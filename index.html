@@ -3,107 +3,16 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="css/styles.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 		/>
-
 		<title>Andrea Galliani - Personal Webpage</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				background-color: #f5f5f5; /* Light Gray for a calm background */
-				color: #333;
-				margin: 0;
-				padding: 0;
-			}
-
-			header {
-				background-color: #4a90e2; /* Cool Blue Color */
-				color: #fff; /* White text for header */
-				text-align: center;
-				padding: 20px;
-				display: flex; /* Use flexbox to align content */
-				flex-direction: column; /* Stack elements vertically */
-				align-items: center; /* Center align elements horizontally */
-			}
-
-			h1 {
-				margin: 0;
-				font-size: 2em;
-				color: #fff; /* White text for header */
-			}
-
-			/* Style for the profile picture */
-			.profile-picture {
-				width: 250px; /* Adjust the width as needed */
-				height: 250px; /* Adjust the height as needed */
-				border-radius: 50%; /* Make it circular */
-				margin-bottom: 10px; /* Add some spacing below the picture */
-			}
-
-			/* Style for the PDF icon */
-			.pdf-icon::before {
-				content: "\1F4C4"; /* Unicode character for PDF icon */
-				font-size: 1.2em;
-				margin-right: 5px;
-			}
-
-			section {
-				padding: 20px;
-				background-color: #fff; /* White background for sections */
-				margin: 20px;
-				border-radius: 5px;
-				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for sections */
-			}
-
-			p {
-				font-size: 1.2em;
-			}
-
-			.medium-embed {
-				margin-top: 20px;
-			}
-
-			a,
-			u {
-				text-decoration: none;
-			}
-
-			/* Style for the link icons */
-			.link-icon::before {
-				margin-right: 5px;
-				font-size: 1.2em;
-			}
-
-			/* Style for the footer */
-			footer {
-				background-color: #333; /* Dark background color for the footer */
-				color: #fff; /* White text for the footer */
-				text-align: center;
-				padding: 20px;
-			}
-
-			/* Style for the links in the footer */
-			footer a {
-				color: #fff; /* White color for links */
-				text-decoration: none; /* Remove underlines from links */
-				margin: 0 10px; /* Add margin between links and vertical bar */
-			}
-
-			/* Style for the vertical bar separator */
-			footer .separator::before {
-				content: "|"; /* Vertical bar as content */
-				margin: 0 5px; /* Add spacing around the vertical bar */
-			}
-		</style>
 	</head>
 	<body>
 		<header>
-			<!-- Profile Picture -->
-			<img class="profile-picture" src="./propic.jpg" alt="Profile Picture" />
-
-			<!-- Header Text -->
+			<img class="profile-picture" src="images/propic.jpg" alt="Profile Picture" />
 			<h1>Andrea Galliani</h1>
 			<p>Computer Engineer | Ph.D. Student | Research Fellow</p>
 		</header>
@@ -131,64 +40,41 @@
 				Energy Physics pixel detectors.
 			</p>
 		</section>
-
-		<!-- Section for PDF CV -->
 		<section>
 			<h2>My Scientific and Academic Curriculum</h2>
-
-			<!-- Provide a download link with the PDF icon -->
 			<p>
 				<a
 					href="https://didattica-rubrica.unibg.it/sites/default/files/cven/04-07-2023/scientific_academic_cv_eng_1.pdf"
 					target="_blank"
 					download
-					><span class="pdf-icon"></span> Download CV (ENG)</a
 				>
+					<i class="fa-solid fa-file-pdf"></i> Download CV (ENG)
+				</a>
 			</p>
 		</section>
 		<section>
-			<h2>	You can reach me at:</h2>
-			<p>
-				andreagalliani29 <strong>[at]</strong> gmail <strong>[dot]</strong> com
-			</p>
+			<h2>You can reach me at:</h2>
+			<p>andreagalliani29 <strong>[at]</strong> gmail <strong>[dot]</strong> com</p>
 		</section>
-		<!-- Section for Links -->
-
-		<!-- Footer for Links -->
 		<footer>
-			<!-- Add icons to your links -->
 			<p>
-				<a href="https://www.linkedin.com/in/andreagalliani" target="_blank">
-					<!--i class="fas fa-link link-icon"></i-->
-					Linkedin</a
-				>
-
+				<a href="https://www.linkedin.com/in/andreagalliani" target="_blank"> Linkedin </a>
 				<span class="separator"></span>
-				<a href="https://github.com/agalliani">
-					<!--i class="fas fa-link link-icon"></i-->
-					GitHub</a
-				>
-
+				<a href="https://github.com/agalliani"> GitHub </a>
 				<span class="separator"></span>
-				<a href="https://www.researchgate.net/profile/Andrea-Galliani-3" target="_blank"
-					><!--i class="fas fa-link link-icon"></i-->
-					ResearchGate</a
-				>
+				<a href="https://www.researchgate.net/profile/Andrea-Galliani-3" target="_blank">
+					ResearchGate
+				</a>
 				<span class="separator"></span>
-				<a href="https://www.scopus.com/authid/detail.uri?authorId=57936566700" target="_blank"
-					><!--i class="fas fa-link link-icon"></i-->
-					Scopus</a
-				>
+				<a href="https://www.scopus.com/authid/detail.uri?authorId=57936566700" target="_blank">
+					Scopus
+				</a>
 				<span class="separator"></span>
-				<a href="https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it" target="_blank"
-					><!--i class="fas fa-link link-icon"></i-->
-					Google Scholar</a
-				>
+				<a href="https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it" target="_blank">
+					Google Scholar
+				</a>
 				<span class="separator"></span>
-				<a href="https://orcid.org/my-orcid?orcid=0000-0001-8606-5689" target="_blank"
-					><!--i class="fas fa-link link-icon"></i-->
-					ORCID</a
-				>
+				<a href="https://orcid.org/my-orcid?orcid=0000-0001-8606-5689" target="_blank"> ORCID </a>
 			</p>
 		</footer>
 	</body>
