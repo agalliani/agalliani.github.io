@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		/>
+
 		<title>Andrea Galliani - Personal Webpage</title>
 		<style>
 			body {
@@ -37,6 +42,13 @@
 				margin-bottom: 10px; /* Add some spacing below the picture */
 			}
 
+			/* Style for the PDF icon */
+			.pdf-icon::before {
+				content: "\1F4C4"; /* Unicode character for PDF icon */
+				font-size: 1.2em;
+				margin-right: 5px;
+			}
+
 			section {
 				padding: 20px;
 				background-color: #fff; /* White background for sections */
@@ -51,6 +63,38 @@
 
 			.medium-embed {
 				margin-top: 20px;
+			}
+
+			a,
+			u {
+				text-decoration: none;
+			}
+
+			/* Style for the link icons */
+			.link-icon::before {
+				margin-right: 5px;
+				font-size: 1.2em;
+			}
+
+			/* Style for the footer */
+			footer {
+				background-color: #333; /* Dark background color for the footer */
+				color: #fff; /* White text for the footer */
+				text-align: center;
+				padding: 20px;
+			}
+
+			/* Style for the links in the footer */
+			footer a {
+				color: #fff; /* White color for links */
+				text-decoration: none; /* Remove underlines from links */
+				margin: 0 10px; /* Add margin between links and vertical bar */
+			}
+
+			/* Style for the vertical bar separator */
+			footer .separator::before {
+				content: "|"; /* Vertical bar as content */
+				margin: 0 5px; /* Add spacing around the vertical bar */
 			}
 		</style>
 	</head>
@@ -87,19 +131,65 @@
 				Energy Physics pixel detectors.
 			</p>
 		</section>
+
+		<!-- Section for PDF CV -->
 		<section>
-			<h2>Contact Information</h2>
+			<h2>My Scientific and Academic Curriculum</h2>
+
+			<!-- Provide a download link with the PDF icon -->
 			<p>
-				You can reach me at:
-				<br />
-				Email: andreagalliani29 [at] gmail [dot] com
-				<br />
-				LinkedIn:
-				<a href="https://www.linkedin.com/in/andreagalliani" target="_blank">LinkedIn Profile</a>
+				<a
+					href="https://didattica-rubrica.unibg.it/sites/default/files/cven/04-07-2023/scientific_academic_cv_eng_1.pdf"
+					target="_blank"
+					download
+					><span class="pdf-icon"></span> Download CV (ENG)</a
+				>
 			</p>
 		</section>
+		<section>
+			<h2>	You can reach me at:</h2>
+			<p>
+				andreagalliani29 <strong>[at]</strong> gmail <strong>[dot]</strong> com
+			</p>
+		</section>
+		<!-- Section for Links -->
 
-	
+		<!-- Footer for Links -->
+		<footer>
+			<!-- Add icons to your links -->
+			<p>
+				<a href="https://www.linkedin.com/in/andreagalliani" target="_blank">
+					<!--i class="fas fa-link link-icon"></i-->
+					Linkedin</a
+				>
+
+				<span class="separator"></span>
+				<a href="https://github.com/agalliani">
+					<!--i class="fas fa-link link-icon"></i-->
+					GitHub</a
+				>
+
+				<span class="separator"></span>
+				<a href="https://www.researchgate.net/profile/Andrea-Galliani-3" target="_blank"
+					><!--i class="fas fa-link link-icon"></i-->
+					ResearchGate</a
+				>
+				<span class="separator"></span>
+				<a href="https://www.scopus.com/authid/detail.uri?authorId=57936566700" target="_blank"
+					><!--i class="fas fa-link link-icon"></i-->
+					Scopus</a
+				>
+				<span class="separator"></span>
+				<a href="https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it" target="_blank"
+					><!--i class="fas fa-link link-icon"></i-->
+					Google Scholar</a
+				>
+				<span class="separator"></span>
+				<a href="https://orcid.org/my-orcid?orcid=0000-0001-8606-5689" target="_blank"
+					><!--i class="fas fa-link link-icon"></i-->
+					ORCID</a
+				>
+			</p>
+		</footer>
 	</body>
 </html>
-
