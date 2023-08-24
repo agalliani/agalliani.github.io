@@ -42,8 +42,12 @@ section {
  border-radius: 5px;
  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
+ /* twilik Medium Carousel custom styles if SLIDER setting is enabled */
+ /* https://www.twilik.com  */
  .VueCarousel {
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  margin: 0px;
+  padding: 0px;
  }
 }
 
@@ -109,4 +113,8 @@ footer .separator::before {
  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
  margin: 7px;
 
+}
+
+.rtb-close {
+ z-index: 50;
 }
