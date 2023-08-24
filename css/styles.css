@@ -41,6 +41,10 @@ section {
  margin: 20px;
  border-radius: 5px;
  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+ .VueCarousel {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+ }
 }
 
 p {
@@ -51,6 +55,8 @@ a,
 u {
  text-decoration: none;
 }
+
+
 
 
 
@@ -73,4 +79,34 @@ footer a {
 footer .separator::before {
  content: "|";
  margin: 0 5px;
+}
+
+
+
+/* twilik Medium Carousel custom styles if SLIDER setting is enabled */
+/* https://www.twilik.com  */
+.post-title {
+ color: #464646;
+}
+
+.btn-primary {
+ font-weight: 600;
+ color: #464646;
+
+}
+
+.post-date {
+ box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1) !important;
+ border-radius: 4px;
+}
+
+.post-image {
+ border-radius: 4px;
+}
+
+.slider-post {
+ border-radius: 5px;
+ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+ margin: 7px;
+
 }
