@@ -104,7 +104,7 @@
         Google Scholar
       </a>
       <span class="separator"></span>
-      <a href="https://orcid.org/my-orcid?orcid=0000-0001-8606-5689" target="_blank"> ORCID </a>
+      <a href="https://orcid.org/0000-0001-8606-5689" target="_blank"> ORCID </a>
     </p>
 
     <p>andreagalliani29 <strong>[at]</strong> gmail <strong>[dot]</strong> com</p>
