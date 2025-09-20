@@ -21,7 +21,7 @@
   <h2>About Me</h2>
   <p>
     I'm a PhD candidate in Engineering and Applied Science with a strong background in analog and mixed-signal IC design for high-energy physics detectors.
-    Alongside my research, I develop software solutions for data acquisition, workflow automation, and backend systems using Python, TypeScript, and modern frameworks.
+    Alongside my research, I develop software solutions for data acquisition, workflow automation, and full-stack systems using Python, TypeScript, and modern frameworks.
   </p>
   <p>
     My work bridges hardware and software: designing complex CMOS circuits while creating scalable, maintainable software solutions. 
@@ -48,6 +48,7 @@
     I am currently a Research Fellow at the University of Bergamo, working on the development and characterization of front-end circuits in 28 nm CMOS technology for pixel detectors.
     In parallel, I develop software tools and automation scripts for testing, data acquisition, and analysis, bridging the gap between hardware design and software solutions.
   </p>
+  <br>
   
   <h2>Past Experience</h2>
   <p>
