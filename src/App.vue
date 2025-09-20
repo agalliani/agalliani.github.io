@@ -3,34 +3,32 @@
 </script>
 
 <template>
-  <header>
+<header>
+  <img class="profile-picture" src="/propic.webp" alt="Profile Picture" />
+  <h1>Andrea Galliani</h1>
+  <ul class="skills-list">
+    <li>🔬 Analog & Mixed-Signal IC Design</li>
+    <li>💻 Backend & Full-Stack Software Development</li>
+    <li>🖥️ Programming: Python, TypeScript, C++</li>
+    <li>⚡ Embedded Systems & Automation</li>
+  </ul>
+</header>
 
-    <img class="profile-picture" src="/propic.webp" alt="Profile Picture" />
-    <h1>Andrea Galliani</h1>
-    <!--p>Computer Engineer | Ph.D. Student | Research Fellow</p-->
-    <ul class="skills-list">
-      <li>🔬 Research in Microelectronics</li>
-      <li>💻 Web, Embedded Systems & Circuit Design</li>
-      <li>👨‍💻 Programming: Python, TypeScript, C++</li>
-    </ul>
-  </header>
 
 
 
   <section>
-    <h2>About Me</h2>
-    <p>
-      I'm a Computer Engineer passionate about designing cutting-edge CMOS Integrated Circuits and embedded
-      systems. My research focuses on developing innovative solutions for high-energy particle detectors,
-      contributing to advancements in particle physics.
-    </p>
-    <p>
-      During my PhD at the University of Bergamo, I am developing and characterizing front-end circuits in 28nm
-      CMOS technology, significantly improving detector performance. I have a strong interest in the interface
-      between hardware and software, and I am gaining solid experience in programming microcontrollers.
-    </p>
-  </section>
-  <section>
+  <h2>About Me</h2>
+  <p>
+    I'm a PhD candidate in Engineering and Applied Science with a strong background in analog and mixed-signal IC design for high-energy physics detectors.
+    Alongside my research, I develop software solutions for data acquisition, workflow automation, and backend systems using Python, TypeScript, and modern frameworks.
+  </p>
+  <p>
+    My work bridges hardware and software: designing complex CMOS circuits while creating scalable, maintainable software solutions. 
+    I am passionate about solving challenging engineering problems, simplifying processes, and delivering impactful results.
+  </p>
+</section>
+<section>
     <h2>Oxymeter Project</h2>
     <p>
       I'm the creator of Oxymeter, a project that won third place at Startcup Bergamo 2024. <br /> Oxymeter is a
@@ -45,24 +43,19 @@
     </p>
   </section>
   <section>
-    <h2>Current Work</h2>
-    <p>
-      I am working as a Graduate Research Fellow at the Università degli Studi di Bergamo,
-      in the context of the Progetti di Rilevante Interesse Nazionale (PRIN). In this role, my responsibilities
-      include
-      the development and characterization of front-end circuits in 28 nm CMOS technology for pixel detectors in
-      future high-energy
-      physics accelerators and advanced x-ray imaging instrumentation.
-    </p>
-    <h2>Past Experience</h2>
-    <p>
-      I worked as Research Fellow at the National Institute for Nuclear Physics (INFN),
-      section of Pavia, working on the Falaphel project. In this role, my responsibilities include
-      the design, test, and characterization of front-end circuits for the next generation of High
-      Energy Physics pixel detectors.
-    </p>
-  </section>
-  <section>
+  <h2>Current Work</h2>
+  <p>
+    I am currently a Research Fellow at the University of Bergamo, working on the development and characterization of front-end circuits in 28 nm CMOS technology for pixel detectors.
+    In parallel, I develop software tools and automation scripts for testing, data acquisition, and analysis, bridging the gap between hardware design and software solutions.
+  </p>
+  
+  <h2>Past Experience</h2>
+  <p>
+    I previously worked as a Research Fellow at INFN Pavia on the Falaphel project, focusing on front-end circuits for high-energy physics detectors.
+    I also developed software applications for data collection, analysis, and visualization, gaining hands-on experience in Python, Tkinter, and workflow automation.
+  </p>
+</section>
+<section>
     <h2>Scientific and Academic Curriculum</h2>
     <p>
       <a href="/scientific_academic_cv_eng.pdf" target="_blank" download>
