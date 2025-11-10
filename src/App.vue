@@ -28,7 +28,7 @@
     I am passionate about solving challenging engineering problems, simplifying processes, and delivering impactful results.
   </p>
 </section>
-<section>
+<!--section>
     <h2>Oxymeter Project</h2>
     <p>
       I'm the creator of Oxymeter, a project that won third place at Startcup Bergamo 2024. <br /> Oxymeter is a
@@ -41,7 +41,7 @@
       <a href="https://agalliani.github.io/frontend-oxymeter/#/" target="_blank">
         <button>Visit OXYMETER</button></a>
     </p>
-  </section>
+  </section-->
   <section>
   <h2>Current Work</h2>
   <p>
