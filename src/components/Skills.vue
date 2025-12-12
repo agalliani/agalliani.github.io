@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const skills = {
-  silicon: ['Analog IC Design', 'Mixed-Signal', 'CMOS Technology', 'Cadence Virtuoso', 'Verilog-A', 'Physical Layout'],
-  code: ['Python', 'TypeScript', 'Vue.js', 'C++', 'Node.js', 'Full-Stack Dev'],
+  silicon: ['Analog IC Design', 'Mixed-Signal', 'Radhard Design', 'CMOS Technology', 'Cadence Virtuoso', 'Verilog-A', 'Physical Layout'],
+  code: ['Python', 'TypeScript', 'Vue.js', 'C++', 'Node.js', 'Full-Stack Dev', 'SRE'],
   tools: ['Git & GitHub', 'Docker', 'Linux / Bash', 'CI/CD Pipelines', 'Altium Designer', 'Matlab']
 }
 </script>

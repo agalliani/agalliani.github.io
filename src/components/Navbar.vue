@@ -38,6 +38,10 @@ const scrollToSection = (id: string) => {
                 class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
           About
         </button>
+        <button @click="scrollToSection('projects')" 
+                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+          Projects
+        </button>
         <button @click="scrollToSection('skills')" 
                 class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
           Skills

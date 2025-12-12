@@ -18,10 +18,10 @@ const scrollToProjects = () => {
           Andrea <span class="text-accent">Galliani</span>
         </h1>
         <h2 class="text-lg lg:text-xl font-mono text-accent-secondary mb-8">
-          Bridging Hardware & Software | IC Design & Embedded Systems Specialist
+          AMS Engineer @ Bosch Sensortec | Ph.D.
         </h2>
         <p class="text-text-muted text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-          I turn complex IC designs into seamless digital experiences. From analog circuits to full-stack automation, I connect hardware and software to deliver real impact.
+          Bridging Analog Design & Digital Intelligence. Designing Mixed-Signal interfaces for MEMS sensors.
         </p>
         
         <button @click="scrollToProjects" 

@@ -10,13 +10,13 @@
             About Me
           </h2>
           <p class="text-xl text-accent-secondary font-medium mb-6">
-            I thrive at the intersection of hardware and software.
+            Bridging the Gap Between Analog Silicon and Edge AI.
           </p>
           <p class="text-lg leading-relaxed text-text-muted mb-6">
-            With hands-on experience in analog & mixed-signal IC design and a strong background in full-stack development, I simplify the bridge between silicon and systems. I create solutions that are not only technically robust but also practical and scalable.
+            I am an <strong>AMS Engineer at Bosch Sensortec</strong> (Milan) with a Ph.D. in Microelectronics. My profile bridges two worlds: the precision of <strong>Analog Mixed-Signal Design</strong> (28nm CMOS/Radhard) and the scalability of <strong>Industrial IoT Software</strong> (Full-Stack). I build reliable systems from the sensor physics up to the cloud dashboard.
           </p>
           <p class="text-lg leading-relaxed text-text-muted">
-            Working with me means gaining a collaborator who understands both the chip and the code, delivering value faster and smarter.
+            Recognized by <strong>Bosch Sensortec</strong> as a top innovator (1st Prize & HQ Invited), I don't just write code or design schematics—I build complete, intelligent systems from the transistor up to the cloud.
           </p>
         </div>
         
