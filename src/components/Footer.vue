@@ -48,7 +48,7 @@ const year = new Date().getFullYear()
 
       <div class="text-center border-t border-white/5 pt-8">
         <p class="text-slate-400 text-sm">
-          © {{ year }} Andrea Galliani. Ph.D. Candidate & Engineering Specialist.
+          © {{ year }} Andrea Galliani. All rights reserved.
         </p>
       </div>
     </div>

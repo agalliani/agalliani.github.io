@@ -19,7 +19,7 @@ const scrollToProjects = () => {
           <!-- Glow effect -->
           <div class="absolute inset-0 bg-accent rounded-full blur-3xl opacity-20 animate-pulse"></div>
           <img src="/propic.webp" alt="Andrea Galliani" 
-               class="relative w-full h-full object-cover rounded-full border-4 border-accent shadow-2xl ring-1 ring-white/10" />
+               class="relative w-full h-full object-cover rounded-full border-2 border-accent shadow-2xl ring-1 ring-white/10" />
         </div>
       </div>
 
@@ -47,11 +47,6 @@ const scrollToProjects = () => {
           <p class="text-lg text-text-muted leading-relaxed mb-8">
             I don't just write code or design schematic, I build complete, intelligent systems from the transistor up to the cloud.
           </p>
-
-          <!--button @click="scrollToProjects" 
-                  class="px-8 py-3 bg-accent hover:bg-accent-hover text-primary-dark font-bold rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-accent/20">
-            View Projects
-          </button-->
         </div>
 
       </div>

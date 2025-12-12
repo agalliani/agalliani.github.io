@@ -103,6 +103,17 @@ const ventures = [
     badge: '🏆 Award Winner'
   },
   {
+    title: 'Mechanical Design & 3D Prototyping',
+    subtitle: 'From PCB to Finished Product Enclosures',
+    description: 'End-to-end mechanical integration for electronic prototypes. Designed custom enclosures in <strong>Fusion 360</strong> with precise tolerances for PCB mounting, connectors, and thermal dissipation.<br><br><span class="text-slate-300">Production:</span> Manufactured rugged cases for the <strong>Giro-E (MOST)</strong> trackers and ergonomic shells for the <strong>Oxymeter</strong> wearable using <strong>Bambu Lab X1 Carbon</strong> (High-speed/Multi-material) and <strong>Creality Ender 3 S1 Pro</strong>.<br><br><span class="text-slate-300">Lab Fixtures:</span> Created custom supports for Falaphel/PiHex test boards to ensure stability during X-Ray and bonding procedures.',
+    tech: ['Fusion 360', 'Bambu Lab X1C', 'PLA/PETG/ABS', 'Rapid Prototyping', 'DFM'],
+    icon: 'fas fa-cube',
+    gallery: [
+      '/images/fusion-render.jpg',
+      '/images/3d-print-result.jpg'
+    ]
+  },
+  {
     title: 'Giro-E Technician | MOST Project',
     subtitle: 'Giro-E 2024 | Siena - Naples',
     description: 'Field technician managing prototype devices on race bikes during the <strong>Giro-E 2024</strong> (Siena to Naples). Proved reliability of sensors in extreme real-world conditions.',
