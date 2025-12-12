@@ -58,7 +58,11 @@ const projects = [
     tech: ['Python', 'Automated Testing', 'Hardware Interfacing', 'Data Analysis', 'Git'],
     link: 'https://github.com/agalliani/falaphel3-daq',
     linkLabel: 'View Code on GitHub',
-    icon: 'fas fa-terminal'
+    icon: 'fas fa-terminal',
+    gallery: [
+      '/images/daq-setup.jpg',
+      '/images/tot-linearity-plot.png'
+    ]
   },
   {
     title: 'MangroviaIoT Platform',

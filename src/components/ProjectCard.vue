@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MiniGallery from './MiniGallery.vue'
+
 defineProps<{
   title: string
   subtitle?: string
@@ -7,6 +9,7 @@ defineProps<{
   link?: string
   linkLabel?: string
   links?: { label: string; url: string }[]
+  gallery?: string[]
   icon?: string
   badge?: string
 }>()
@@ -30,6 +33,8 @@ defineProps<{
     
     <p class="text-slate-400 mb-6 text-sm leading-relaxed flex-grow" v-html="description"></p>
     
+    <MiniGallery v-if="gallery" :images="gallery" />
+
     <div class="flex flex-wrap gap-2 mb-6">
       <span v-for="t in tech" :key="t" class="px-2 py-1 text-xs font-mono rounded bg-slate-900/50 text-teal-400 border border-white/5">
         {{ t }}

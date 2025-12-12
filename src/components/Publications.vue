@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MiniGallery from './MiniGallery.vue'
+
 const talks = [
   {
     event: 'ApplePies 2023 (Genoa)',
@@ -46,7 +48,12 @@ const fieldWork = [
     location: 'Torino & Milano',
     date: '2022 - 2024',
     icon: 'fas fa-microchip',
-    color: 'from-purple-500/20 to-indigo-500/5'
+    color: 'from-purple-500/20 to-indigo-500/5',
+    gallery: [
+      '/images/bonding-microscope.jpg',
+      '/images/daughter-board-enig.jpg',
+      '/images/lab-torino.jpg'
+    ]
   }
 ]
 </script>
@@ -100,6 +107,8 @@ const fieldWork = [
                 <h3 class="text-xl font-bold text-white mb-3 leading-tight">{{ work.title }}</h3>
                 <p class="text-slate-300 text-sm leading-relaxed mb-6" v-html="work.description"></p>
                 
+                <MiniGallery v-if="work.gallery" :images="work.gallery" />
+
                 <div class="flex flex-col gap-2 text-xs text-slate-400 font-mono border-t border-white/10 pt-4">
                   <span class="flex items-center"><i class="fas fa-map-marker-alt w-5 text-center mr-2"></i>{{ work.location }}</span>
                   <span class="flex items-center"><i class="fas fa-calendar-alt w-5 text-center mr-2"></i>{{ work.date }}</span>
