@@ -14,6 +14,18 @@ const projects = [
     icon: 'fas fa-microchip'
   },
   {
+    title: 'PiHEX | PRIN 2022',
+    subtitle: '28nm CMOS for HL-LHC & X-Ray Imaging',
+    description: 'Project aimed at advancing electronic instrumentation for <strong>High Luminosity Accelerators (HL-LHC)</strong> and next-gen <strong>Free Electron Lasers</strong>. Designed prototype chips integrating readout channel matrices with <strong>ultra-fine pitch (<100 µm)</strong> in 28nm CMOS technology. Pushing the limits of spatial resolution and readout speed for future particle physics experiments.<br><br><span class="text-slate-300">Context:</span> Funded by the Italian Ministry of University and Research (MUR) - PRIN 2022 Program.',
+    tech: ['PRIN 2022', '28nm CMOS', 'Pixel Detectors', 'HL-LHC', 'X-Ray Imaging'],
+    links: [
+      { label: 'Project Presentation (Unipd)', url: 'https://www.dei.unipd.it/system/files/PRIN2022_PiHEX_Gerardin_0.pdf' },
+      { label: 'CERN Indico Contribution', url: 'https://indico.cern.ch/event/1428808/contributions/6505566/contribution.pdf' }
+    ],
+    icon: 'fas fa-atom',
+    badge: '🏛️ MUR Grant'
+  },
+  {
     title: 'Oxymeter | Sports Tech Venture',
     subtitle: '3rd Place Winner @ StartCup Bergamo 2024',
     description: 'Founded a sports-tech project originally designed as an IoT wearable. Successfully pitched the business case, winning a €2.5k grant.<br><br><span class="text-slate-300">The Pivot:</span> Led the technical transition from a hardware prototype to a scalable <strong>Vue.js Web App</strong> MVP to prioritize market validation over manufacturing complexity.',
