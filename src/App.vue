@@ -8,7 +8,7 @@ import Footer from './components/Footer.vue'
 
 <template>
   <Navbar />
-  <main>
+  <main class="w-full overflow-x-hidden">
     <div id="hero"><Hero /></div>
     <div id="about"><About /></div>
     <div id="skills"><Skills /></div>
@@ -16,11 +16,3 @@ import Footer from './components/Footer.vue'
   <div id="footer"><Footer /></div>
 </template>
 
-<style scoped>
-main {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0;
-}
-</style>

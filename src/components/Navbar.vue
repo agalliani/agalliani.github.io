@@ -24,75 +24,30 @@ const scrollToSection = (id: string) => {
 </script>
 
 <template>
-  <nav class="navbar" :class="{ 'scrolled': isScrolled }">
-    <div class="container">
-      <div class="logo" @click="scrollToSection('hero')">AG.</div>
-      <div class="links">
-        <button @click="scrollToSection('about')">About</button>
-        <button @click="scrollToSection('skills')">Skills</button>
-        <button @click="scrollToSection('footer')">Contact</button>
+  <nav :class="[
+    'fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6',
+    isScrolled ? 'py-4 bg-slate-900/90 backdrop-blur-md border-b border-white/5 shadow-lg' : 'py-6 bg-transparent'
+  ]">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="font-mono font-bold text-2xl text-text-main hover:text-accent cursor-pointer tracking-tighter transition-colors" 
+           @click="scrollToSection('hero')">
+        AG.
+      </div>
+      <div class="flex gap-8">
+        <button @click="scrollToSection('about')" 
+                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+          About
+        </button>
+        <button @click="scrollToSection('skills')" 
+                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+          Skills
+        </button>
+        <button @click="scrollToSection('footer')" 
+                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+          Contact
+        </button>
       </div>
     </div>
   </nav>
 </template>
 
-<style scoped>
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 1.5rem 2rem;
-  z-index: 100;
-  transition: all 0.3s ease;
-}
-
-.navbar.scrolled {
-  padding: 1rem 2rem;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--color-text);
-  cursor: pointer;
-  letter-spacing: -0.05em;
-}
-
-.logo:hover {
-  color: var(--color-accent-code);
-}
-
-.links {
-  display: flex;
-  gap: 2rem;
-}
-
-button {
-  background: none;
-  border: none;
-  color: var(--color-text);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  opacity: 1;
-  color: var(--color-accent-silicon);
-}
-</style>

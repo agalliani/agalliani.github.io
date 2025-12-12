@@ -10,71 +10,30 @@ const links = [
 </script>
 
 <template>
-  <footer class="footer">
-    <div class="container">
-      <div class="academic-links">
-        <a v-for="link in links" :key="link.name" :href="link.url" target="_blank" rel="noopener">{{ link.name }}</a>
+  <footer class="py-16 px-6 border-t border-white/5 mt-16 bg-primary/50 backdrop-blur-sm">
+    <div class="container mx-auto max-w-4xl text-center">
+      <div class="flex justify-center flex-wrap gap-6 mb-8">
+        <a v-for="link in links" 
+           :key="link.name" 
+           :href="link.url" 
+           target="_blank" 
+           rel="noopener"
+           class="text-text-muted text-sm hover:text-accent hover:underline transition-colors">
+          {{ link.name }}
+        </a>
       </div>
       
-      <div class="contact">
-        <a href="mailto:andreagalliani29@gmail.com" class="email">andreagalliani29 [at] gmail [dot] com</a>
+      <div class="mb-8">
+        <a href="mailto:andreagalliani29@gmail.com" 
+           class="font-mono text-text-main text-base hover:text-accent-secondary transition-colors">
+          andreagalliani29 [at] gmail [dot] com
+        </a>
       </div>
 
-      <p class="copyright">© {{ year }} Andrea Galliani. Built with Vue 3 & Vite.</p>
+      <p class="text-text-muted text-xs opacity-60">
+        © {{ year }} Andrea Galliani. Built with Vue 3 & Vite.
+      </p>
     </div>
   </footer>
 </template>
 
-<style scoped>
-.footer {
-  padding: 4rem 2rem;
-  border-top: 1px solid var(--glass-border);
-  margin-top: 4rem;
-  background: rgba(15, 23, 42, 0.5);
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.academic-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.academic-links a {
-  color: var(--color-accent-tools);
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-.academic-links a:hover {
-  color: var(--color-accent-silicon);
-  text-decoration: underline;
-}
-
-.contact {
-  margin-bottom: 2rem;
-}
-
-.email {
-  font-family: var(--font-mono);
-  color: var(--color-text);
-  font-size: 1rem;
-}
-
-.email:hover {
-  color: var(--color-accent-code);
-}
-
-.copyright {
-  color: var(--color-accent-tools);
-  font-size: 0.8rem;
-  opacity: 0.6;
-}
-</style>
