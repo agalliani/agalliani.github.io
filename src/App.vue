@@ -16,7 +16,6 @@
 
 
 
-
   <section>
   <h2>About Me</h2>
   <p>
@@ -28,29 +27,20 @@
     I am passionate about solving challenging engineering problems, simplifying processes, and delivering impactful results.
   </p>
 </section>
-<!--section>
-    <h2>Oxymeter Project</h2>
-    <p>
-      I'm the creator of Oxymeter, a project that won third place at Startcup Bergamo 2024. <br /> Oxymeter is a
-      cutting-edge environmental monitoring device designed to measure altitude and oxygen availability, tailored
-      for high-altitude sports enthusiasts and researchers.
-      <br />You can learn more about the StartCup competition <a
-        href="https://www.unibg.it/ateneo/chi-siamo/grandi-eventi/start-cup-2024" target="_blank">here</a>.
-    </p>
-    <p>
-      <a href="https://agalliani.github.io/frontend-oxymeter/#/" target="_blank">
-        <button>Visit OXYMETER</button></a>
-    </p>
-  </section-->
+
   <section>
   <h2>Current Work</h2>
-  <p>
-    I am currently a Research Fellow at the University of Bergamo, working on the development and characterization of front-end circuits in 28 nm CMOS technology for pixel detectors.
-    In parallel, I develop software tools and automation scripts for testing, data acquisition, and analysis, bridging the gap between hardware design and software solutions.
+   <p>
+    I work as an AMS Engineer at Bosch Sensortec in Milan, focusing on mixed-signal integrated circuits for next-generation sensing technologies. My role bridges analog and digital domains: I verify system-level compatibility, run chip-level simulations, and identify design inconsistencies early in the development flow. I collaborate with cross-disciplinary teams to ensure robust, reliable, and high-performance sensor solutions.
   </p>
   <br>
-  
+ 
   <h2>Past Experience</h2>
+   <p>
+    I have been a Research Fellow at the University of Bergamo, working on the development and characterization of front-end circuits in 28 nm CMOS technology for pixel detectors.
+    In parallel, I developed software tools and automation scripts for testing, data acquisition, and analysis, bridging hardware design and software solutions.
+  </p>
+  <br>
   <p>
     I previously worked as a Research Fellow at INFN Pavia on the Falaphel project, focusing on front-end circuits for high-energy physics detectors.
     I also developed software applications for data collection, analysis, and visualization, gaining hands-on experience in Python, Tkinter, and workflow automation.
@@ -65,19 +55,6 @@
     </p>
   </section>
 
-  <!--section>
-			<h2>Read my medium stories</h2>
-			<div
-				id="retainable-rss-embed"
-				data-rss="https://medium.com/feed/@agalliani"
-				data-maxcols="3"
-				data-layout="slider"
-				data-poststyle="modal"
-				data-readmore="Read more..."
-				data-buttonclass="btn btn-primary"
-				data-offset="-100"
-			></div>
-		</section-->
   <footer>
     <p>
       <a href="https://www.linkedin.com/in/andreagalliani" target="_blank"> Linkedin </a>
@@ -106,11 +83,9 @@
 </template>
 
 <style scoped>
-
-
 /* Header styles */
 header {
-    background-color: #2c3e50; /* Blu scuro elegante */
+    background-color: #2c3e50;
     color: #fff;
     text-align: center;
     padding: 20px;
@@ -120,7 +95,6 @@ header {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile picture styles */
 .profile-picture {
     width: 250px;
     height: 250px;
@@ -131,7 +105,6 @@ header {
     border-width: 3px;
 }
 
-/* Skills list styles */
 .skills-list {
     list-style-type: none;
     padding: 0;
@@ -145,17 +118,14 @@ header {
     margin: 5px 0;
 }
 
-
-/* Title styles */
 h1 {
     margin: 0;
     font-size: 2.5em;
     color: #fff;
 }
 
-  /* Button styles */
-  button {
-    background-color: #3498db; /* Blu acceso per i bottoni */
+button {
+    background-color: #3498db;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -163,43 +133,40 @@ h1 {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-   }
-   
-   button:hover {
-    background-color: #2980b9; /* Blu più scuro al passaggio del mouse */
-   }
-/* Section styles */
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
 section {
     padding: 20px;
     background-color: #fff;
     margin: 20px auto;
-    border-radius: 8px; /* Bordi più arrotondati */
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15); /* Ombreggiatura leggera */
+    border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
     max-width: 1200px;
-    width: 90%; /* Adatta il layout agli schermi più grandi */
+    width: 90%;
 }
 
-/* Text styles */
 p {
     font-size: 1.2em;
     line-height: 1.6;
 }
 
-/* Link styles */
 a {
     text-decoration: none;
-    color: #3498db; /* Colore blu per i link */
+    color: #3498db;
     transition: all 0.3s ease-in-out;
 }
 
 a:hover {
     text-decoration: underline;
-    color: #1e608e; /* Un blu leggermente più scuro */
+    color: #1e608e;
 }
 
-/* Footer styles */
 footer {
-    background-color: #2c3e50; /* Blu scuro, in linea con l'header */
+    background-color: #2c3e50;
     color: #fff;
     text-align: center;
     padding: 20px;
@@ -209,7 +176,6 @@ footer {
     gap: 15px;
 }
 
-/* Footer links styles */
 footer a {
     color: #fff;
     text-decoration: none;
@@ -218,18 +184,14 @@ footer a {
 }
 
 footer a:hover {
-    color: #3498db; /* Blu per hover sui link nel footer */
+    color: #3498db;
 }
 
-/* Footer separator styles */
 footer .separator::before {
     content: "|";
     margin: 0 5px;
 }
 
-/* Custom styles for sections or other elements can be added below */
-
-/* Responsività per mobile */
 @media (max-width: 768px) {
     header {
         padding: 10px;
@@ -244,11 +206,6 @@ footer .separator::before {
         height: 150px;
     }
 
-    /*section {
-        margin: 10px;
-        padding: 15px;
-    }*/
-
     p {
         font-size: 1em;
     }
@@ -258,5 +215,4 @@ footer .separator::before {
         padding: 8px 16px;
     }
 }
-
 </style>
