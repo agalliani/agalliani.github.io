@@ -1,2 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #0F172A;
+  --color-primary-light: #1E293B;
+  --color-primary-dark: #020617;
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+  --color-accent-secondary: #14B8A6;
+  --color-text-main: #E2E8F0;
+  --color-text-muted: #94A3B8;
+}
+
+body {
+  @apply bg-slate-950 text-slate-200;
+}

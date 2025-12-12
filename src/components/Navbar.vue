@@ -29,25 +29,25 @@ const scrollToSection = (id: string) => {
     isScrolled ? 'py-4 bg-slate-900/90 backdrop-blur-md border-b border-white/5 shadow-lg' : 'py-6 bg-transparent'
   ]">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="font-mono font-bold text-2xl text-text-main hover:text-accent cursor-pointer tracking-tighter transition-colors" 
+      <div class="font-mono font-bold text-2xl text-slate-200 hover:text-amber-400 cursor-pointer tracking-tighter transition-colors" 
            @click="scrollToSection('hero')">
         AG.
       </div>
       <div class="flex gap-8">
         <button @click="scrollToSection('about')" 
-                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+                class="text-slate-400 font-mono text-sm hover:text-amber-400 transition-colors">
           About
         </button>
         <button @click="scrollToSection('projects')" 
-                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+                class="text-slate-400 font-mono text-sm hover:text-amber-400 transition-colors">
           Projects
         </button>
         <button @click="scrollToSection('skills')" 
-                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+                class="text-slate-400 font-mono text-sm hover:text-amber-400 transition-colors">
           Skills
         </button>
         <button @click="scrollToSection('footer')" 
-                class="text-text-muted font-mono text-sm hover:text-accent transition-colors">
+                class="text-slate-400 font-mono text-sm hover:text-amber-400 transition-colors">
           Contact
         </button>
       </div>
