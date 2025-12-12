@@ -24,7 +24,7 @@ const year = new Date().getFullYear()
             <i class="fas fa-envelope text-xl"></i>
           </div>
           <h3 class="text-slate-200 font-bold mb-1">Get in Touch</h3>
-          <span class="text-sm text-slate-500 group-hover:text-accent transition-colors">andreagalliani29@gmail.com</span>
+          <span class="text-sm text-slate-400 group-hover:text-amber-400 transition-colors">andreagalliani29@gmail.com</span>
         </a>
 
         <!-- LinkedIn -->
@@ -33,7 +33,7 @@ const year = new Date().getFullYear()
             <i class="fab fa-linkedin-in text-xl"></i>
           </div>
           <h3 class="text-slate-200 font-bold mb-1">Connect on LinkedIn</h3>
-          <span class="text-sm text-slate-500 group-hover:text-[#0077b5] transition-colors">View Profile</span>
+          <span class="text-sm text-slate-400 group-hover:text-[#0077b5] transition-colors">View Profile</span>
         </a>
 
         <!-- GitHub -->
@@ -42,12 +42,12 @@ const year = new Date().getFullYear()
             <i class="fab fa-github text-xl"></i>
           </div>
           <h3 class="text-slate-200 font-bold mb-1">Check Code</h3>
-          <span class="text-sm text-slate-500 group-hover:text-white transition-colors">Explore Repositories</span>
+          <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Explore Repositories</span>
         </a>
       </div>
 
       <div class="text-center border-t border-white/5 pt-8">
-        <p class="text-slate-500 text-sm">
+        <p class="text-slate-400 text-sm">
           © {{ year }} Andrea Galliani. Ph.D. Candidate & Engineering Specialist.
         </p>
       </div>

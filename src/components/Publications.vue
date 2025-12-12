@@ -64,14 +64,14 @@ const fieldWork = [
           <div class="space-y-6">
             <div v-for="talk in talks" :key="talk.event" class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-accent/30 transition-colors group">
               <div class="flex justify-between items-start mb-2">
-                <span class="text-accent font-mono text-sm">{{ talk.event }}</span>
+                <span class="text-amber-400 font-mono text-sm">{{ talk.event }}</span>
                 <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 bg-white/5 rounded text-slate-400">{{ talk.type }}</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-200 group-hover:text-accent transition-colors">{{ talk.topic }}</h3>
+              <h3 class="text-lg font-bold text-slate-200 group-hover:text-amber-400 transition-colors">{{ talk.topic }}</h3>
             </div>
           </div>
           <div class="mt-8">
-            <a href="https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it" target="_blank" class="inline-flex items-center text-slate-400 hover:text-accent transition-colors font-medium">
+            <a href="https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it" target="_blank" class="inline-flex items-center text-slate-400 hover:text-amber-400 transition-colors font-medium">
               View Full Publication List <i class="fas fa-external-link-alt ml-2 text-xs"></i>
             </a>
           </div>

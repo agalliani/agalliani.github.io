@@ -37,15 +37,15 @@ defineProps<{
     </div>
 
     <div class="mt-auto space-y-3">
-      <a v-if="link" :href="link" target="_blank" class="inline-flex items-center text-sm text-accent hover:text-amber-400 font-medium transition-colors">
+      <a v-if="link" :href="link" target="_blank" class="inline-flex items-center text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors">
         {{ linkLabel || 'View Project' }} <i class="fas fa-arrow-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
       </a>
 
       <div v-if="links && links.length > 0" class="pt-4 border-t border-white/5">
-        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Resources</span>
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Resources</span>
         <div class="flex flex-col gap-2">
-          <a v-for="l in links" :key="l.label" :href="l.url" target="_blank" class="text-sm text-slate-300 hover:text-accent transition-colors flex items-center gap-2 group/link">
-            <i class="fas fa-file-pdf text-xs opacity-70 group-hover/link:text-accent"></i> {{ l.label }}
+          <a v-for="l in links" :key="l.label" :href="l.url" target="_blank" class="text-sm text-slate-300 hover:text-amber-400 transition-colors flex items-center gap-2 group/link">
+            <i class="fas fa-file-pdf text-xs opacity-70 group-hover/link:text-amber-400"></i> {{ l.label }}
           </a>
         </div>
       </div>
