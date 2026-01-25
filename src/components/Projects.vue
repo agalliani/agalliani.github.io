@@ -9,13 +9,13 @@ const globImages = import.meta.glob('/src/assets/images/**/*.{png,jpg,jpeg,webp,
   import: 'default' 
 })
 
-// Helper to filter images by folder name
-const getGallery = (folderName?: string) => {
-  if (!folderName) return undefined
+// Helper to filter images by partial path (e.g. 'deep-tech/pihex' or just 'pihex')
+const getGallery = (pathSegment?: string) => {
+  if (!pathSegment) return undefined
   
   return Object.keys(globImages)
-    // Filter paths containing the folder name (e.g. /src/assets/images/pihex/foo.jpg)
-    .filter(path => path.includes(`/${folderName}/`)) 
+    // Filter paths containing the segment (e.g. /src/assets/images/deep-tech/pihex/foo.jpg)
+    .filter(path => path.includes(`/${pathSegment}/`)) 
     .sort() // Sort alphabetically to maintain order
     .map(path => globImages[path] as string)
 }
@@ -32,7 +32,7 @@ const deepTech = [
     ],
     icon: 'fas fa-atom',
     badge: '🏛️ MUR Grant',
-    gallery: getGallery('pihex')
+    gallery: getGallery('deep-tech/pihex')
   },
   {
     title: 'FALAPHEL: Silicon Photonics Readout',
@@ -44,7 +44,7 @@ const deepTech = [
       { label: 'Technical Specifications (PDF)', url: 'https://agenda.infn.it/event/27087/contributions/137028/attachments/82129/107840/spec_v02.pdf' }
     ],
     icon: 'fas fa-microchip',
-    gallery: getGallery('falaphel')
+    gallery: getGallery('deep-tech/falaphel')
   },
   {
     title: 'Falaphel-3 DAQ Framework',
@@ -54,7 +54,7 @@ const deepTech = [
     link: 'https://github.com/agalliani/falaphel3-daq',
     linkLabel: 'View Code on GitHub',
     icon: 'fas fa-terminal',
-    gallery: getGallery('falaphel3')
+    gallery: getGallery('deep-tech/falaphel3')
   },
   {
     title: 'X-Ray Irradiation Campaigns',
@@ -62,7 +62,7 @@ const deepTech = [
     description: 'Executed irradiation campaigns at the Department of Physics in Padova using X-ray facilities. Performed <strong>Total Ionizing Dose (TID)</strong> testing on 28nm CMOS chips, managing the DAQ setup to collect operational data during and after radiation exposure.',
     tech: ['TID Testing', 'X-Ray', 'DAQ', 'Radiation Hardness', 'Data Analysis'],
     icon: 'fas fa-radiation',
-    gallery: getGallery('xray-irradiation')
+    gallery: getGallery('deep-tech/xray-irradiation')
   },
   {
     title: 'Wire Bonding Supervision',
@@ -70,7 +70,7 @@ const deepTech = [
     description: 'Supervised the wire-bonding operations at INFN Physics Departments (Turin/Milan). <strong>Design for Manufacturing:</strong> Personally designed the custom daughter-board PCBs, strictly enforcing <strong>ENIG (Electroless Nickel Immersion Gold)</strong> surface finishing to ensure reliable wire bondability. <strong>Operations:</strong> Managed the bonding setup for both ceramic packages (CPGA) and direct Chip-on-Board (CoB) assemblies.',
     tech: ['Wire Bonding', 'PCB Design', 'ENIG', 'Manufacturing', 'Quality Control'],
     icon: 'fas fa-microchip',
-    gallery: getGallery('wire-bonding')
+    gallery: getGallery('deep-tech/wire-bonding')
   }
 ]
 
@@ -86,7 +86,9 @@ const industrial = [
       { label: 'View Official LinkedIn Post 🔗', url: 'https://www.linkedin.com/posts/bosch-italia_sensingsolutions-sensational-boschitalia-activity-7084804184545345537-wJKk' }
     ],
     icon: 'fas fa-medal',
-    badge: '🥇 1st Place Winner'
+    badge: '🥇 1st Place Winner',
+    gallery: getGallery('industrial/bosch-challenge')
+
   },
   {
     title: 'MangroviaIoT Platform',
@@ -95,7 +97,7 @@ const industrial = [
     tech: ['Vue.js', 'Angular', 'Microservices', 'SRE', 'Industrial IoT'],
     link: 'https://mangroviaiot.com/',
     linkLabel: 'Visit Platform',
-    icon: 'fas fa-server'
+    icon: 'fas fa-server',
   },
   {
     title: 'Smart Gas Meter Firmware | Pietro Fiorentini',
@@ -123,7 +125,7 @@ const ventures = [
     description: 'End-to-end mechanical integration for electronic prototypes. Designed custom enclosures in <strong>Fusion 360</strong> with precise tolerances for PCB mounting, connectors, and thermal dissipation.<br><br><span class="text-slate-300">Production:</span> Manufactured rugged cases for the <strong>Giro-E (MOST)</strong> trackers and ergonomic shells for the <strong>Oxymeter</strong> wearable using <strong>Bambu Lab X1 Carbon</strong> (High-speed/Multi-material) and <strong>Creality Ender 3 S1 Pro</strong>.<br><br><span class="text-slate-300">Lab Fixtures:</span> Created custom supports for Falaphel/PiHex test boards to ensure stability during X-Ray and bonding procedures.',
     tech: ['Fusion 360', 'Bambu Lab X1C', 'PLA/PETG/ABS', 'Rapid Prototyping', 'DFM'],
     icon: 'fas fa-cube',
-    gallery: getGallery('mechanical')
+    gallery: getGallery('ventures/mechanical')
   },
   {
     title: 'Giro-E Technician | MOST Project',
