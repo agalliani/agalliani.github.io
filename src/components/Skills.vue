@@ -15,9 +15,9 @@ const skillCategories = [
   {
     title: 'Software & Firmware',
     skills: [
-      { name: 'SystemVerilog', validation: 'STFC Training & Verification' },
-      { name: 'Python', validation: 'Data Analysis & Automation' },
-      { name: 'Vue.js / TS', validation: 'MangroviaIoT Platform' },
+      { name: 'SystemVerilog', validation: 'Bosch Sensortec & STFC Training & Verification' },
+      { name: 'Python', validation: 'Data Analysis & Automation at Bosch, during my PhD and for personal projects' },
+      { name: 'Vue.js / TS', validation: 'MangroviaIoT Platform, direct job experience and personal projects' },
       { name: 'C / C++', validation: 'Embedded & DAQ Systems' },
       { name: 'Node.js', validation: 'Backend Services' },
       { name: 'Linux / Bash', validation: 'Server Administration' }

@@ -12,7 +12,14 @@ const deepTech = [
       { label: 'CERN Indico Contribution', url: 'https://indico.cern.ch/event/1428808/contributions/6505566/contribution.pdf' }
     ],
     icon: 'fas fa-atom',
-    badge: '🏛️ MUR Grant'
+    badge: '🏛️ MUR Grant',
+    gallery: [
+      '/images/pihex/foto-misure.jpg',
+      '/images/pihex/TOT_FALAPHEL_FULLCHIP_1.png',
+      '/images/pihex/tot-microscopio.jpg',
+      '/images/pihex/tot_preamp_simple_page-0001.jpg'
+   
+    ]
   },
   {
     title: 'FALAPHEL: Silicon Photonics Readout',
@@ -23,7 +30,11 @@ const deepTech = [
       { label: 'Project Overview (PDF)', url: 'https://agenda.infn.it/event/23453/contributions/117451/attachments/73991/93910/Falaphel.pdf' },
       { label: 'Technical Specifications (PDF)', url: 'https://agenda.infn.it/event/27087/contributions/137028/attachments/82129/107840/spec_v02.pdf' }
     ],
-    icon: 'fas fa-microchip'
+    icon: 'fas fa-microchip',
+    gallery: [
+      '/images/falaphel/AMBA0002.JPG',
+   
+    ]
   },
   {
     title: 'Falaphel-3 DAQ Framework',
@@ -34,8 +45,8 @@ const deepTech = [
     linkLabel: 'View Code on GitHub',
     icon: 'fas fa-terminal',
     gallery: [
-      '/images/daq-setup.jpg',
-      '/images/tot-linearity-plot.png'
+      '/images/falaphel/daq-setup.jpg',
+      '/images/falaphel/tot-linearity-plot.png'
     ]
   },
   {
@@ -52,9 +63,9 @@ const deepTech = [
     tech: ['Wire Bonding', 'PCB Design', 'ENIG', 'Manufacturing', 'Quality Control'],
     icon: 'fas fa-microchip',
     gallery: [
-      '/images/bonding-microscope.jpg',
-      '/images/daughter-board-enig.jpg',
-      '/images/lab-torino.jpg'
+      '/images/wire-bonding/bonding-microscope.jpg',
+      '/images/wire-bonding/daughter-board-enig.jpg',
+      '/images/wire-bonding/lab-torino.jpg'
     ]
   }
 ]
@@ -109,8 +120,8 @@ const ventures = [
     tech: ['Fusion 360', 'Bambu Lab X1C', 'PLA/PETG/ABS', 'Rapid Prototyping', 'DFM'],
     icon: 'fas fa-cube',
     gallery: [
-      '/images/fusion-render.jpg',
-      '/images/3d-print-result.jpg'
+      '/images/mechanical/fusion-render.jpg',
+      '/images/mechanical/3d-print-result.jpg'
     ]
   },
   {
