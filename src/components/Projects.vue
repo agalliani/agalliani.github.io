@@ -1,6 +1,25 @@
 <script setup lang="ts">
 import ProjectCard from './ProjectCard.vue'
 
+// VITE GLOB IMPORT: Automatically load all images from src/assets/images
+// Using absolute path pattern to ensure robust matching across environments
+const globImages = import.meta.glob('/src/assets/images/**/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP,mp4,webm,mov,MP4,WEBM,MOV}', { 
+  eager: true, 
+  query: '?url',
+  import: 'default' 
+})
+
+// Helper to filter images by folder name
+const getGallery = (folderName?: string) => {
+  if (!folderName) return undefined
+  
+  return Object.keys(globImages)
+    // Filter paths containing the folder name (e.g. /src/assets/images/pihex/foo.jpg)
+    .filter(path => path.includes(`/${folderName}/`)) 
+    .sort() // Sort alphabetically to maintain order
+    .map(path => globImages[path] as string)
+}
+
 const deepTech = [
   {
     title: 'PiHEX | PRIN 2022',
@@ -13,13 +32,7 @@ const deepTech = [
     ],
     icon: 'fas fa-atom',
     badge: '🏛️ MUR Grant',
-    gallery: [
-      '/images/pihex/foto-misure.jpg',
-      '/images/pihex/TOT_FALAPHEL_FULLCHIP_1.png',
-      '/images/pihex/tot-microscopio.jpg',
-      '/images/pihex/tot_preamp_simple_page-0001.jpg'
-   
-    ]
+    gallery: getGallery('pihex')
   },
   {
     title: 'FALAPHEL: Silicon Photonics Readout',
@@ -31,10 +44,7 @@ const deepTech = [
       { label: 'Technical Specifications (PDF)', url: 'https://agenda.infn.it/event/27087/contributions/137028/attachments/82129/107840/spec_v02.pdf' }
     ],
     icon: 'fas fa-microchip',
-    gallery: [
-      '/images/falaphel/AMBA0002.JPG',
-   
-    ]
+    gallery: getGallery('falaphel')
   },
   {
     title: 'Falaphel-3 DAQ Framework',
@@ -44,17 +54,15 @@ const deepTech = [
     link: 'https://github.com/agalliani/falaphel3-daq',
     linkLabel: 'View Code on GitHub',
     icon: 'fas fa-terminal',
-    gallery: [
-      '/images/falaphel/daq-setup.jpg',
-      '/images/falaphel/tot-linearity-plot.png'
-    ]
+    gallery: getGallery('falaphel3')
   },
   {
     title: 'X-Ray Irradiation Campaigns',
     subtitle: 'INFN Padova | TID Testing',
     description: 'Executed irradiation campaigns at the Department of Physics in Padova using X-ray facilities. Performed <strong>Total Ionizing Dose (TID)</strong> testing on 28nm CMOS chips, managing the DAQ setup to collect operational data during and after radiation exposure.',
     tech: ['TID Testing', 'X-Ray', 'DAQ', 'Radiation Hardness', 'Data Analysis'],
-    icon: 'fas fa-radiation'
+    icon: 'fas fa-radiation',
+    gallery: getGallery('xray-irradiation')
   },
   {
     title: 'Wire Bonding Supervision',
@@ -62,11 +70,7 @@ const deepTech = [
     description: 'Supervised the wire-bonding operations at INFN Physics Departments (Turin/Milan). <strong>Design for Manufacturing:</strong> Personally designed the custom daughter-board PCBs, strictly enforcing <strong>ENIG (Electroless Nickel Immersion Gold)</strong> surface finishing to ensure reliable wire bondability. <strong>Operations:</strong> Managed the bonding setup for both ceramic packages (CPGA) and direct Chip-on-Board (CoB) assemblies.',
     tech: ['Wire Bonding', 'PCB Design', 'ENIG', 'Manufacturing', 'Quality Control'],
     icon: 'fas fa-microchip',
-    gallery: [
-      '/images/wire-bonding/bonding-microscope.jpg',
-      '/images/wire-bonding/daughter-board-enig.jpg',
-      '/images/wire-bonding/lab-torino.jpg'
-    ]
+    gallery: getGallery('wire-bonding')
   }
 ]
 
@@ -119,10 +123,7 @@ const ventures = [
     description: 'End-to-end mechanical integration for electronic prototypes. Designed custom enclosures in <strong>Fusion 360</strong> with precise tolerances for PCB mounting, connectors, and thermal dissipation.<br><br><span class="text-slate-300">Production:</span> Manufactured rugged cases for the <strong>Giro-E (MOST)</strong> trackers and ergonomic shells for the <strong>Oxymeter</strong> wearable using <strong>Bambu Lab X1 Carbon</strong> (High-speed/Multi-material) and <strong>Creality Ender 3 S1 Pro</strong>.<br><br><span class="text-slate-300">Lab Fixtures:</span> Created custom supports for Falaphel/PiHex test boards to ensure stability during X-Ray and bonding procedures.',
     tech: ['Fusion 360', 'Bambu Lab X1C', 'PLA/PETG/ABS', 'Rapid Prototyping', 'DFM'],
     icon: 'fas fa-cube',
-    gallery: [
-      '/images/mechanical/fusion-render.jpg',
-      '/images/mechanical/3d-print-result.jpg'
-    ]
+    gallery: getGallery('mechanical')
   },
   {
     title: 'Giro-E Technician | MOST Project',

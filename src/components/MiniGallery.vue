@@ -33,6 +33,10 @@ const onImageError = (image: string) => {
   failedImages.add(image)
 }
 
+const isVideo = (url: string) => {
+  return /\.(mp4|webm|mov)($|\?)/i.test(url)
+}
+
 // Keyboard Navigation
 const handleKeydown = (e: KeyboardEvent) => {
   if (selectedIndex.value === -1) return
@@ -67,14 +71,25 @@ onUnmounted(() => {
           class="flex-shrink-0 snap-start cursor-pointer group relative"
           @click="openLightbox(index)"
         >
+          <video 
+            v-if="isVideo(image)"
+            :src="image" 
+            class="h-24 w-auto rounded-md border border-white/10 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/50"
+            muted
+            playsinline
+            @error="onImageError(image)"
+          ></video>
           <img 
+            v-else
             :src="image" 
             alt="Gallery thumbnail" 
             class="h-24 w-auto rounded-md border border-white/10 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/50"
             loading="lazy"
             @error="onImageError(image)"
           />
-          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-md"></div>
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-md flex items-center justify-center">
+            <i v-if="isVideo(image)" class="fas fa-play text-white/80 text-lg opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md"></i>
+          </div>
         </div>
       </template>
     </div>
@@ -107,10 +122,20 @@ onUnmounted(() => {
             <i class="fas fa-chevron-left text-3xl"></i>
           </button>
 
-          <!-- The Image -->
+          <!-- The Media -->
+          <video
+            v-if="isVideo(images[selectedIndex])"
+            :src="images[selectedIndex]"
+            :key="`vid-${selectedIndex}`"
+            controls
+            autoplay
+            loop
+            class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl border border-white/5 bg-black"
+          ></video>
           <img 
+            v-else
             :src="images[selectedIndex]" 
-            :key="selectedIndex"
+            :key="`img-${selectedIndex}`"
             alt="Full size view" 
             class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl border border-white/5 bg-black"
           />
@@ -135,7 +160,15 @@ onUnmounted(() => {
                 class="relative group focus:outline-none transition-all duration-200"
                 :class="index === selectedIndex ? 'scale-110 opacity-100 ring-2 ring-amber-500 rounded-md z-10' : 'opacity-50 hover:opacity-100 hover:scale-105'"
               >
+                <video
+                  v-if="isVideo(image)"
+                  :src="image"
+                  class="h-12 w-auto object-cover rounded-md shadow-lg"
+                  muted
+                  playsinline
+                ></video>
                 <img 
+                  v-else
                   :src="image" 
                   class="h-12 w-auto object-cover rounded-md shadow-lg" 
                   alt="Thumbnail"
