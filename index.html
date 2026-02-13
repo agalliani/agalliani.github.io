@@ -4,6 +4,23 @@
 
 
 <head>
+  <script>
+    // Service Worker Kill Switch for Nested Apps
+    // If we are in a sub-project path but the main SW is active, kill it and reload.
+    if (window.location.pathname.startsWith('/timeline-me') || window.location.pathname.startsWith('/frontend-oxymeter')) {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          for (let registration of registrations) {
+            console.log('Unregistering stale Service Worker for: ', registration.scope);
+            registration.unregister();
+          }
+          if (registrations.length > 0) {
+            window.location.reload();
+          }
+        });
+      }
+    }
+  </script>
   <meta charset="UTF-8">
   <link rel="icon" href="/icons8-circuito-100.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
