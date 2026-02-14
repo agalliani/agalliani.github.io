@@ -74,16 +74,17 @@ onUnmounted(() => {
           <video 
             v-if="isVideo(image)"
             :src="image" 
-            class="h-24 w-auto rounded-md border border-white/10 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/50"
+            class="h-24 w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30"
             muted
             playsinline
+            preload="metadata"
             @error="onImageError(image)"
           ></video>
           <img 
             v-else
             :src="image" 
             alt="Gallery thumbnail" 
-            class="h-24 w-auto rounded-md border border-white/10 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/50"
+            class="h-24 w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30"
             loading="lazy"
             @error="onImageError(image)"
           />
