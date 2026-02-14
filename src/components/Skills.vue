@@ -40,25 +40,25 @@ const skillCategories = [
 
 const themeClasses = {
   accent: {
-    border: 'border-accent/20',
+    border: 'border-accent/10',
     bg: 'bg-accent/5',
     text: 'text-accent',
-    hover: 'group-hover:border-accent group-hover:shadow-accent/10',
-    pill: 'bg-accent/10 border-accent/20 text-accent'
+    hover: 'group-hover:bg-accent/10 group-hover:shadow-lg group-hover:shadow-accent/5',
+    pill: 'bg-accent/10 text-accent'
   },
   secondary: {
-    border: 'border-accent-secondary/20',
+    border: 'border-accent-secondary/10',
     bg: 'bg-accent-secondary/5',
     text: 'text-accent-secondary',
-    hover: 'group-hover:border-accent-secondary group-hover:shadow-accent-secondary/10',
-    pill: 'bg-accent-secondary/10 border-accent-secondary/20 text-accent-secondary'
+    hover: 'group-hover:bg-accent-secondary/10 group-hover:shadow-lg group-hover:shadow-accent-secondary/5',
+    pill: 'bg-accent-secondary/10 text-accent-secondary'
   },
   muted: {
-    border: 'border-white/10',
+    border: 'border-white/5',
     bg: 'bg-white/5',
     text: 'text-text-muted',
-    hover: 'group-hover:border-text-muted group-hover:shadow-text-muted/10',
-    pill: 'bg-white/5 border-white/10 text-text-muted'
+    hover: 'group-hover:bg-white/10 group-hover:shadow-lg group-hover:shadow-white/5',
+    pill: 'bg-white/5 text-text-muted'
   }
 }
 </script>
@@ -85,7 +85,7 @@ const themeClasses = {
           
           <div class="grid grid-cols-1 gap-3">
             <div v-for="skill in category.skills" :key="skill.name" 
-                 class="flex flex-col p-3 rounded-lg border transition-colors"
+                 class="flex flex-col p-3 rounded-lg transition-colors"
                  :class="themeClasses[category.theme as keyof typeof themeClasses].pill">
               <span class="font-bold text-sm">{{ skill.name }}</span>
               <span class="text-xs opacity-70 mt-1 font-mono">{{ skill.validation }}</span>
