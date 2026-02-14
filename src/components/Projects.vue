@@ -24,8 +24,8 @@ const webApps = [
   {
     title: 'Timeline Me',
     subtitle: 'Instant Timeline Generator',
-    description: 'A productivity tool for developers and PMs. Instantly converts Markdown-like text into visual, exportable timelines. Features real-time parsing, custom themes, and image export.<br><br><strong>Why it exists:</strong> To solve the pain of creating timeline graphics for documentation and presentations manually.',
-    tech: ['Vue.js 3', 'Tailwind CSS', 'Regex Engine', 'Canvas API'],
+    description: 'A productivity tool for developers and PMs. Create visual, exportable timelines in seconds. Features an intuitive form interface, custom themes, and high-quality image export.<br><br><strong>Why it exists:</strong> To solve the pain of creating timeline graphics for documentation and presentations manually.',
+    tech: ['Next.js', 'React', 'Tailwind CSS', 'Shadcn UI'],
     link: 'https://agalliani.github.io/timeline-me/', 
     linkLabel: 'Launch App 🚀', 
     links: [
