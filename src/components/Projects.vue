@@ -20,6 +20,32 @@ const getGallery = (pathSegment?: string) => {
     .map(path => globImages[path] as string)
 }
 
+const webApps = [
+  {
+    title: 'Timeline Me',
+    subtitle: 'Instant Timeline Generator',
+    description: 'A productivity tool for developers and PMs. Instantly converts Markdown-like text into visual, exportable timelines. Features real-time parsing, custom themes, and image export.<br><br><strong>Why it exists:</strong> To solve the pain of creating timeline graphics for documentation and presentations manually.',
+    tech: ['Vue.js 3', 'Tailwind CSS', 'Regex Engine', 'Canvas API'],
+    link: 'https://agalliani.github.io/timeline-me/', 
+    linkLabel: 'Launch App 🚀', 
+    links: [
+       { label: 'View Source', url: 'https://github.com/agalliani/timeline-me' }
+    ],
+    badge: '✨ New Tool',
+    icon: 'fas fa-stream'
+  },
+  {
+    title: 'Oxymeter | Sports Tech',
+    subtitle: 'IoT Device Companion App',
+    description: 'A scalable <strong>Vue.js Web App</strong> designed to interface with wearable IoT devices. Features real-time data visualization and session management.<br><br><span class="text-slate-300">The Pivot:</span> Transformed a hardware-heavy prototype into a software-first solution to prioritize market validation.',
+    tech: ['Vue.js', 'Vite', 'IoT Integration', 'UX Design'],
+    link: 'https://agalliani.github.io/frontend-oxymeter/#/',
+    linkLabel: 'Launch App 🚀',
+    icon: 'fas fa-heart-pulse',
+    badge: '🏆 Award Winner'
+  }
+]
+
 const deepTech = [
   {
     title: 'PiHEX | PRIN 2022',
@@ -110,16 +136,6 @@ const industrial = [
 
 const ventures = [
   {
-    title: 'Oxymeter | Sports Tech Venture',
-    subtitle: '3rd Place Winner @ StartCup Bergamo 2024',
-    description: 'Founded a sports-tech project originally designed as an IoT wearable. Successfully pitched the business case, winning a €2.5k grant.<br><br><span class="text-slate-300">The Pivot:</span> Led the technical transition from a hardware prototype to a scalable <strong>Vue.js Web App</strong> MVP to prioritize market validation over manufacturing complexity.',
-    tech: ['Vue.js', 'IoT Prototyping', 'Business Strategy', 'Product Design'],
-    link: 'https://agalliani.github.io/frontend-oxymeter/#/',
-    linkLabel: 'Try Live App',
-    icon: 'fas fa-heart-pulse',
-    badge: '🏆 Award Winner'
-  },
-  {
     title: 'Mechanical Design & 3D Prototyping',
     subtitle: 'From PCB to Finished Product Enclosures',
     description: 'End-to-end mechanical integration for electronic prototypes. Designed custom enclosures in <strong>Fusion 360</strong> with precise tolerances for PCB mounting, connectors, and thermal dissipation.<br><br><span class="text-slate-300">Production:</span> Manufactured rugged cases for the <strong>Giro-E (MOST)</strong> trackers and ergonomic shells for the <strong>Oxymeter</strong> wearable using <strong>Bambu Lab X1 Carbon</strong> (High-speed/Multi-material) and <strong>Creality Ender 3 S1 Pro</strong>.<br><br><span class="text-slate-300">Lab Fixtures:</span> Created custom supports for Falaphel/PiHex test boards to ensure stability during X-Ray and bonding procedures.',
@@ -147,6 +163,31 @@ const ventures = [
 
 <template>
   <div class="bg-slate-900">
+    <!-- SECTION 0: Interactive Web Apps (Highlighted for Conversion) -->
+    <section class="py-24 px-6 relative bg-gradient-to-b from-slate-800/50 to-slate-900 border-b border-white/5">
+      <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]"></div>
+      <div class="container mx-auto max-w-6xl relative">
+        <div class="mb-16">
+          <h2 class="text-4xl font-bold text-slate-200 mb-4 relative inline-block after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-16 after:h-1 after:bg-emerald-500 after:rounded-full">
+            Interactive Web Apps & Tools
+          </h2>
+          <p class="text-slate-300 mt-6 max-w-2xl text-lg font-light leading-relaxed">
+            Live demonstrations of full-stack engineering capabilities. <br>
+            <span class="text-emerald-400 font-medium">Try the apps directly in your browser.</span>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          <ProjectCard 
+            v-for="project in webApps" 
+            :key="project.title"
+            v-bind="project"
+            class="transform hover:scale-[1.01] transition-all duration-300 ring-1 ring-emerald-500/20 hover:ring-emerald-500/50 bg-slate-800/50 backdrop-blur-sm"
+          />
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 1: Deep Tech & Silicon Innovation -->
     <section class="py-24 px-6 relative">
       <div class="container mx-auto max-w-6xl">
