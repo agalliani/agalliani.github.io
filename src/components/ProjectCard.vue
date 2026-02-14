@@ -16,14 +16,14 @@ defineProps<{
 </script>
 
 <template>
-  <div class="group relative bg-slate-800/50 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-accent transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+  <div class="group relative bg-slate-800/40 backdrop-blur-md border border-white/5 rounded-xl p-6 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
     <div class="flex justify-between items-start mb-4">
-      <div v-if="icon" class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center text-accent text-xl border border-white/5">
+      <div v-if="icon" class="w-10 h-10 rounded-lg bg-slate-700/30 flex items-center justify-center text-accent text-xl">
         <i :class="icon"></i>
       </div>
       <div v-else class="w-10 h-10"></div> <!-- Spacer -->
       
-      <div v-if="badge" class="px-2 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wide">
+      <div v-if="badge" class="px-2 py-1 rounded-full bg-amber-500/10 text-amber-500 text-xs font-bold uppercase tracking-wide">
         {{ badge }}
       </div>
     </div>
@@ -36,7 +36,7 @@ defineProps<{
     <MiniGallery v-if="gallery" :images="gallery" />
 
     <div class="flex flex-wrap gap-2 mb-6">
-      <span v-for="t in tech" :key="t" class="px-2 py-1 text-xs font-mono rounded bg-slate-900/50 text-teal-400 border border-white/5">
+      <span v-for="t in tech" :key="t" class="px-2 py-1 text-xs font-mono rounded bg-teal-500/10 text-teal-400">
         {{ t }}
       </span>
     </div>
