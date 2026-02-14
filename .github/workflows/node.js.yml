@@ -2,8 +2,10 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting tags starting with 'v'
+  # Runs on pushes targeting tags starting with 'v' or on main branch
   push:
+    branches:
+      - 'main'
     tags:
       - 'v*'
 
