@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, reactive, onUnmounted, watch } from 'vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   images: string[]
-}>()
+  heightClass?: string
+}>(), {
+  heightClass: 'h-24'
+})
 
 const selectedIndex = ref<number>(-1)
 const failedImages = reactive(new Set<string>())
@@ -62,7 +65,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="images && images.length > 0" class="my-4">
+  <div v-if="images && images.length > 0">
     <!-- Thumbnail Strip -->
     <div class="flex gap-3 overflow-x-auto pb-2 snap-x scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
       <template v-for="(image, index) in images" :key="index">
@@ -74,7 +77,7 @@ onUnmounted(() => {
           <video 
             v-if="isVideo(image)"
             :src="image" 
-            class="h-24 w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30"
+            :class="[heightClass, 'w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30']"
             muted
             playsinline
             preload="metadata"
@@ -84,10 +87,11 @@ onUnmounted(() => {
             v-else
             :src="image" 
             alt="Gallery thumbnail" 
-            class="h-24 w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30"
+            :class="[heightClass, 'w-auto rounded-md border border-white/5 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:border-amber-400/30']"
             loading="lazy"
             @error="onImageError(image)"
           />
+
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-md flex items-center justify-center">
             <i v-if="isVideo(image)" class="fas fa-play text-white/80 text-lg opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md"></i>
           </div>

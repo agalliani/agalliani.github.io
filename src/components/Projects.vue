@@ -20,6 +20,12 @@ const getGallery = (pathSegment?: string) => {
     .map(path => globImages[path] as string)
 }
 
+// Explicit imports for hero images to ensure they are bundled correctly
+import dalilaHero from '@/assets/images/web-apps/dalila-portfolio-hero.png'
+import timelineMeHero from '@/assets/images/web-apps/timeline-me-hero.png'
+import oxymeterHero from '@/assets/images/web-apps/oxymeter-hero.png'
+
+
 const webApps = [
   {
     title: 'Dalila Scollo | Design Portfolio',
@@ -29,7 +35,8 @@ const webApps = [
     link: 'https://dalilascollo.com/',
     linkLabel: 'Visit Website',
     icon: 'fas fa-briefcase',
-    badge: '✨ Featured Design'
+    badge: '✨ Featured Design',
+    image: dalilaHero
   },
   {
     title: 'Timeline Me',
@@ -40,9 +47,10 @@ const webApps = [
     linkLabel: 'Launch App 🚀', 
     //links: [
     //   { label: 'View Source', url: 'https://github.com/agalliani/timeline-me' }
-   // ],
+    // ],
     badge: 'In Progress',
-    icon: 'fas fa-stream'
+    icon: 'fas fa-stream',
+    image: timelineMeHero
   },
   {
     title: 'Oxymeter | Sports Tech',
@@ -52,7 +60,8 @@ const webApps = [
     link: 'https://agalliani.github.io/frontend-oxymeter/#/',
     linkLabel: 'Launch App 🚀',
     icon: 'fas fa-heart-pulse',
-    badge: '🏆 Award Winner'
+    badge: '🏆 Award Winner',
+    image: oxymeterHero
   }
 ]
 
