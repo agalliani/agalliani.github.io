@@ -22,16 +22,26 @@ const getGallery = (pathSegment?: string) => {
 
 const webApps = [
   {
+    title: 'Dalila Scollo | Design Portfolio',
+    subtitle: 'Minimalist Portfolio for Visual Arts',
+    description: 'Designed and developed a bespoke portfolio website focused on visual impact and clean typography. Built to showcase artistic works with a distraction-free user experience.',
+    tech: ['Vue.js', 'Tailwind CSS', 'UX/UI Design', 'Responsive'],
+    link: 'https://dalilascollo.com/',
+    linkLabel: 'Visit Website',
+    icon: 'fas fa-briefcase',
+    badge: '✨ Featured Design'
+  },
+  {
     title: 'Timeline Me',
     subtitle: 'Instant Timeline Generator',
     description: 'A productivity tool for developers and PMs. Create visual, exportable timelines in seconds. Features an intuitive form interface, custom themes, and high-quality image export.<br><br><strong>Why it exists:</strong> To solve the pain of creating timeline graphics for documentation and presentations manually.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'Shadcn UI'],
     link: 'https://agalliani.github.io/timeline-me/', 
     linkLabel: 'Launch App 🚀', 
-    links: [
-       { label: 'View Source', url: 'https://github.com/agalliani/timeline-me' }
-    ],
-    badge: '✨ New Tool',
+    //links: [
+    //   { label: 'View Source', url: 'https://github.com/agalliani/timeline-me' }
+   // ],
+    badge: 'In Progress',
     icon: 'fas fa-stream'
   },
   {
@@ -169,7 +179,7 @@ const ventures = [
       <div class="container mx-auto max-w-6xl relative">
         <div class="mb-16">
           <h2 class="text-4xl font-bold text-slate-200 mb-4 relative inline-block after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-16 after:h-1 after:bg-emerald-500 after:rounded-full">
-            Interactive Web Apps & Tools
+            Full-Stack Development & Web Design
           </h2>
           <p class="text-slate-300 mt-6 max-w-2xl text-lg font-light leading-relaxed">
             Live demonstrations of full-stack engineering capabilities. <br>
@@ -237,7 +247,7 @@ const ventures = [
       <div class="container mx-auto max-w-6xl">
         <div class="mb-16">
           <h2 class="text-4xl font-bold text-slate-200 mb-4 relative inline-block after:content-[''] after:absolute after:-bottom-3 after:left-0 after:w-16 after:h-1 after:bg-indigo-500 after:rounded-full">
-            Ventures & Field Operations
+            Ventures & Prototyping
           </h2>
           <p class="text-slate-400 mt-6 max-w-2xl text-lg">
             Entrepreneurship, Product Management, and Real-world Testing.

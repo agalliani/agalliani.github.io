@@ -13,7 +13,7 @@ const year = new Date().getFullYear()
           Ready to Solve Complex Engineering Challenges?
         </h2>
         <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-          Always open to discussing R&D opportunities in Analog IC Design, Embedded Systems, and Edge AI.
+          Already working in the industry, but always open to discussing technology, design, and new ideas.
         </p>
       </div>
 
