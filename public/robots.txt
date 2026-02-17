@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agalliani.github.io/sitemap.xml

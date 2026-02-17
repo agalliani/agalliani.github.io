@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.3",
+    "@unhead/vue": "^2.1.4",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

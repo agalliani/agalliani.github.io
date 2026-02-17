@@ -25,7 +25,7 @@ const isExpanded = ref(false)
     <!-- Hero Section: Image OR Gallery -->
     <div v-if="image" class="w-full h-48 overflow-hidden relative border-b border-white/5 group-hover:border-accent/20 transition-colors">
       <div class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors z-10"></div>
-      <img :src="image" :alt="title" class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-500">
+      <img :src="image" :alt="title" class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-500" loading="lazy">
     </div>
     <div v-else-if="gallery && gallery.length > 0" class="w-full bg-slate-900/50 border-b border-white/5 p-2 overflow-hidden relative group-hover:border-accent/20 transition-colors">
        <MiniGallery :images="gallery" heightClass="h-48" />

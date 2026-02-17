@@ -5,6 +5,14 @@ import Projects from '../components/Projects.vue'
 import Publications from '../components/Publications.vue'
 import Skills from '../components/Skills.vue'
 import Footer from '../components/Footer.vue'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Home',
+  meta: [
+    { name: 'description', content: 'Andrea Galliani - AMS Engineer, Ph.D. in Microelectronics, and Full-Stack Developer. Explore my portfolio of Deep Tech projects and Web Applications.' }
+  ]
+})
 </script>
 
 <template>
