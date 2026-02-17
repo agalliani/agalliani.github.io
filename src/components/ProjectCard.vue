@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import MiniGallery from './MiniGallery.vue'
 
 defineProps<{
@@ -14,6 +15,8 @@ defineProps<{
   badge?: string
   image?: string
 }>()
+
+const isExpanded = ref(false)
 </script>
 
 <template>
@@ -43,7 +46,16 @@ defineProps<{
       <h3 class="text-xl font-bold text-slate-200 mb-1 group-hover:text-accent transition-colors">{{ title }}</h3>
       <div v-if="subtitle" class="text-sm text-teal-400 font-mono mb-3">{{ subtitle }}</div>
       
-      <p class="text-slate-400 mb-6 text-sm leading-relaxed flex-grow" v-html="description"></p>
+      <div class="relative mb-6 flex-grow group/desc">
+        <div :class="{'line-clamp-3': !isExpanded}" class="text-slate-400 text-sm leading-relaxed transition-all duration-300" v-html="description"></div>
+        <button 
+          @click.stop.prevent="isExpanded = !isExpanded" 
+          class="text-xs font-bold text-amber-500 hover:text-amber-400 mt-2 focus:outline-none flex items-center gap-1"
+        >
+          {{ isExpanded ? 'Show Less' : 'Read More' }}
+          <i class="fas" :class="isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </button>
+      </div>
       
       <!-- MiniGallery removed from here -->
 
@@ -70,5 +82,6 @@ defineProps<{
     </div>
   </div>
 </template>
+
 
 
