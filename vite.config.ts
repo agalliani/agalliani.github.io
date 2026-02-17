@@ -35,7 +35,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10MB
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,vue,ts}'],
         navigateFallbackDenylist: [/^\/timeline-me/, /^\/frontend-oxymeter/], // Exclude sub-apps
         runtimeCaching: [
