@@ -28,13 +28,13 @@ import oxymeterHero from '@/assets/images/web-apps/oxymeter-hero.png'
 
 const webApps = [
   {
-    title: 'Dalila Scollo | Design Portfolio',
-    subtitle: 'Minimalist Portfolio for Visual Arts',
-    description: 'Designed and developed a bespoke portfolio website focused on visual impact and clean typography. Built to showcase artistic works with a distraction-free user experience.',
-    tech: ['Vue.js', 'Tailwind CSS', 'UX/UI Design', 'Responsive'],
+    title: 'Dalila Scollo | Performer & Vocal Coach',
+    subtitle: 'Soprano, Dancer & Creative Coach',
+    description: 'Official website of Dalila Scollo, a multi-disciplinary artist and <strong>Soprano (F3-G5)</strong>. The platform showcases her career in <strong>Musical Theatre</strong> and <strong>Commercial Dance</strong>, featuring a rich media gallery of her performances and details on her <strong>Vocal Coaching</strong> methodology.',
+    tech: ['Vue.js', 'Tailwind CSS', 'Audio/Video Gallery', 'Responsive'],
     link: 'https://dalilascollo.com/',
     linkLabel: 'Visit Website',
-    icon: 'fas fa-briefcase',
+    icon: 'fas fa-microphone-lines',
     badge: '✨ Featured Design',
     image: dalilaHero
   },
