@@ -7,7 +7,7 @@
   <script>
     // Service Worker Kill Switch for Nested Apps
     // If we are in a sub-project path but the main SW is active, kill it and reload.
-    if (window.location.pathname.startsWith('/timeline-me') || window.location.pathname.startsWith('/frontend-oxymeter')) {
+    if (window.location.pathname.startsWith('/timeline-me')) {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function (registrations) {
           for (let registration of registrations) {
@@ -29,14 +29,15 @@
   <!-- AdSense
 	<meta name="google-adsense-account" content="ca-pub-3310183051093389"-->
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <title>Andrea Galliani | AMS Engineer & Ph.D. - Silicon Innovation & IoT</title>
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Andrea Galliani | AMS Engineer & Ph.D. - Silicon Innovation & IoT">
   <meta property="og:description" content="Portfolio of Andrea Galliani, Ph.D. - AMS Engineer at Bosch Sensortec. Specializing in Deep Tech, Analog Mixed-Signal Design (28nm CMOS), Industrial IoT, and Embedded Safety Systems.">
-  <meta property="og:image" content="/propic.webp">
+  <meta property="og:image" content="https://agalliani.github.io/propic.webp">
+  <meta property="og:url" content="https://agalliani.github.io/">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NJFPWY2XD"></script>

@@ -19,12 +19,12 @@ const year = new Date().getFullYear()
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
         <!-- Email -->
-        <a href="mailto:andreagalliani29@gmail.com" class="group flex flex-col items-center p-8 rounded-2xl bg-slate-900/50 border border-white/5 hover:border-accent/30 hover:bg-slate-900 transition-all duration-300">
+        <a href="mailto:andrea.galliani.29@gmail.com" class="group flex flex-col items-center p-8 rounded-2xl bg-slate-900/50 border border-white/5 hover:border-accent/30 hover:bg-slate-900 transition-all duration-300">
           <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform">
             <i class="fas fa-envelope text-xl"></i>
           </div>
           <h3 class="text-slate-200 font-bold mb-1">Get in Touch</h3>
-          <span class="text-sm text-slate-400 group-hover:text-amber-400 transition-colors">andreagalliani29@gmail.com</span>
+          <span class="text-sm text-slate-400 group-hover:text-amber-400 transition-colors">andrea.galliani.29@gmail.com</span>
         </a>
 
         <!-- LinkedIn -->

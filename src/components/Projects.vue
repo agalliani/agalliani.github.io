@@ -57,7 +57,7 @@ const webApps = [
     subtitle: 'IoT Device Companion App',
     description: 'A scalable <strong>Vue.js Web App</strong> designed to interface with wearable IoT devices. Features real-time data visualization and session management.<br><br><span class="text-slate-300">The Pivot:</span> Transformed a hardware-heavy prototype into a software-first solution to prioritize market validation.',
     tech: ['Vue.js', 'Vite', 'IoT Integration', 'UX Design'],
-    link: 'https://agalliani.github.io/frontend-oxymeter/#/',
+    link: 'https://www.oxymeter.it/',
     linkLabel: 'Launch App 🚀',
     icon: 'fas fa-heart-pulse',
     badge: '🏆 Award Winner',
