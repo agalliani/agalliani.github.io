@@ -14,9 +14,10 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
-    "build-only": "vite build",
+    "build-only": "vite-ssg build",
     "postbuild": "node scripts/generate-sitemap.js",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "sync-blog": "node scripts/sync-blog-content.js"
   },
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.3",
@@ -34,6 +35,8 @@
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.22",
     "cypress": "^13.17.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.3.0",
     "npm-run-all2": "^7.0.2",
     "postcss": "^8.5.6",
     "start-server-and-test": "^2.0.9",
@@ -42,6 +45,7 @@
     "vite": "^6.0.5",
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-vue-devtools": "^7.6.8",
+    "vite-ssg": "^28.3.0",
     "vue-tsc": "^3.1.8"
   }
 }
