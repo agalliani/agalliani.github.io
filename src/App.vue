@@ -7,8 +7,8 @@ useHead({
   titleTemplate: '%s | Andrea Galliani',
   meta: [
     { name: 'description', content: 'Portfolio of Andrea Galliani, Ph.D. - AMS Engineer at Bosch Sensortec. Specializing in Deep Tech, Analog Mixed-Signal Design, and Industrial IoT.' },
-    { property: 'og:image', content: 'https://agalliani.github.io/propic.webp' },
-    { property: 'og:url', content: 'https://agalliani.github.io/' },
+    { property: 'og:image', content: 'https://andreagalliani.com/propic.webp' },
+    { property: 'og:url', content: 'https://andreagalliani.com/' },
     { name: 'theme-color', content: '#0f172a' }
   ]
 })

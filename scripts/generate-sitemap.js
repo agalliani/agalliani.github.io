@@ -1,50 +1,98 @@
+#!/usr/bin/env node
+/**
+ * generate-sitemap.js
+ *
+ * Generates sitemap.xml and robots.txt into dist/ after the Vite build.
+ *
+ * Approach mirrored from frontend-oxymeter/scripts/generate-sitemap.js (same author,
+ * same conventions) — see that file for the reference implementation:
+ *  - Only <loc> and <lastmod> in the sitemap — Google ignores <priority>/<changefreq>
+ *    since 2024, so they're just dead weight.
+ *  - <lastmod> in ISO 8601 date format (YYYY-MM-DD).
+ *  - Site URL overridable via SITE_URL env var (falls back to the production domain),
+ *    so preview/staging builds don't leak the wrong canonical host into the sitemap.
+ *  - robots.txt allows real-time AI browsing/citation bots (Google-Extended,
+ *    ChatGPT-User, PerplexityBot) but blocks AI training crawlers.
+ *
+ * Run:  node scripts/generate-sitemap.js
+ * Hook: runs automatically in the "postbuild" step via package.json (after `vite build`,
+ * so it writes straight into dist/, alongside the rest of the static output).
+ */
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '../dist');
-const hostname = 'https://agalliani.github.io';
 
-const routes = [
-    { path: '/', changefreq: 'weekly', priority: '1.0' },
-    { path: '/about', changefreq: 'monthly', priority: '0.8' },
-    { path: '/timeline-me/', changefreq: 'monthly', priority: '0.9' },
-    { path: '/frontend-oxymeter/', changefreq: 'monthly', priority: '0.9' },
-    { path: '/scientific_academic_cv_eng.pdf', changefreq: 'monthly', priority: '0.7' }
-];
+const SITE_URL = (process.env.SITE_URL || 'https://andreagalliani.com').replace(/\/+$/, '');
+const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-const generateSitemap = () => {
-    const date = new Date().toISOString();
+// Single source of truth for indexable page routes.
+// Keep this in sync with src/router/index.ts — the catch-all 404 route is
+// intentionally excluded.
+const PAGES = ['/', '/about'];
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.map(route => `  <url>
-    <loc>${hostname}${route.path}</loc>
-    <lastmod>${date}</lastmod>
-    <changefreq>${route.changefreq}</changefreq>
-    <priority>${route.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`;
+// Static, directly-indexable assets that live outside the router (not "pages").
+const ASSETS = ['/scientific_academic_cv_eng.pdf'];
 
-    fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml);
-    console.log('✅ Generated sitemap.xml');
-};
+/** Wraps a URL entry with <loc> and <lastmod> only — Google ignores priority/changefreq. */
+const urlEntry = (loc) => `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </url>`;
 
-const generateRobots = () => {
-    const robots = `User-agent: *
+function generateSitemap() {
+  const urls = [...PAGES, ...ASSETS].map((p) => urlEntry(`${SITE_URL}${p}`));
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls,
+    '</urlset>',
+  ].join('\n');
+
+  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf8');
+  console.log(`✅ sitemap.xml generated (${urls.length} URLs) → ${SITE_URL}`);
+}
+
+function generateRobots() {
+  const content = `# ---- REGOLE GLOBALI PER TUTTI I MOTORI DI RICERCA ----
+User-agent: *
 Allow: /
 
-Sitemap: ${hostname}/sitemap.xml`;
+# ---- AI BOTS: POLICY SFUMATA ----
+# Apriamo i bot di browsing in tempo reale (citano il sito nelle risposte live)
+# e i bot usati per AI Overviews di Google Search.
+# Google-Extended, ChatGPT-User, PerplexityBot: nessuna regola qui sotto =
+# ereditano Allow: / dal blocco globale.
 
-    fs.writeFileSync(path.join(distDir, 'robots.txt'), robots);
-    console.log('✅ Generated robots.txt');
-};
+# Blocchiamo solo i bot di TRAINING (raccolgono dati per addestrare LLM senza compenso)
+User-agent: GPTBot
+Disallow: /
 
-if (fs.existsSync(distDir)) {
-    generateSitemap();
-    generateRobots();
-} else {
-    console.error('❌ Dist directory not found. Run build first.');
-    process.exit(1);
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# ---- LINK ALLA SITEMAP ----
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+
+  fs.writeFileSync(path.join(distDir, 'robots.txt'), content, 'utf8');
+  console.log('✅ robots.txt generated');
 }
+
+if (!fs.existsSync(distDir)) {
+  console.error('❌ dist/ not found — run `vite build` first.');
+  process.exit(1);
+}
+
+generateSitemap();
+generateRobots();
