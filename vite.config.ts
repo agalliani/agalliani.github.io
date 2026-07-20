@@ -40,7 +40,7 @@ export default defineConfig({
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10MB
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,vue,ts}'],
-        navigateFallbackDenylist: [/^\/timeline-me/, /^\/frontend-oxymeter/, /^\/sitemap\.xml$/, /^\/robots\.txt$/], // Exclude sub-apps and static SEO files
+        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/], // Exclude static SEO files
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
