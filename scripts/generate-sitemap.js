@@ -31,17 +31,33 @@ const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
 // Single source of truth for indexable page routes.
 // Keep this in sync with src/router/index.ts — the catch-all 404 route is
-// intentionally excluded.
-const PAGES = ['/', '/about'];
+// intentionally excluded. The /blog section is added dynamically below from the
+// synced post JSON, so it stays in sync with what actually got published.
+const PAGES = ['/', '/blog'];
 
 // Static, directly-indexable assets that live outside the router (not "pages").
 const ASSETS = ['/scientific_academic_cv_eng.pdf'];
 
+const blogDir = path.resolve(__dirname, '../src/content/blog');
+
 /** Wraps a URL entry with <loc> and <lastmod> only — Google ignores priority/changefreq. */
-const urlEntry = (loc) => `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </url>`;
+const urlEntry = (loc, lastmod = TODAY) => `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
+
+/** One <url> per synced blog post, using the post's own date as <lastmod>. */
+function blogEntries() {
+  if (!fs.existsSync(blogDir)) return [];
+  return fs
+    .readdirSync(blogDir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(fs.readFileSync(path.join(blogDir, f), 'utf8')))
+    .map((post) => urlEntry(`${SITE_URL}/blog/${post.slug}`, post.date || TODAY));
+}
 
 function generateSitemap() {
-  const urls = [...PAGES, ...ASSETS].map((p) => urlEntry(`${SITE_URL}${p}`));
+  const urls = [
+    ...[...PAGES, ...ASSETS].map((p) => urlEntry(`${SITE_URL}${p}`)),
+    ...blogEntries(),
+  ];
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',

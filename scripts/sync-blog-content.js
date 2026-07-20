@@ -1,0 +1,114 @@
+#!/usr/bin/env node
+/**
+ * sync-blog-content.js
+ *
+ * Syncs blog posts from the (separate) `hab` repo into this site.
+ *
+ * The two repos stay independent (no submodule, no monorepo — see
+ * hab/docs/architettura-blog-sito.md). hab is the single source of truth for
+ * content; this script reads the ready-to-publish posts, renders their markdown
+ * to HTML *at sync time* (never in the browser), and writes committable
+ * artifacts into the site:
+ *   - src/content/blog/<slug>.json   (frontmatter + pre-rendered HTML)
+ *   - public/images/blog/<slug>/...  (post images, copied verbatim)
+ *
+ * It does NOT decide what to publish — it mirrors everything under
+ * hab/content/blog/. Choosing "this post is ready" is a human decision made in
+ * hab (moving a post out of content/diario/ into content/blog/).
+ *
+ * Source repo path: HAB_REPO_PATH env var, falling back to ../hab relative to
+ * this repo's root.
+ *
+ * Run:  npm run sync-blog   (manual/local step — the generated JSON is what
+ * gets committed and what Vercel builds from; this never runs on Vercel).
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import matter from 'gray-matter';
+import MarkdownIt from 'markdown-it';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const siteRoot = path.resolve(__dirname, '..');
+
+// hab repo path — overridable so the two repos can live anywhere on disk.
+const habRoot = process.env.HAB_REPO_PATH
+  ? path.resolve(process.env.HAB_REPO_PATH)
+  : path.resolve(siteRoot, '../hab');
+
+const blogSrcDir = path.join(habRoot, 'content', 'blog');
+const jsonOutDir = path.join(siteRoot, 'src', 'content', 'blog');
+const imgOutRoot = path.join(siteRoot, 'public', 'images', 'blog');
+
+// html:false → raw HTML in the markdown is escaped, not injected. Content is
+// first-party/trusted (authored by us in hab), so this is a safety default, not
+// a full sanitizer.
+const md = new MarkdownIt({ html: false, linkify: true, typographer: true });
+
+/** Rewrites relative `images/...` refs to the site-absolute public path. */
+function rewriteImagePath(ref, slug) {
+  if (!ref) return ref;
+  // Only rewrite post-relative refs (leave absolute URLs / already-rooted paths).
+  if (/^(https?:)?\/\//.test(ref) || ref.startsWith('/')) return ref;
+  const normalized = ref.replace(/^\.\//, '');
+  return `/images/blog/${slug}/${normalized.replace(/^images\//, '')}`;
+}
+
+function copyPostImages(postDir, slug) {
+  const imagesDir = path.join(postDir, 'images');
+  if (!fs.existsSync(imagesDir)) return;
+  const dest = path.join(imgOutRoot, slug);
+  fs.rmSync(dest, { recursive: true, force: true });
+  fs.cpSync(imagesDir, dest, { recursive: true });
+}
+
+function syncPost(slug) {
+  const postDir = path.join(blogSrcDir, slug);
+  const indexPath = path.join(postDir, 'index.md');
+  if (!fs.statSync(postDir).isDirectory() || !fs.existsSync(indexPath)) return false;
+
+  const { data, content } = matter(fs.readFileSync(indexPath, 'utf8'));
+
+  copyPostImages(postDir, slug);
+
+  // Render markdown, then rewrite <img src="images/..."> to /images/blog/<slug>/...
+  const html = md
+    .render(content)
+    .replace(/(<img[^>]+src=")([^"]+)(")/g, (_m, pre, ref, post) => `${pre}${rewriteImagePath(ref, slug)}${post}`);
+
+  const post = {
+    slug: data.slug || slug,
+    title: data.title || slug,
+    date: data.date ? new Date(data.date).toISOString().split('T')[0] : null,
+    excerpt: data.excerpt || '',
+    tags: data.tags || [],
+    cover: data.cover ? rewriteImagePath(data.cover, slug) : null,
+    html,
+  };
+
+  fs.mkdirSync(jsonOutDir, { recursive: true });
+  fs.writeFileSync(path.join(jsonOutDir, `${slug}.json`), `${JSON.stringify(post, null, 2)}\n`, 'utf8');
+  return true;
+}
+
+function syncAll() {
+  if (!fs.existsSync(blogSrcDir)) {
+    console.log(`ℹ️  No blog content found at ${blogSrcDir} — nothing to sync.`);
+    return;
+  }
+
+  const slugs = fs
+    .readdirSync(blogSrcDir, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name);
+
+  let count = 0;
+  for (const slug of slugs) {
+    if (syncPost(slug)) count += 1;
+  }
+
+  console.log(`✅ Synced ${count} blog post(s) from ${blogSrcDir} → src/content/blog/`);
+}
+
+syncAll();
