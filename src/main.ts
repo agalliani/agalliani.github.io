@@ -1,18 +1,17 @@
 import './assets/main.css'
 
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
-import { createUnhead, headSymbol } from '@unhead/vue'
 
 import App from './App.vue'
-import router from './router'
+import { routes } from './router'
 
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-const head = createUnhead()
-app.provide(headSymbol, head)
-
-app.mount('#app')
+// vite-ssg builds the router (right history mode per environment), manages the
+// unhead instance, and handles mount — so no manual createApp/createUnhead/mount.
+export const createApp = ViteSSG(
+  App,
+  { routes, base: import.meta.env.BASE_URL },
+  ({ app }) => {
+    app.use(createPinia())
+  },
+)
