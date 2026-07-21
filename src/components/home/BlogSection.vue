@@ -19,7 +19,7 @@ const { t } = useI18n()
       </div>
 
       <!-- Cards -->
-      <div class="mt-14 grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-7">
+      <div class="mt-14 grid grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] gap-7">
         <!-- HAB — placeholder panel, not yet a real link -->
         <div
           class="flex flex-col overflow-hidden rounded-3xl border border-night-line bg-night-card"
@@ -43,7 +43,7 @@ const { t } = useI18n()
             </div>
           </div>
           <div class="flex flex-1 flex-col p-8 pb-[34px]">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-night-faint">
                 {{ t.habLabel }}
               </span>
@@ -76,7 +76,7 @@ const { t } = useI18n()
             />
           </div>
           <div class="flex flex-1 flex-col p-8 pb-[34px]">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-night-faint">
                 {{ t.oxyLabel }}
               </span>

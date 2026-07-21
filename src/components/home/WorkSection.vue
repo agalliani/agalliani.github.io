@@ -21,7 +21,7 @@ const { t } = useI18n()
     <p class="mt-[18px] max-w-[560px] text-[19px] leading-[1.6] text-ink-soft">{{ t.workLead }}</p>
 
     <!-- Dense list -->
-    <div class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-x-10 gap-y-[14px]">
+    <div class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-x-10 gap-y-[14px]">
       <a
         v-for="item in featuredWork"
         :key="item.id"
