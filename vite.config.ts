@@ -29,7 +29,7 @@ export default defineConfig({
     dirStyle: 'nested',
     // Explicit route list: static routes + every blog post; the catch-all
     // not-found and the /blog/:slug template are intentionally excluded.
-    includedRoutes: () => ['/', '/blog', ...blogRoutes()],
+    includedRoutes: () => ['/', '/projects', '/blog', ...blogRoutes()],
   },
   plugins: [
     vue(),
