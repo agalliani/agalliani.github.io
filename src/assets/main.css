@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* --- Legacy dark theme (still used by /blog views + old components) --- */
   --color-primary: #0F172A;
   --color-primary-light: #1E293B;
   --color-primary-dark: #020617;
@@ -9,6 +10,34 @@
   --color-accent-secondary: #14B8A6;
   --color-text-main: #E2E8F0;
   --color-text-muted: #94A3B8;
+
+  /* --- Home redesign: minimal / Apple-style light palette --- */
+  /* Text */
+  --color-ink: #1d1d1f;
+  --color-ink-soft: #6e6e73;
+  --color-ink-faint: #86868b;
+  /* Surfaces & lines */
+  --color-surface: #f5f5f7;
+  --color-surface-2: #f0f0f2;
+  --color-line: #e8e8ed;
+  --color-line-strong: #d2d2d7;
+  /* Accent */
+  --color-brand: #0071e3;
+  --color-arrow: #c7c7cc;
+  /* Dark blog section */
+  --color-night: #1d1d1f;
+  --color-night-card: #242426;
+  --color-night-line: #3a3a3c;
+  --color-night-line-strong: #5a5a5e;
+  --color-night-text: #a1a1a6;
+  --color-night-faint: #8e8e93;
+  --color-sky: #6ab0ff;
+  --color-badge-line: #3a5a7a;
+
+  /* Fonts */
+  --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
 }
 
 body {
