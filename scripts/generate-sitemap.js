@@ -33,7 +33,7 @@ const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 // Keep this in sync with src/router/index.ts — the catch-all 404 route is
 // intentionally excluded. The /blog section is added dynamically below from the
 // synced post JSON, so it stays in sync with what actually got published.
-const PAGES = ['/', '/blog'];
+const PAGES = ['/', '/projects', '/blog'];
 
 // Static, directly-indexable assets that live outside the router (not "pages").
 const ASSETS = ['/scientific_academic_cv_eng.pdf'];

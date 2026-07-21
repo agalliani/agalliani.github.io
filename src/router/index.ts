@@ -10,6 +10,12 @@ export const routes: RouteRecordRaw[] = [
     component: HomeView,
   },
   {
+    path: '/projects',
+    name: 'projects',
+    // lazy-loaded chunk, prerendered by vite-ssg (see includedRoutes).
+    component: () => import('../views/ProjectsView.vue'),
+  },
+  {
     path: '/blog',
     name: 'blog',
     // route level code-splitting: lazy-loaded chunk, prerendered by vite-ssg.
