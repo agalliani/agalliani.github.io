@@ -28,6 +28,15 @@ const expanded = ref(false)
     </div>
 
     <div class="flex flex-1 flex-col p-6">
+      <div v-if="project.status === 'wip'" class="mb-3">
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full bg-surface px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-soft"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-[#22c55e] animate-pulse" aria-hidden="true"></span>
+          {{ t.statusWip }}
+        </span>
+      </div>
+
       <div v-if="project.badge" class="mb-3">
         <span class="rounded-full bg-surface px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-soft">
           {{ project.badge }}

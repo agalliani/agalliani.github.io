@@ -49,6 +49,8 @@ export interface Project {
   gallery?: string[]
   image?: string
   badge?: string
+  /** When 'wip', ProjectCard shows a green-dot "in progress" badge. */
+  status?: 'wip'
 }
 
 export interface ProjectCategory {
@@ -116,6 +118,22 @@ export const featuredWork: FeaturedProject[] = [
 ]
 
 // ---- Full archive (/projects) ---------------------------------------------
+// Work in progress: projects currently under construction. Append new
+// `status: 'wip'` items here — the "Work in progress" category renders them
+// with a green-dot badge, no other change needed.
+const workInProgress: Project[] = [
+  {
+    id: 'falegnameria-galliani',
+    title: 'Falegnameria Galliani',
+    subtitle: 'Sito vetrina per attività di falegnameria',
+    desc: 'Sito web in costruzione per un’attività di <strong>falegnameria artigianale</strong>: presentazione dei lavori su misura, servizi e contatti. In fase di sviluppo attivo.',
+    tech: ['Vue.js', 'Vite', 'Tailwind CSS', 'Vercel'],
+    link: 'https://falegnameria-galliani.vercel.app/',
+    linkLabel: 'Anteprima live',
+    status: 'wip',
+  },
+]
+
 const webApps: Project[] = [
   {
     id: 'dalila-scollo',
@@ -266,6 +284,7 @@ const ventures: Project[] = [
 ]
 
 export const projectCategories: ProjectCategory[] = [
+  { id: 'wip', titleKey: 'catWip', leadKey: 'catWipLead', accent: '#22c55e', items: workInProgress },
   { id: 'web', titleKey: 'catWeb', leadKey: 'catWebLead', accent: '#0071e3', items: webApps },
   { id: 'deep-tech', titleKey: 'catDeepTech', leadKey: 'catDeepTechLead', accent: '#8e5ff5', items: deepTech },
   { id: 'industrial', titleKey: 'catIndustrial', leadKey: 'catIndustrialLead', accent: '#14b8a6', items: industrial },

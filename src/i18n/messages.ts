@@ -45,6 +45,9 @@ export interface Messages {
   projectsTitle: string
   projectsLead: string
   backHome: string
+  catWip: string
+  catWipLead: string
+  statusWip: string
   catWeb: string
   catDeepTech: string
   catIndustrial: string
@@ -101,6 +104,9 @@ export const messages: Record<Lang, Messages> = {
     projectsLead:
       'L’archivio completo: dal software full-stack ai chip in silicio, dall’IoT industriale ai prototipi sul campo.',
     backHome: '← Home',
+    catWip: 'Work in progress',
+    catWipLead: 'Progetti in cantiere, aggiornati mentre prendono forma.',
+    statusWip: 'In corso',
     catWeb: 'Full-Stack & Web Design',
     catDeepTech: 'Deep Tech & Silicio',
     catIndustrial: 'IoT Industriale & Sicurezza',
@@ -155,6 +161,9 @@ export const messages: Record<Lang, Messages> = {
     projectsLead:
       'The full archive: from full-stack software to silicon chips, from industrial IoT to field prototypes.',
     backHome: '← Home',
+    catWip: 'Work in progress',
+    catWipLead: 'Projects under construction, updated as they take shape.',
+    statusWip: 'In progress',
     catWeb: 'Full-Stack & Web Design',
     catDeepTech: 'Deep Tech & Silicon',
     catIndustrial: 'Industrial IoT & Safety',
