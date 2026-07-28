@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { track } from '../composables/useAnalytics'
 import type { Messages } from '../i18n/messages'
 
 // The one navigation bar of the site, shared by the home page and every route
@@ -24,9 +25,18 @@ const isActive = (to: string) => route.path === to || route.path.startsWith(`${t
 // On the home page the brand is a scroll-to-top affordance; elsewhere the
 // RouterLink navigation does the work on its own.
 const onBrandClick = (e: MouseEvent) => {
+  track('nav_click', { target: 'brand', location: 'header' })
   if (route.path !== '/') return
   e.preventDefault()
   window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const onNavClick = (target: string) => track('nav_click', { target, location: 'header' })
+
+const onToggleLang = () => {
+  // Read `other` before toggling — after it, it's the language we came from.
+  track('language_switch', { to: other.value })
+  toggle()
 }
 </script>
 
@@ -52,6 +62,7 @@ const onBrandClick = (e: MouseEvent) => {
         class="no-underline transition-colors hover:text-ink"
         :class="isActive(l.to) ? 'font-semibold text-ink' : 'text-ink-soft'"
         :aria-current="isActive(l.to) ? 'page' : undefined"
+        @click="onNavClick(l.to)"
       >
         {{ t[l.key] }}
       </RouterLink>
@@ -59,6 +70,7 @@ const onBrandClick = (e: MouseEvent) => {
       <RouterLink
         :to="{ path: '/', hash: '#contact' }"
         class="text-ink-soft no-underline transition-colors hover:text-ink max-[440px]:hidden"
+        @click="onNavClick('contact')"
       >
         {{ t.navContact }}
       </RouterLink>
@@ -67,7 +79,7 @@ const onBrandClick = (e: MouseEvent) => {
         type="button"
         class="shrink-0 cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
         :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
-        @click="toggle"
+        @click="onToggleLang"
       >
         {{ other.toUpperCase() }}
       </button>

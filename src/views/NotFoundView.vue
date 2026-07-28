@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { onMounted } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { track } from '../composables/useAnalytics'
+
+const route = useRoute()
+
+// A 404 is also a pageview, but the path alone doesn't say it failed — this is
+// what makes broken inbound links findable in GA4.
+onMounted(() => track('page_not_found', { path: route.fullPath }))
 </script>
 
 <template>

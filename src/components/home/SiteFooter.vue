@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
+import { track, trackOutbound } from '../../composables/useAnalytics'
 
 const { t } = useI18n()
 
@@ -9,6 +10,13 @@ const links = [
   { label: 'GitHub', href: 'https://github.com/agalliani', external: true },
   { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=mReBtJQAAAAJ&hl=it', external: true },
 ]
+
+// The mail link is the site's actual conversion — it gets its own event name so
+// it can be marked as a conversion in GA4 without filtering on a parameter.
+const onLinkClick = (link: (typeof links)[number]) => {
+  if (link.external) trackOutbound(link.href, link.label, 'footer_social')
+  else track('contact_click', { method: 'email' })
+}
 </script>
 
 <template>
@@ -34,6 +42,7 @@ const links = [
           :target="l.external ? '_blank' : undefined"
           :rel="l.external ? 'noopener' : undefined"
           class="text-brand hover:underline"
+          @click="onLinkClick(l)"
         >
           {{ l.label }}
         </a>

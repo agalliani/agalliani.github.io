@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
+import { track } from '../../composables/useAnalytics'
 
 const { t } = useI18n()
 </script>
@@ -29,12 +30,14 @@ const { t } = useI18n()
         <RouterLink
           to="/blog"
           class="rounded-full bg-brand px-7 py-3.5 text-[16px] font-medium text-white no-underline transition-opacity hover:opacity-90"
+          @click="track('cta_click', { cta: 'blog' })"
         >
           {{ t.ctaBlog }}
         </RouterLink>
         <RouterLink
           to="/projects"
           class="rounded-full bg-surface px-7 py-3.5 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-surface-2"
+          @click="track('cta_click', { cta: 'work' })"
         >
           {{ t.ctaWork }}
         </RouterLink>

@@ -2,6 +2,7 @@
 import { RouterLink } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 import { featuredWork } from '../../data/projects'
+import { track, trackOutbound } from '../../composables/useAnalytics'
 
 const { t } = useI18n()
 </script>
@@ -29,6 +30,7 @@ const { t } = useI18n()
         target="_blank"
         rel="noopener"
         class="grid grid-cols-[96px_1fr_auto] items-center gap-5 rounded-2xl p-4 no-underline transition-colors duration-200 hover:bg-surface"
+        @click="trackOutbound(item.href, item.id, 'featured_work')"
       >
         <div
           class="aspect-square overflow-hidden rounded-xl"
@@ -56,7 +58,11 @@ const { t } = useI18n()
     </div>
 
     <div class="mt-12">
-      <RouterLink to="/projects" class="text-[17px] font-medium text-brand hover:underline">
+      <RouterLink
+        to="/projects"
+        class="text-[17px] font-medium text-brand hover:underline"
+        @click="track('nav_click', { target: 'all_work', location: 'work_section' })"
+      >
         {{ t.allWork }}
       </RouterLink>
     </div>

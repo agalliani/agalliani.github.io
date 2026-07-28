@@ -3,8 +3,15 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 import { useLatestPosts, formatPostDate } from '../../composables/useBlogPosts'
+import { track } from '../../composables/useAnalytics'
 
 const { t, lang } = useI18n()
+
+// `location` separates a post opened from the home teaser from the same post
+// opened via /blog — the pageview alone can't tell them apart, and that's the
+// number that says whether this section earns its place on the home page.
+const onPostClick = (slug: string, position: 'featured' | 'list') =>
+  track('blog_post_click', { slug, location: 'home', position })
 
 // A preview of the blog, and nothing else. This section used to mix the latest
 // post with an Oxymeter card that linked off-site (and was already listed under
@@ -35,6 +42,7 @@ const rest = computed(() => latest.value.slice(1))
         <RouterLink
           :to="`/blog/${featured.slug}`"
           class="group mt-14 grid grid-cols-[1.05fr_.95fr] items-stretch overflow-hidden rounded-3xl border border-night-line bg-night-card no-underline transition duration-[250ms] hover:-translate-y-1 hover:border-night-line-strong hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] max-md:grid-cols-1"
+          @click="onPostClick(featured.slug, 'featured')"
         >
           <div
             class="relative min-h-[260px] overflow-hidden bg-[linear-gradient(180deg,#0b1a3a_0%,#22467e_45%,#7db0e6_100%)] max-md:aspect-video max-md:min-h-0"
@@ -90,6 +98,7 @@ const rest = computed(() => latest.value.slice(1))
             <RouterLink
               :to="`/blog/${post.slug}`"
               class="group grid grid-cols-[auto_1fr] items-baseline gap-x-6 gap-y-1 rounded-2xl px-6 py-5 no-underline transition-colors duration-200 hover:bg-night-card max-md:grid-cols-1 max-md:px-4"
+              @click="onPostClick(post.slug, 'list')"
             >
               <time class="font-mono text-[11px] uppercase tracking-[0.08em] text-night-faint">
                 {{ formatPostDate(post.date, lang) }}
@@ -111,7 +120,11 @@ const rest = computed(() => latest.value.slice(1))
       <p v-else class="mt-14 text-[17px] text-night-text">{{ t.blogEmpty }}</p>
 
       <div class="mt-12">
-        <RouterLink to="/blog" class="text-[17px] font-medium text-sky no-underline hover:underline">
+        <RouterLink
+          to="/blog"
+          class="text-[17px] font-medium text-sky no-underline hover:underline"
+          @click="track('nav_click', { target: 'all_posts', location: 'blog_section' })"
+        >
           {{ t.blogAllPosts }}
         </RouterLink>
       </div>

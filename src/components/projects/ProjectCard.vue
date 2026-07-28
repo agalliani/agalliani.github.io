@@ -2,12 +2,19 @@
 import { ref } from 'vue'
 import MiniGallery from '../MiniGallery.vue'
 import { useI18n } from '../../composables/useI18n'
+import { track, trackOutbound } from '../../composables/useAnalytics'
 import type { Project } from '../../data/projects'
 
-defineProps<{ project: Project }>()
+const props = defineProps<{ project: Project }>()
 
 const { t } = useI18n()
 const expanded = ref(false)
+
+const onToggleExpand = () => {
+  expanded.value = !expanded.value
+  // Only the opening half is a signal of interest; collapsing isn't.
+  if (expanded.value) track('project_expand', { project: props.project.title })
+}
 </script>
 
 <template>
@@ -57,7 +64,7 @@ const expanded = ref(false)
         <button
           type="button"
           class="mt-2 cursor-pointer bg-transparent text-[13px] font-semibold text-brand hover:underline"
-          @click="expanded = !expanded"
+          @click="onToggleExpand"
         >
           {{ expanded ? t.showLess : t.readMore }}
         </button>
@@ -80,6 +87,7 @@ const expanded = ref(false)
           target="_blank"
           rel="noopener"
           class="inline-flex items-center gap-1.5 text-[14px] font-medium text-brand hover:underline"
+          @click="trackOutbound(project.link, project.title, 'project_card')"
         >
           {{ project.linkLabel || 'View project' }} <span aria-hidden="true">→</span>
         </a>
@@ -96,6 +104,7 @@ const expanded = ref(false)
               target="_blank"
               rel="noopener"
               class="text-[14px] text-ink-soft transition-colors hover:text-brand"
+              @click="trackOutbound(l.url, `${project.title} — ${l.label}`, 'project_resource')"
             >
               {{ l.label }}
             </a>

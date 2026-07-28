@@ -5,6 +5,7 @@ import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import { usePosts, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n, initLangFromStorage } from '../composables/useI18n'
+import { track } from '../composables/useAnalytics'
 
 const { t, lang } = useI18n()
 const posts = usePosts()
@@ -48,6 +49,7 @@ useHead({
           <RouterLink
             :to="`/blog/${post.slug}`"
             class="group block rounded-2xl p-6 no-underline transition-colors duration-200 hover:bg-surface max-md:p-4"
+            @click="track('blog_post_click', { slug: post.slug, location: 'blog_list' })"
           >
             <time
               v-if="post.date"

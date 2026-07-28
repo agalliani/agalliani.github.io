@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onUnmounted, watch } from 'vue'
+import { track } from '../composables/useAnalytics'
 
 const props = withDefaults(defineProps<{
   images: string[]
@@ -14,6 +15,7 @@ const failedImages = reactive(new Set<string>())
 const openLightbox = (index: number) => {
   selectedIndex.value = index
   document.body.style.overflow = 'hidden' // Prevent background scrolling
+  track('gallery_open', { image: props.images[index] ?? '', index })
 }
 
 const closeLightbox = () => {
