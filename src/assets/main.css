@@ -41,5 +41,5 @@
 }
 
 body {
-  @apply bg-slate-950 text-slate-200;
+  @apply bg-white text-ink;
 }

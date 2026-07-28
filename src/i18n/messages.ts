@@ -25,10 +25,18 @@ export interface Messages {
   blogTitle: string
   blogLead: string
   blogSoon: string
+  blogAllPosts: string
   habLabel: string
   habLead: string
   oxyLabel: string
   oxyLead: string
+
+  // Blog pages (/blog and /blog/:slug)
+  blogPageLead: string
+  blogEmpty: string
+  backBlog: string
+  postNotFound: string
+  postNotFoundLead: string
 
   // Selected work (home) + projects page
   workKicker: string
@@ -84,12 +92,20 @@ export const messages: Record<Lang, Messages> = {
     blogLead:
       'Scrivo dei miei progetti mentre li costruisco: le scelte, gli errori e i numeri veri. Due storie per iniziare.',
     blogSoon: 'Prossimamente',
+    blogAllPosts: 'Tutti gli articoli →',
     habLabel: 'Pallone stratosferico',
     habLead:
       'Un pallone sonda ai confini dello spazio: progetto il payload, lo lancio e provo a recuperarlo. Racconto qui ogni passo, dai primi calcoli al giorno del volo.',
     oxyLabel: 'Startup sport-tech · IoT',
     oxyLead:
       'Due anni tra prototipi, pivot e i primi dati veri sul campo. La storia di Oxymeter dallo StartCup a oggi, senza filtri.',
+
+    blogPageLead:
+      'Appunti e articoli dai progetti che sto costruendo: le scelte, gli errori e i numeri veri.',
+    blogEmpty: 'Nessun articolo pubblicato per ora.',
+    backBlog: '← Blog',
+    postNotFound: 'Articolo non trovato',
+    postNotFoundLead: 'L’articolo che cerchi non esiste o è stato spostato.',
 
     workKicker: 'Progetti selezionati',
     workTitle: 'Cose che ho costruito',
@@ -141,12 +157,20 @@ export const messages: Record<Lang, Messages> = {
     blogLead:
       'I write about my projects while I build them: the choices, the mistakes and the real numbers. Two stories to start with.',
     blogSoon: 'Coming soon',
+    blogAllPosts: 'All posts →',
     habLabel: 'High-altitude balloon',
     habLead:
       'A weather balloon to the edge of space: I design the payload, launch it and try to bring it back. I document every step here, from the first calculations to launch day.',
     oxyLabel: 'Sport-tech startup · IoT',
     oxyLead:
       'Two years of prototypes, pivots and the first real field data. The story of Oxymeter from StartCup to today, unfiltered.',
+
+    blogPageLead:
+      'Notes and articles from the projects I am building: the choices, the mistakes and the real numbers.',
+    blogEmpty: 'No posts published yet.',
+    backBlog: '← Blog',
+    postNotFound: 'Post not found',
+    postNotFoundLead: 'The post you are looking for does not exist or has moved.',
 
     workKicker: 'Selected work',
     workTitle: 'Things I’ve built',

@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import type { BlogPost } from '../types/blog'
+import { usePosts, formatPostDate } from '../composables/useBlogPosts'
+import { useI18n, initLangFromStorage } from '../composables/useI18n'
 
-// Eager glob: every post JSON is bundled and resolved at import time, so there's
-// no async data fetching — vite-ssg can prerender the list without onSSRAppRendered.
-const modules = import.meta.glob<{ default: BlogPost }>('../content/blog/*.json', { eager: true })
+const { t, lang, other, toggle } = useI18n()
+const posts = usePosts()
 
-const posts = computed<BlogPost[]>(() =>
-  Object.values(modules)
-    .map((m) => m.default)
-    .sort((a, b) => (b.date || '').localeCompare(a.date || '')),
-)
-
-function formatDate(date: string | null): string {
-  if (!date) return ''
-  return new Date(date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })
-}
+onMounted(initLangFromStorage)
 
 useHead({
   title: 'Blog',
@@ -32,35 +24,77 @@ useHead({
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-950 text-slate-200">
-    <header class="border-b border-white/5">
-      <div class="container mx-auto max-w-3xl px-6 py-6">
-        <RouterLink to="/" class="font-mono font-bold text-xl text-slate-200 hover:text-amber-400 transition-colors">
-          AG.
-        </RouterLink>
-      </div>
+  <div class="min-h-screen bg-white font-ui text-ink">
+    <!-- Top bar — same chrome as /projects -->
+    <header
+      class="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white/80 px-[clamp(24px,5vw,48px)] py-[18px] backdrop-blur-[20px] backdrop-saturate-[1.8]"
+    >
+      <RouterLink to="/" class="text-[15px] font-medium text-ink no-underline hover:text-ink/60">
+        {{ t.backHome }}
+      </RouterLink>
+      <button
+        type="button"
+        class="cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
+        :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
+        @click="toggle"
+      >
+        {{ other.toUpperCase() }}
+      </button>
     </header>
 
-    <main class="container mx-auto max-w-3xl px-6 py-12">
-      <h1 class="text-4xl font-bold mb-10 tracking-tight">Blog</h1>
+    <!-- Heading -->
+    <section class="mx-auto max-w-[820px] px-[clamp(24px,5vw,48px)] pb-4 pt-[clamp(48px,8vw,96px)]">
+      <div class="mb-2.5 text-[14px] font-medium uppercase tracking-[0.12em] text-ink-faint">
+        {{ t.blogKicker }}
+      </div>
+      <h1 class="m-0 font-serif text-[clamp(40px,6vw,56px)] font-medium leading-[1.05] tracking-[-0.02em]">
+        {{ t.blogTitle }}
+      </h1>
+      <p class="mt-4 max-w-[620px] text-[19px] leading-[1.6] text-ink-soft">{{ t.blogPageLead }}</p>
+    </section>
 
-      <p v-if="posts.length === 0" class="text-slate-400">Nessun articolo pubblicato per ora.</p>
+    <!-- Posts -->
+    <main class="mx-auto max-w-[820px] px-[clamp(24px,5vw,48px)] pb-[clamp(56px,8vw,96px)] pt-8">
+      <p v-if="posts.length === 0" class="text-[17px] text-ink-soft">{{ t.blogEmpty }}</p>
 
-      <ul class="flex flex-col gap-8">
-        <li v-for="post in posts" :key="post.slug" class="border-b border-white/5 pb-8 last:border-b-0">
-          <RouterLink :to="`/blog/${post.slug}`" class="group block">
-            <time v-if="post.date" class="font-mono text-xs text-amber-400/80">{{ formatDate(post.date) }}</time>
-            <h2 class="text-2xl font-semibold mt-1 group-hover:text-amber-400 transition-colors">
+      <ul class="m-0 flex list-none flex-col gap-3 p-0">
+        <li v-for="post in posts" :key="post.slug">
+          <RouterLink
+            :to="`/blog/${post.slug}`"
+            class="group block rounded-2xl p-6 no-underline transition-colors duration-200 hover:bg-surface max-md:p-4"
+          >
+            <time
+              v-if="post.date"
+              class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"
+            >
+              {{ formatPostDate(post.date, lang) }}
+            </time>
+            <h2
+              class="mt-2 font-serif text-[clamp(24px,3vw,30px)] font-medium leading-[1.15] tracking-[-0.01em] text-ink transition-colors group-hover:text-brand"
+            >
               {{ post.title }}
             </h2>
-            <p class="text-slate-400 mt-2">{{ post.excerpt }}</p>
-            <div v-if="post.tags.length" class="flex flex-wrap gap-2 mt-3">
-              <span v-for="tag in post.tags" :key="tag"
-                    class="font-mono text-xs text-slate-500 bg-white/5 rounded px-2 py-0.5">#{{ tag }}</span>
+            <p class="mt-2.5 text-[17px] leading-[1.6] text-ink-soft">{{ post.excerpt }}</p>
+            <div v-if="post.tags.length" class="mt-4 flex flex-wrap gap-2">
+              <span
+                v-for="tag in post.tags"
+                :key="tag"
+                class="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-faint"
+              >
+                #{{ tag }}
+              </span>
             </div>
           </RouterLink>
         </li>
       </ul>
     </main>
+
+    <!-- Footer strip -->
+    <footer class="border-t border-line bg-surface px-[clamp(24px,5vw,48px)] py-14">
+      <div class="mx-auto flex max-w-[1080px] items-center justify-between gap-6 text-[13px] text-ink-faint">
+        <span>© 2026 Andrea Galliani</span>
+        <RouterLink to="/" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
+      </div>
+    </footer>
   </div>
 </template>

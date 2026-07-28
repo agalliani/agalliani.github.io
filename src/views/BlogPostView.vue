@@ -1,25 +1,21 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, onMounted } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import type { BlogPost } from '../types/blog'
+import { getPostBySlug, formatPostDate } from '../composables/useBlogPosts'
+import { useI18n, initLangFromStorage } from '../composables/useI18n'
 
 const SITE_URL = 'https://andreagalliani.com'
 
-// Same eager glob as the list view — the post for the current slug is resolved
-// synchronously from the bundled JSON, so vite-ssg prerenders it statically.
-const modules = import.meta.glob<{ default: BlogPost }>('../content/blog/*.json', { eager: true })
-const bySlug = Object.fromEntries(
-  Object.values(modules).map((m) => [m.default.slug, m.default]),
-) as Record<string, BlogPost>
-
+const { t, lang, other, toggle } = useI18n()
 const route = useRoute()
-const post = computed<BlogPost | undefined>(() => bySlug[String(route.params.slug)])
 
-function formatDate(date: string | null): string {
-  if (!date) return ''
-  return new Date(date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })
-}
+// Resolved synchronously from the bundled JSON (see useBlogPosts), so vite-ssg
+// prerenders every post statically.
+const post = computed<BlogPost | undefined>(() => getPostBySlug(String(route.params.slug)))
+
+onMounted(initLangFromStorage)
 
 // Meta tags are baked into the static HTML by vite-ssg → social crawlers (which
 // don't run JS) and search engines see them in the server response.
@@ -44,97 +40,166 @@ useHead(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-950 text-slate-200">
-    <header class="border-b border-white/5">
-      <div class="container mx-auto max-w-3xl px-6 py-6">
-        <RouterLink to="/blog" class="font-mono text-sm text-slate-400 hover:text-amber-400 transition-colors">
-          ← Blog
-        </RouterLink>
-      </div>
+  <div class="min-h-screen bg-white font-ui text-ink">
+    <!-- Top bar — same chrome as /blog and /projects -->
+    <header
+      class="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white/80 px-[clamp(24px,5vw,48px)] py-[18px] backdrop-blur-[20px] backdrop-saturate-[1.8]"
+    >
+      <RouterLink to="/blog" class="text-[15px] font-medium text-ink no-underline hover:text-ink/60">
+        {{ t.backBlog }}
+      </RouterLink>
+      <button
+        type="button"
+        class="cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
+        :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
+        @click="toggle"
+      >
+        {{ other.toUpperCase() }}
+      </button>
     </header>
 
-    <main class="container mx-auto max-w-3xl px-6 py-12">
+    <main class="mx-auto max-w-[720px] px-[clamp(24px,5vw,48px)] pb-[clamp(56px,8vw,96px)] pt-[clamp(48px,8vw,88px)]">
       <template v-if="post">
-        <time v-if="post.date" class="font-mono text-xs text-amber-400/80">{{ formatDate(post.date) }}</time>
-        <h1 class="text-4xl font-bold mt-2 mb-6 tracking-tight">{{ post.title }}</h1>
-        <div v-if="post.tags.length" class="flex flex-wrap gap-2 mb-10">
-          <span v-for="tag in post.tags" :key="tag"
-                class="font-mono text-xs text-slate-500 bg-white/5 rounded px-2 py-0.5">#{{ tag }}</span>
+        <time
+          v-if="post.date"
+          class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"
+        >
+          {{ formatPostDate(post.date, lang) }}
+        </time>
+        <h1
+          class="mt-3 font-serif text-[clamp(36px,5.5vw,52px)] font-medium leading-[1.08] tracking-[-0.02em] text-ink"
+        >
+          {{ post.title }}
+        </h1>
+        <p class="mt-5 text-[20px] leading-[1.55] text-ink-soft">{{ post.excerpt }}</p>
+        <div v-if="post.tags.length" class="mt-6 flex flex-wrap gap-2">
+          <span
+            v-for="tag in post.tags"
+            :key="tag"
+            class="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-faint"
+          >
+            #{{ tag }}
+          </span>
         </div>
+
+        <hr class="my-10 border-0 border-t border-line" />
+
         <!-- html is pre-rendered and rewritten at sync time (first-party content). -->
         <article class="post-body" v-html="post.html"></article>
+
+        <div class="mt-16 border-t border-line pt-8">
+          <RouterLink to="/blog" class="text-[17px] font-medium text-brand no-underline hover:underline">
+            {{ t.backBlog }}
+          </RouterLink>
+        </div>
       </template>
 
       <template v-else>
-        <h1 class="text-3xl font-bold mb-4">Articolo non trovato</h1>
-        <p class="text-slate-400 mb-8">L'articolo che cerchi non esiste o è stato spostato.</p>
-        <RouterLink to="/blog" class="text-amber-400 hover:text-amber-300 font-mono">← Torna al blog</RouterLink>
+        <h1 class="font-serif text-[clamp(32px,5vw,44px)] font-medium tracking-[-0.02em]">
+          {{ t.postNotFound }}
+        </h1>
+        <p class="mt-4 text-[19px] leading-[1.6] text-ink-soft">{{ t.postNotFoundLead }}</p>
+        <RouterLink
+          to="/blog"
+          class="mt-8 inline-block text-[17px] font-medium text-brand no-underline hover:underline"
+        >
+          {{ t.backBlog }}
+        </RouterLink>
       </template>
     </main>
+
+    <!-- Footer strip -->
+    <footer class="border-t border-line bg-surface px-[clamp(24px,5vw,48px)] py-14">
+      <div class="mx-auto flex max-w-[1080px] items-center justify-between gap-6 text-[13px] text-ink-faint">
+        <span>© 2026 Andrea Galliani</span>
+        <RouterLink to="/" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
+      </div>
+    </footer>
   </div>
 </template>
 
 <style scoped>
-/* Minimal typography for the injected post HTML (no @tailwindcss/typography dep). */
+/* Minimal typography for the injected post HTML (no @tailwindcss/typography dep).
+   Colours/fonts mirror the light home theme tokens in assets/main.css. */
 .post-body {
-  line-height: 1.75;
-  color: rgb(203 213 225); /* slate-300 */
+  font-size: 19px;
+  line-height: 1.7;
+  color: #1d1d1f; /* --color-ink */
 }
 .post-body :deep(h2) {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 2rem 0 0.75rem;
-  color: rgb(226 232 240); /* slate-200 */
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 2.75rem 0 1rem;
 }
 .post-body :deep(h3) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 1.5rem 0 0.5rem;
-  color: rgb(226 232 240);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 2rem 0 0.75rem;
 }
 .post-body :deep(p) {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 }
 .post-body :deep(a) {
-  color: rgb(251 191 36); /* amber-400 */
+  color: #0071e3; /* --color-brand */
+  text-decoration: none;
+}
+.post-body :deep(a:hover) {
   text-decoration: underline;
+}
+.post-body :deep(strong) {
+  font-weight: 600;
 }
 .post-body :deep(ul),
 .post-body :deep(ol) {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
   padding-left: 1.5rem;
 }
 .post-body :deep(ul) { list-style: disc; }
 .post-body :deep(ol) { list-style: decimal; }
-.post-body :deep(li) { margin: 0.375rem 0; }
+.post-body :deep(li) { margin: 0.5rem 0; }
 .post-body :deep(img) {
   max-width: 100%;
   height: auto;
-  border-radius: 0.5rem;
-  margin: 1.5rem 0;
+  border-radius: 16px;
+  margin: 2rem 0;
+}
+.post-body :deep(hr) {
+  border: 0;
+  border-top: 1px solid #e8e8ed; /* --color-line */
+  margin: 2.5rem 0;
 }
 .post-body :deep(code) {
-  font-family: ui-monospace, monospace;
-  font-size: 0.875em;
-  background: rgb(255 255 255 / 0.06);
-  padding: 0.15em 0.35em;
-  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: #f5f5f7; /* --color-surface */
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
 }
 .post-body :deep(pre) {
-  background: rgb(255 255 255 / 0.05);
-  padding: 1rem;
-  border-radius: 0.5rem;
+  background: #1d1d1f; /* --color-night */
+  color: #f5f5f7;
+  padding: 1.25rem;
+  border-radius: 16px;
   overflow-x: auto;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
+  font-size: 15px;
+  line-height: 1.6;
 }
 .post-body :deep(pre code) {
   background: none;
   padding: 0;
+  font-size: inherit;
 }
 .post-body :deep(blockquote) {
-  border-left: 3px solid rgb(251 191 36 / 0.5);
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-  color: rgb(148 163 184); /* slate-400 */
+  border-left: 3px solid #d2d2d7; /* --color-line-strong */
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  color: #6e6e73; /* --color-ink-soft */
+  font-style: italic;
 }
 </style>
