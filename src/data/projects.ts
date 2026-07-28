@@ -64,7 +64,7 @@ export interface ProjectCategory {
 }
 
 // ---- Featured (home) -------------------------------------------------------
-export type FeaturedDescKey = 'tl' | 'dalila' | 'pihex' | 'falaphel'
+export type FeaturedDescKey = 'oxy' | 'tl' | 'dalila' | 'pihex' | 'falaphel'
 
 export interface FeaturedProject {
   id: string
@@ -79,8 +79,17 @@ export interface FeaturedProject {
   dark?: boolean
 }
 
-/** The four curated rows on the home page, in order. */
+/** The curated rows on the home page, in order. */
 export const featuredWork: FeaturedProject[] = [
+  {
+    id: 'oxymeter',
+    title: 'Oxymeter',
+    tag: 'Sport-tech · IoT',
+    descKey: 'oxy',
+    href: 'https://www.oxymeter.it/',
+    image: oxymeterHero,
+    dark: true,
+  },
   {
     id: 'timeline-me',
     title: 'Timeline Me',

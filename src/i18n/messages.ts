@@ -24,12 +24,8 @@ export interface Messages {
   blogKicker: string
   blogTitle: string
   blogLead: string
-  blogSoon: string
+  blogLatest: string
   blogAllPosts: string
-  habLabel: string
-  habLead: string
-  oxyLabel: string
-  oxyLead: string
 
   // Blog pages (/blog and /blog/:slug)
   blogPageLead: string
@@ -43,7 +39,8 @@ export interface Messages {
   workTitle: string
   workLead: string
   allWork: string
-  // Curated one-liners for the four featured rows on the home page.
+  // Curated one-liners for the featured rows on the home page.
+  oxy: string
   tl: string
   dalila: string
   pihex: string
@@ -90,15 +87,9 @@ export const messages: Record<Lang, Messages> = {
     blogKicker: 'Il blog',
     blogTitle: 'Costruire in pubblico',
     blogLead:
-      'Scrivo dei miei progetti mentre li costruisco: le scelte, gli errori e i numeri veri. Due storie per iniziare.',
-    blogSoon: 'Prossimamente',
+      'Scrivo dei miei progetti mentre li costruisco: le scelte, gli errori e i numeri veri.',
+    blogLatest: 'Ultimo articolo',
     blogAllPosts: 'Tutti gli articoli →',
-    habLabel: 'Pallone stratosferico',
-    habLead:
-      'Un pallone sonda ai confini dello spazio: progetto il payload, lo lancio e provo a recuperarlo. Racconto qui ogni passo, dai primi calcoli al giorno del volo.',
-    oxyLabel: 'Startup sport-tech · IoT',
-    oxyLead:
-      'Due anni tra prototipi, pivot e i primi dati veri sul campo. La storia di Oxymeter dallo StartCup a oggi, senza filtri.',
 
     blogPageLead:
       'Appunti e articoli dai progetti che sto costruendo: le scelte, gli errori e i numeri veri.',
@@ -111,6 +102,7 @@ export const messages: Record<Lang, Messages> = {
     workTitle: 'Cose che ho costruito',
     workLead: 'Una selezione tra web, hardware e deep tech.',
     allWork: 'Tutti i progetti →',
+    oxy: 'Dispositivo IoT e app per l’allenamento: dal prototipo ai primi dati sul campo.',
     tl: 'Crea timeline pronte da esportare in pochi secondi.',
     dalila: 'Sito portfolio disegnato e sviluppato su misura.',
     pihex: 'Chip in CMOS 28nm per gli acceleratori HL-LHC al CERN.',
@@ -155,15 +147,9 @@ export const messages: Record<Lang, Messages> = {
     blogKicker: 'The blog',
     blogTitle: 'Building in public',
     blogLead:
-      'I write about my projects while I build them: the choices, the mistakes and the real numbers. Two stories to start with.',
-    blogSoon: 'Coming soon',
+      'I write about my projects while I build them: the choices, the mistakes and the real numbers.',
+    blogLatest: 'Latest post',
     blogAllPosts: 'All posts →',
-    habLabel: 'High-altitude balloon',
-    habLead:
-      'A weather balloon to the edge of space: I design the payload, launch it and try to bring it back. I document every step here, from the first calculations to launch day.',
-    oxyLabel: 'Sport-tech startup · IoT',
-    oxyLead:
-      'Two years of prototypes, pivots and the first real field data. The story of Oxymeter from StartCup to today, unfiltered.',
 
     blogPageLead:
       'Notes and articles from the projects I am building: the choices, the mistakes and the real numbers.',
@@ -176,6 +162,7 @@ export const messages: Record<Lang, Messages> = {
     workTitle: 'Things I’ve built',
     workLead: 'A selection across web, hardware and deep tech.',
     allWork: 'All projects →',
+    oxy: 'IoT device and training app: from prototype to the first real field data.',
     tl: 'Build export-ready timelines in seconds.',
     dalila: 'A portfolio site designed and built from scratch.',
     pihex: '28nm CMOS chip for CERN’s HL-LHC accelerators.',
