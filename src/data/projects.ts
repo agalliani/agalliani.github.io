@@ -127,33 +127,21 @@ export const featuredWork: FeaturedProject[] = [
 ]
 
 // ---- Full archive (/projects) ---------------------------------------------
-// Work in progress: projects currently under construction. Append new
-// `status: 'wip'` items here — the "Work in progress" category renders them
-// with a green-dot badge, no other change needed.
-const workInProgress: Project[] = [
-  {
-    id: 'falegnameria-galliani',
-    title: 'Falegnameria Galliani',
-    subtitle: 'Sito vetrina per attività di falegnameria',
-    desc: 'Sito web in costruzione per un’attività di <strong>falegnameria artigianale</strong>: presentazione dei lavori su misura, servizi e contatti. In fase di sviluppo attivo.',
-    tech: ['Vue.js', 'Vite', 'Tailwind CSS', 'Vercel'],
-    link: 'https://falegnameria-galliani.vercel.app/',
-    linkLabel: 'Anteprima live',
-    status: 'wip',
-  },
-]
-
+// Projects still taking shape live alongside the finished ones: mark them
+// `status: 'wip'` and ProjectCard adds the pulsing "in cantiere" badge.
+// `wipFirst()` floats them to the top of their category, so the declaration
+// order below only has to express the ranking among the finished ones.
 const webApps: Project[] = [
   {
-    id: 'dalila-scollo',
-    title: 'Dalila Scollo | Performer & Vocal Coach',
-    subtitle: 'Soprano, Dancer & Creative Coach',
-    desc: 'Official website of Dalila Scollo, a multi-disciplinary artist and <strong>Soprano (F3-G5)</strong>. The platform showcases her career in <strong>Musical Theatre</strong> and <strong>Commercial Dance</strong>, featuring a rich media gallery of her performances and details on her <strong>Vocal Coaching</strong> methodology.',
-    tech: ['Vue.js', 'Tailwind CSS', 'Audio/Video Gallery', 'Responsive'],
-    link: 'https://dalilascollo.com/',
-    linkLabel: 'Visit Website',
-    badge: 'Featured Design',
-    image: dalilaHero,
+    id: 'oxymeter',
+    title: 'Oxymeter | Sports Tech',
+    subtitle: 'IoT Device Companion App',
+    desc: 'A scalable <strong>Vue.js Web App</strong> designed to interface with wearable IoT devices. Features real-time data visualization and session management.<br><br><strong>The Pivot:</strong> Transformed a hardware-heavy prototype into a software-first solution to prioritize market validation.',
+    tech: ['Vue.js', 'Vite', 'IoT Integration', 'UX Design'],
+    link: 'https://www.oxymeter.it/',
+    linkLabel: 'Launch App',
+    badge: 'Award Winner',
+    image: oxymeterHero,
   },
   {
     id: 'timeline-me',
@@ -167,15 +155,25 @@ const webApps: Project[] = [
     image: timelineMeHero,
   },
   {
-    id: 'oxymeter',
-    title: 'Oxymeter | Sports Tech',
-    subtitle: 'IoT Device Companion App',
-    desc: 'A scalable <strong>Vue.js Web App</strong> designed to interface with wearable IoT devices. Features real-time data visualization and session management.<br><br><strong>The Pivot:</strong> Transformed a hardware-heavy prototype into a software-first solution to prioritize market validation.',
-    tech: ['Vue.js', 'Vite', 'IoT Integration', 'UX Design'],
-    link: 'https://www.oxymeter.it/',
-    linkLabel: 'Launch App',
-    badge: 'Award Winner',
-    image: oxymeterHero,
+    id: 'falegnameria-galliani',
+    title: 'Falegnameria Galliani',
+    subtitle: 'Sito vetrina per attività di falegnameria',
+    desc: 'Sito web per un’attività di <strong>falegnameria artigianale</strong>: presentazione dei lavori su misura, servizi e contatti.<br><br><strong>In cantiere:</strong> progetto in evoluzione insieme al cliente, aggiornato mano a mano che il catalogo dei lavori cresce.',
+    tech: ['Vue.js', 'Vite', 'Tailwind CSS', 'Vercel'],
+    link: 'https://falegnameria-galliani.vercel.app/',
+    linkLabel: 'Anteprima live',
+    status: 'wip',
+  },
+  {
+    id: 'dalila-scollo',
+    title: 'Dalila Scollo | Performer & Vocal Coach',
+    subtitle: 'Soprano, Dancer & Creative Coach',
+    desc: 'Official website of Dalila Scollo, a multi-disciplinary artist and <strong>Soprano (F3-G5)</strong>. The platform showcases her career in <strong>Musical Theatre</strong> and <strong>Commercial Dance</strong>, featuring a rich media gallery of her performances and details on her <strong>Vocal Coaching</strong> methodology.',
+    tech: ['Vue.js', 'Tailwind CSS', 'Audio/Video Gallery', 'Responsive'],
+    link: 'https://dalilascollo.com/',
+    linkLabel: 'Visit Website',
+    badge: 'Featured Design',
+    image: dalilaHero,
   },
 ]
 
@@ -292,10 +290,13 @@ const ventures: Project[] = [
   },
 ]
 
+/** Work-in-progress items come first; everything else keeps its declared order. */
+const wipFirst = (items: Project[]): Project[] =>
+  [...items].sort((a, b) => Number(b.status === 'wip') - Number(a.status === 'wip'))
+
 export const projectCategories: ProjectCategory[] = [
-  { id: 'wip', titleKey: 'catWip', leadKey: 'catWipLead', accent: '#22c55e', items: workInProgress },
-  { id: 'web', titleKey: 'catWeb', leadKey: 'catWebLead', accent: '#0071e3', items: webApps },
-  { id: 'deep-tech', titleKey: 'catDeepTech', leadKey: 'catDeepTechLead', accent: '#8e5ff5', items: deepTech },
-  { id: 'industrial', titleKey: 'catIndustrial', leadKey: 'catIndustrialLead', accent: '#14b8a6', items: industrial },
-  { id: 'ventures', titleKey: 'catVentures', leadKey: 'catVenturesLead', accent: '#f59e0b', items: ventures },
+  { id: 'web', titleKey: 'catWeb', leadKey: 'catWebLead', accent: '#0071e3', items: wipFirst(webApps) },
+  { id: 'deep-tech', titleKey: 'catDeepTech', leadKey: 'catDeepTechLead', accent: '#8e5ff5', items: wipFirst(deepTech) },
+  { id: 'industrial', titleKey: 'catIndustrial', leadKey: 'catIndustrialLead', accent: '#14b8a6', items: wipFirst(industrial) },
+  { id: 'ventures', titleKey: 'catVentures', leadKey: 'catVenturesLead', accent: '#f59e0b', items: wipFirst(ventures) },
 ]

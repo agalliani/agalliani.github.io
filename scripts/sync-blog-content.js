@@ -63,6 +63,32 @@ function copyPostImages(postDir, slug) {
   fs.cpSync(imagesDir, dest, { recursive: true });
 }
 
+/** Renders a post's markdown body and points its images at the public path. */
+function renderBody(content, slug) {
+  return md
+    .render(content)
+    .replace(/(<img[^>]+src=")([^"]+)(")/g, (_m, pre, ref, post) => `${pre}${rewriteImagePath(ref, slug)}${post}`);
+}
+
+/**
+ * Optional English rendering, from `index.en.md` next to the Italian index.
+ * Only the translatable fields are emitted — slug, date and cover stay
+ * single-sourced from the Italian frontmatter (one post, one URL).
+ */
+function readTranslation(postDir, slug, fallback) {
+  const enPath = path.join(postDir, 'index.en.md');
+  if (!fs.existsSync(enPath)) return undefined;
+
+  const { data, content } = matter(fs.readFileSync(enPath, 'utf8'));
+  const translation = {
+    title: data.title || fallback.title,
+    excerpt: data.excerpt || fallback.excerpt,
+    html: renderBody(content, slug),
+  };
+  if (data.tags) translation.tags = data.tags;
+  return translation;
+}
+
 function syncPost(slug) {
   const postDir = path.join(blogSrcDir, slug);
   const indexPath = path.join(postDir, 'index.md');
@@ -72,11 +98,6 @@ function syncPost(slug) {
 
   copyPostImages(postDir, slug);
 
-  // Render markdown, then rewrite <img src="images/..."> to /images/blog/<slug>/...
-  const html = md
-    .render(content)
-    .replace(/(<img[^>]+src=")([^"]+)(")/g, (_m, pre, ref, post) => `${pre}${rewriteImagePath(ref, slug)}${post}`);
-
   const post = {
     slug: data.slug || slug,
     title: data.title || slug,
@@ -84,8 +105,11 @@ function syncPost(slug) {
     excerpt: data.excerpt || '',
     tags: data.tags || [],
     cover: data.cover ? rewriteImagePath(data.cover, slug) : null,
-    html,
+    html: renderBody(content, slug),
   };
+
+  const en = readTranslation(postDir, slug, post);
+  if (en) post.en = en;
 
   fs.mkdirSync(jsonOutDir, { recursive: true });
   fs.writeFileSync(path.join(jsonOutDir, `${slug}.json`), `${JSON.stringify(post, null, 2)}\n`, 'utf8');

@@ -9,4 +9,18 @@ export interface BlogPost {
   tags: string[]
   cover: string | null
   html: string
+  /**
+   * English rendering of the same post (from hab's `index.en.md`), merged over
+   * the Italian one when the site language is 'en'. Optional: posts without a
+   * translation simply stay Italian. Slug/date/cover are deliberately not
+   * translatable — one post, one URL, one publication date.
+   */
+  en?: BlogPostTranslation
+}
+
+export interface BlogPostTranslation {
+  title: string
+  excerpt: string
+  html: string
+  tags?: string[]
 }
