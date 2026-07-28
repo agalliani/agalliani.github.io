@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 import { track } from '../../composables/useAnalytics'
 
-const { t } = useI18n()
+const { t, lp } = useI18n()
 </script>
 
 <template>
@@ -28,14 +28,14 @@ const { t } = useI18n()
            scroll to the blog teaser instead of opening the blog. -->
       <div class="mt-10 flex flex-wrap gap-3.5">
         <RouterLink
-          to="/blog"
+          :to="lp('/blog')"
           class="rounded-full bg-brand px-7 py-3.5 text-[16px] font-medium text-white no-underline transition-opacity hover:opacity-90"
           @click="track('cta_click', { cta: 'blog' })"
         >
           {{ t.ctaBlog }}
         </RouterLink>
         <RouterLink
-          to="/projects"
+          :to="lp('/projects')"
           class="rounded-full bg-surface px-7 py-3.5 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-surface-2"
           @click="track('cta_click', { cta: 'work' })"
         >

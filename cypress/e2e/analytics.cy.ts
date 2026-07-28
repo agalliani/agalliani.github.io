@@ -90,8 +90,9 @@ describe('analytics', () => {
       })
     })
 
-    it('tracks the language toggle', () => {
-      cy.get('nav button').click()
+    it('tracks the language switch, which navigates to the English tree', () => {
+      cy.get('nav a[hreflang="en"]').click()
+      cy.location('pathname').should('eq', '/en')
       cy.window().then((win) => {
         const ev = events(win).find((e) => e.name === 'language_switch')
         expect(ev?.params.to).to.eq('en')

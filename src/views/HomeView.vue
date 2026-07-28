@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import HeroSection from '../components/home/HeroSection.vue'
 import BlogSection from '../components/home/BlogSection.vue'
 import WorkSection from '../components/home/WorkSection.vue'
 import SiteFooter from '../components/home/SiteFooter.vue'
-import { initLangFromStorage } from '../composables/useI18n'
+import { useI18n } from '../composables/useI18n'
+import { seoLinks, seoOpenGraph } from '../composables/useSeo'
 
-// Restore the visitor's saved language on the client (no-op during SSR).
-onMounted(initLangFromStorage)
+const { t, lang } = useI18n()
 
-useHead({
+useHead(() => ({
   title: 'Home',
-  meta: [
-    {
-      name: 'description',
-      content:
-        'Andrea Galliani — AMS Engineer & Ph.D. in Microelectronics. I design analog chips and build software, and I document my projects (HAB, Oxymeter) building in public.',
-    },
-  ],
-})
+  meta: [{ name: 'description', content: t.value.seoHomeDesc }, ...seoOpenGraph('/', lang.value)],
+  link: seoLinks('/', lang.value),
+}))
 </script>
 
 <template>

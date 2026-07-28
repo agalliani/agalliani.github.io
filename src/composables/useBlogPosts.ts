@@ -1,4 +1,4 @@
-import { computed, type ComputedRef } from 'vue'
+import { computed, type ComputedRef, type Ref } from 'vue'
 import type { BlogPost } from '../types/blog'
 import type { Lang } from '../i18n/messages'
 import { useI18n } from './useI18n'
@@ -15,16 +15,14 @@ const allPosts: BlogPost[] = Object.values(modules)
 
 const bySlug: Record<string, BlogPost> = Object.fromEntries(allPosts.map((p) => [p.slug, p]))
 
-const { lang } = useI18n()
-
 /**
  * Merges the English rendering over the Italian one. Posts without an `en`
  * block fall back to Italian, so a partially translated blog stays coherent
  * instead of showing gaps.
  *
- * Every reader below goes through this and touches `lang.value`, which is what
- * makes the callers' computeds re-evaluate on toggle — the views themselves
- * stay language-agnostic.
+ * Every reader below goes through this and reads `lang.value`, which is what
+ * makes the returned computeds re-evaluate when the language changes — the
+ * views themselves stay language-agnostic.
  */
 function localize(post: BlogPost, to: Lang): BlogPost {
   if (to !== 'en' || !post.en) return post
@@ -32,19 +30,29 @@ function localize(post: BlogPost, to: Lang): BlogPost {
   return { ...post, title, excerpt, html, tags: tags ?? post.tags }
 }
 
+// These are composables, not plain getters: the language comes from the app's
+// injected ref (see useI18n), so they have to be called from setup like any
+// other composable.
+
 /** All posts, newest first. */
 export function usePosts(): ComputedRef<BlogPost[]> {
+  const { lang } = useI18n()
   return computed(() => allPosts.map((p) => localize(p, lang.value)))
 }
 
 /** The N most recent posts (used by the home blog section). */
 export function useLatestPosts(count: number): ComputedRef<BlogPost[]> {
+  const { lang } = useI18n()
   return computed(() => allPosts.slice(0, count).map((p) => localize(p, lang.value)))
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  const post = bySlug[slug]
-  return post && localize(post, lang.value)
+/** A single post by slug — undefined when the slug matches nothing. */
+export function usePost(slug: Ref<string>): ComputedRef<BlogPost | undefined> {
+  const { lang } = useI18n()
+  return computed(() => {
+    const post = bySlug[slug.value]
+    return post && localize(post, lang.value)
+  })
 }
 
 export function formatPostDate(date: string | null, lang: Lang = 'it'): string {

@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { useI18n } from '../composables/useI18n'
 import { track } from '../composables/useAnalytics'
 
 const route = useRoute()
+const { lp } = useI18n()
 
 // A 404 is also a pageview, but the path alone doesn't say it failed — this is
 // what makes broken inbound links findable in GA4.
 onMounted(() => track('page_not_found', { path: route.fullPath }))
+
+// This route isn't prerendered, so Vercel's SPA rewrite answers unknown URLs
+// with a 200 and this view. Without `noindex` that reads to a crawler as a real
+// page — one per broken link — which is exactly the noise the two indexable
+// language trees are meant to avoid.
+useHead({ title: 'Page not found', meta: [{ name: 'robots', content: 'noindex' }] })
 </script>
 
 <template>
@@ -24,13 +33,13 @@ onMounted(() => track('page_not_found', { path: route.fullPath }))
     </p>
     <div class="mt-9 flex flex-wrap justify-center gap-3.5">
       <RouterLink
-        to="/"
+        :to="lp('/')"
         class="rounded-full bg-brand px-7 py-3.5 text-[16px] font-medium text-white no-underline transition-opacity hover:opacity-90"
       >
         Home
       </RouterLink>
       <RouterLink
-        to="/blog"
+        :to="lp('/blog')"
         class="rounded-full bg-surface px-7 py-3.5 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-surface-2"
       >
         Blog

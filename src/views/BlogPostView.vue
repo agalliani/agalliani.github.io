@@ -2,24 +2,23 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import type { BlogPost } from '../types/blog'
 import SiteHeader from '../components/SiteHeader.vue'
-import { getPostBySlug, formatPostDate } from '../composables/useBlogPosts'
-import { useI18n, initLangFromStorage } from '../composables/useI18n'
+import { usePost, formatPostDate } from '../composables/useBlogPosts'
+import { useI18n } from '../composables/useI18n'
+import { seoLinks, seoOpenGraph } from '../composables/useSeo'
+import { SITE_URL } from '../i18n/routing'
 import { trackOutbound } from '../composables/useAnalytics'
 import { useScrollDepth } from '../composables/useScrollDepth'
 
-const SITE_URL = 'https://andreagalliani.com'
-
-const { t, lang } = useI18n()
+const { t, lang, lp } = useI18n()
 const route = useRoute()
-
-// Resolved synchronously from the bundled JSON (see useBlogPosts), so vite-ssg
-// prerenders every post statically.
-const post = computed<BlogPost | undefined>(() => getPostBySlug(String(route.params.slug)))
 
 const body = ref<HTMLElement | null>(null)
 const slug = computed(() => String(route.params.slug))
+
+// Resolved synchronously from the bundled JSON (see useBlogPosts), so vite-ssg
+// prerenders every post statically.
+const post = usePost(slug)
 
 useScrollDepth(body, slug)
 
@@ -35,7 +34,6 @@ const onBodyClick = (e: MouseEvent) => {
 }
 
 onMounted(() => {
-  initLangFromStorage()
   body.value?.addEventListener('click', onBodyClick)
 })
 
@@ -45,8 +43,8 @@ onBeforeUnmount(() => body.value?.removeEventListener('click', onBodyClick))
 // don't run JS) and search engines see them in the server response.
 useHead(() => {
   const p = post.value
-  if (!p) return { title: 'Articolo non trovato' }
-  const url = `${SITE_URL}/blog/${p.slug}`
+  if (!p) return { title: t.value.postNotFound, meta: [{ name: 'robots', content: 'noindex' }] }
+  const base = `/blog/${p.slug}`
   const image = p.cover ? `${SITE_URL}${p.cover}` : `${SITE_URL}/propic.webp`
   return {
     title: p.title,
@@ -55,10 +53,12 @@ useHead(() => {
       { property: 'og:title', content: p.title },
       { property: 'og:description', content: p.excerpt },
       { property: 'og:type', content: 'article' },
-      { property: 'og:url', content: url },
       { property: 'og:image', content: image },
+      ...seoOpenGraph(base, lang.value),
     ],
-    link: [{ rel: 'canonical', href: url }],
+    // A post is only claimed as an alternate once it actually has an English
+    // rendering — see the `en` block in the post JSON.
+    link: seoLinks(base, lang.value, Boolean(p.en)),
   }
 })
 </script>
@@ -72,7 +72,7 @@ useHead(() => {
         <!-- Breadcrumb up one level: the header navigates the site, this one
              navigates the hierarchy the post sits in. -->
         <RouterLink
-          to="/blog"
+          :to="lp('/blog')"
           class="text-[15px] font-medium text-ink-soft no-underline transition-colors hover:text-ink"
         >
           {{ t.backBlog }}
@@ -105,7 +105,7 @@ useHead(() => {
         <article ref="body" class="post-body" v-html="post.html"></article>
 
         <div class="mt-16 border-t border-line pt-8">
-          <RouterLink to="/blog" class="text-[17px] font-medium text-brand no-underline hover:underline">
+          <RouterLink :to="lp('/blog')" class="text-[17px] font-medium text-brand no-underline hover:underline">
             {{ t.backBlog }}
           </RouterLink>
         </div>
@@ -117,7 +117,7 @@ useHead(() => {
         </h1>
         <p class="mt-4 text-[19px] leading-[1.6] text-ink-soft">{{ t.postNotFoundLead }}</p>
         <RouterLink
-          to="/blog"
+          :to="lp('/blog')"
           class="mt-8 inline-block text-[17px] font-medium text-brand no-underline hover:underline"
         >
           {{ t.backBlog }}
@@ -129,7 +129,7 @@ useHead(() => {
     <footer class="border-t border-line bg-surface px-[clamp(24px,5vw,48px)] py-14">
       <div class="mx-auto flex max-w-[1080px] items-center justify-between gap-6 text-[13px] text-ink-faint">
         <span>© 2026 Andrea Galliani</span>
-        <RouterLink to="/" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
+        <RouterLink :to="lp('/')" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
       </div>
     </footer>
   </div>

@@ -72,6 +72,14 @@ export interface Messages {
   consentText: string
   consentAccept: string
   consentReject: string
+
+  // Meta descriptions. Translated like everything else: an English page whose
+  // <meta description> is Italian is the fastest way to look untranslated in a
+  // search result, which is the only place most people ever see it.
+  seoSiteDesc: string
+  seoHomeDesc: string
+  seoProjectsDesc: string
+  seoBlogDesc: string
 }
 
 export const messages: Record<Lang, Messages> = {
@@ -137,6 +145,15 @@ export const messages: Record<Lang, Messages> = {
       'Uso Google Analytics per capire come viene letto il sito. Nessun dato viene usato per pubblicità.',
     consentAccept: 'Accetta',
     consentReject: 'Rifiuta',
+
+    seoSiteDesc:
+      'Portfolio di Andrea Galliani, Ph.D. — AMS Engineer in Bosch Sensortec. Deep tech, progettazione analogica mixed-signal e IoT industriale.',
+    seoHomeDesc:
+      'Andrea Galliani — AMS Engineer e Ph.D. in Microelettronica. Progetto chip analogici e sviluppo software, e documento i miei progetti (HAB, Oxymeter) costruendo in pubblico.',
+    seoProjectsDesc:
+      'Archivio completo dei progetti di Andrea Galliani — web app full-stack, silicio in CMOS 28nm, IoT industriale e prototipi sul campo.',
+    seoBlogDesc:
+      'Articoli e note dal progetto HAB e dallo sviluppo con l’AI come copilota — learn in public.',
   },
   en: {
     navWork: 'Work',
@@ -200,5 +217,14 @@ export const messages: Record<Lang, Messages> = {
       'I use Google Analytics to understand how the site is read. No data is used for advertising.',
     consentAccept: 'Accept',
     consentReject: 'Reject',
+
+    seoSiteDesc:
+      'Portfolio of Andrea Galliani, Ph.D. — AMS Engineer at Bosch Sensortec. Deep tech, analog mixed-signal design and industrial IoT.',
+    seoHomeDesc:
+      'Andrea Galliani — AMS Engineer & Ph.D. in Microelectronics. I design analog chips and build software, and I document my projects (HAB, Oxymeter) building in public.',
+    seoProjectsDesc:
+      'Full archive of Andrea Galliani projects — full-stack web apps, 28nm CMOS silicon design, industrial IoT and field prototypes.',
+    seoBlogDesc:
+      'Articles and notes from the HAB project and from building software with AI as a copilot — learn in public.',
   },
 }

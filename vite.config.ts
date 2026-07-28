@@ -9,6 +9,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 // Type-only import: activates vite-ssg's `declare module 'vite'` augmentation so
 // `ssgOptions` type-checks below.
 import type { } from 'vite-ssg'
+// Shared with the app so the prerendered paths and the router can't drift apart.
+import { localizePath } from './src/i18n/routing'
 
 /** Concrete /blog/<slug> paths, read from the synced JSON so prerender covers every post. */
 function blogRoutes(): string[] {
@@ -20,6 +22,16 @@ function blogRoutes(): string[] {
     .map((f) => `/blog/${f.replace(/\.json$/, '')}`)
 }
 
+/**
+ * Every page, in both languages. The English tree is only indexable because it
+ * is prerendered here: without these entries /en/* would fall through to the SPA
+ * rewrite and a crawler would get the Italian shell.
+ */
+function allRoutes(): string[] {
+  const pages = ['/', '/projects', '/blog', ...blogRoutes()]
+  return [...pages, ...pages.map((p) => localizePath(p, 'en'))]
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
@@ -27,9 +39,10 @@ export default defineConfig({
     // Emit dist/<route>/index.html so Vercel serves each prerendered route
     // (the filesystem is checked before the SPA rewrite in vercel.json).
     dirStyle: 'nested',
-    // Explicit route list: static routes + every blog post; the catch-all
-    // not-found and the /blog/:slug template are intentionally excluded.
-    includedRoutes: () => ['/', '/projects', '/blog', ...blogRoutes()],
+    // Explicit route list: static routes + every blog post, in both languages;
+    // the catch-all not-found and the /blog/:slug template are intentionally
+    // excluded.
+    includedRoutes: () => allRoutes(),
   },
   plugins: [
     vue(),

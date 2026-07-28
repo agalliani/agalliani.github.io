@@ -33,35 +33,65 @@ const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 // Keep this in sync with src/router/index.ts — the catch-all 404 route is
 // intentionally excluded. The /blog section is added dynamically below from the
 // synced post JSON, so it stays in sync with what actually got published.
+// Paths are language-neutral: each one is emitted once per language below.
 const PAGES = ['/', '/projects', '/blog'];
 
 // Static, directly-indexable assets that live outside the router (not "pages").
 const ASSETS = ['/scientific_academic_cv_eng.pdf'];
 
+// Mirrors src/i18n/routing.ts. Duplicated rather than imported because this
+// script is plain Node and that module is TypeScript — if the URL layout ever
+// changes, both have to move.
+const LANGS = ['it', 'en'];
+const DEFAULT_LANG = 'it';
+const localizePath = (p, lang) =>
+  lang === DEFAULT_LANG ? p : p === '/' ? '/en' : `/en${p}`;
+
 const blogDir = path.resolve(__dirname, '../src/content/blog');
 
 /** Wraps a URL entry with <loc> and <lastmod> only — Google ignores priority/changefreq. */
-const urlEntry = (loc, lastmod = TODAY) => `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
+const urlEntry = (loc, lastmod = TODAY, alternates = '') =>
+  `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates}  </url>`;
 
-/** One <url> per synced blog post, using the post's own date as <lastmod>. */
-function blogEntries() {
+/**
+ * One <url> per language, each carrying the full reciprocal hreflang set —
+ * Google only honours the annotations when every version points at every other
+ * one, itself included.
+ */
+function localizedEntries(page, lastmod = TODAY) {
+  const alternates = [...LANGS, 'x-default']
+    .map((l) => {
+      const href = `${SITE_URL}${localizePath(page, l === 'x-default' ? DEFAULT_LANG : l)}`;
+      return `    <xhtml:link rel="alternate" hreflang="${l}" href="${href}"/>\n`;
+    })
+    .join('');
+  return LANGS.map((l) => urlEntry(`${SITE_URL}${localizePath(page, l)}`, lastmod, alternates));
+}
+
+/** The language-neutral paths of every synced blog post, with its own date. */
+function blogPages() {
   if (!fs.existsSync(blogDir)) return [];
   return fs
     .readdirSync(blogDir)
     .filter((f) => f.endsWith('.json'))
     .map((f) => JSON.parse(fs.readFileSync(path.join(blogDir, f), 'utf8')))
-    .map((post) => urlEntry(`${SITE_URL}/blog/${post.slug}`, post.date || TODAY));
+    .map((post) => ({ page: `/blog/${post.slug}`, lastmod: post.date || TODAY, translated: Boolean(post.en) }));
 }
 
 function generateSitemap() {
   const urls = [
-    ...[...PAGES, ...ASSETS].map((p) => urlEntry(`${SITE_URL}${p}`)),
-    ...blogEntries(),
+    ...PAGES.flatMap((p) => localizedEntries(p)),
+    // An untranslated post has no English version worth listing: /en/<slug>
+    // resolves, but it renders the Italian text and canonicalises back to it.
+    ...blogPages().flatMap(({ page, lastmod, translated }) =>
+      translated ? localizedEntries(page, lastmod) : [urlEntry(`${SITE_URL}${page}`, lastmod)],
+    ),
+    ...ASSETS.map((p) => urlEntry(`${SITE_URL}${p}`)),
   ];
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...urls,
     '</urlset>',
   ].join('\n');

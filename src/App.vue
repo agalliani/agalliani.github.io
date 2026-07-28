@@ -2,17 +2,25 @@
 import { RouterView } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import ConsentBanner from './components/ConsentBanner.vue'
+import { useI18n } from './composables/useI18n'
 
-useHead({
+const { t, lang } = useI18n()
+
+// App-level defaults only — the per-page canonical, hreflang set and og:url are
+// set by each view (see composables/useSeo), since they depend on the route.
+// `htmlAttrs.lang` has to be here: it's one attribute for the whole document,
+// and getting it wrong tells crawlers and screen readers the /en pages are
+// Italian.
+useHead(() => ({
   title: 'Andrea Galliani | AMS Engineer & Ph.D.',
   titleTemplate: '%s | Andrea Galliani',
+  htmlAttrs: { lang: lang.value },
   meta: [
-    { name: 'description', content: 'Portfolio of Andrea Galliani, Ph.D. - AMS Engineer at Bosch Sensortec. Specializing in Deep Tech, Analog Mixed-Signal Design, and Industrial IoT.' },
+    { name: 'description', content: t.value.seoSiteDesc },
     { property: 'og:image', content: 'https://andreagalliani.com/propic.webp' },
-    { property: 'og:url', content: 'https://andreagalliani.com/' },
-    { name: 'theme-color', content: '#0f172a' }
-  ]
-})
+    { name: 'theme-color', content: '#0f172a' },
+  ],
+}))
 </script>
 
 

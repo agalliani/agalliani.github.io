@@ -1,26 +1,22 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import ProjectCard from '../components/projects/ProjectCard.vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import { projectCategories } from '../data/projects'
-import { useI18n, initLangFromStorage } from '../composables/useI18n'
+import { useI18n } from '../composables/useI18n'
+import { seoLinks, seoOpenGraph } from '../composables/useSeo'
 
-const { t } = useI18n()
+const { t, lang, lp } = useI18n()
 
-onMounted(initLangFromStorage)
-
-useHead({
-  title: 'Projects',
+useHead(() => ({
+  title: t.value.projectsTitle,
   meta: [
-    {
-      name: 'description',
-      content:
-        'Full archive of Andrea Galliani projects — full-stack web apps, 28nm CMOS silicon design, industrial IoT and field prototypes.',
-    },
+    { name: 'description', content: t.value.seoProjectsDesc },
+    ...seoOpenGraph('/projects', lang.value),
   ],
-})
+  link: seoLinks('/projects', lang.value),
+}))
 </script>
 
 <template>
@@ -57,7 +53,7 @@ useHead({
     <footer class="border-t border-line bg-surface px-[clamp(24px,5vw,48px)] py-14">
       <div class="mx-auto flex max-w-[1080px] items-center justify-between gap-6 text-[13px] text-ink-faint">
         <span>© 2026 Andrea Galliani</span>
-        <RouterLink to="/" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
+        <RouterLink :to="lp('/')" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
       </div>
     </footer>
   </div>

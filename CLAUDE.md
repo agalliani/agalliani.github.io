@@ -42,9 +42,19 @@ Blog posts originate in a **separate `hab` repo** (single source of truth for co
 
 The generated JSON + images are **committed artifacts** and are what Vercel builds from — `sync-blog` **never runs on Vercel**, it is a manual local step. In the views (`BlogListView.vue`, `BlogPostView.vue`), posts are loaded via eager `import.meta.glob('../content/blog/*.json', { eager: true })` so they resolve synchronously (no client fetch), and `post.html` is injected with `v-html` (trusted first-party content). `src/content/blog/` may be empty in a fresh checkout — the pipeline handles that gracefully.
 
+### i18n (two indexable language trees)
+Italian is the default and lives at the bare paths; English is the same tree under `/en`. **The URL is the language state** — there is no stored preference, because a crawler has neither storage nor a toggle to click.
+
+- `src/i18n/routing.ts` owns the URL layout (`localizePath`, `langFromPath`) and is shared by the router, the views and `vite.config.ts`, so prerendered paths can't drift from the route table.
+- `src/router/index.ts` declares each page once (Italian) and **derives** the `/en` variant; `includedRoutes` prerenders both trees, so `dist/en/**` is real English HTML.
+- `main.ts` creates **one `lang` ref per app instance** and syncs it in a `router.beforeEach`. It must not be a module-level ref: vite-ssg prerenders routes concurrently in one process, and a shared ref leaks a language across passes (this shipped Italian pages with English markup once already).
+- `useI18n()` reads that ref via `inject` — so it, and everything built on it (`usePosts`, `useLatestPosts`, `usePost`), is a **composable that must be called from setup**. `lp('/blog')` localises internal links.
+- Per-post translation: an optional `en` block in `src/content/blog/<slug>.json`, synced from `index.en.md` in the `hab` post directory. A post without one still resolves under `/en` but renders Italian, so it canonicalises to the Italian URL and claims no hreflang alternates (see `composables/useSeo.ts`).
+
 ### SEO
 - Every view sets meta via `useHead` from `@unhead/vue`; the app-level title template `%s | Andrea Galliani` lives in `App.vue`. Meta is baked into the static HTML so non-JS crawlers see it.
-- `scripts/generate-sitemap.js` runs in the `postbuild` step and writes `dist/sitemap.xml` + `dist/robots.txt`. `PAGES` in that script must be kept in sync with `src/router/index.ts`; blog URLs are added dynamically from the synced JSON. Site URL is overridable via `SITE_URL` env (defaults to the production domain) so preview builds don't leak the wrong canonical host.
+- `composables/useSeo.ts` produces the per-page canonical + reciprocal hreflang set (`it`, `en`, `x-default`) and the language-aware `og:url`/`og:locale`. `App.vue` owns `htmlAttrs.lang`.
+- `scripts/generate-sitemap.js` runs in the `postbuild` step and writes `dist/sitemap.xml` + `dist/robots.txt`. `PAGES` in that script must be kept in sync with `src/router/index.ts`, and it **duplicates the `/en` prefix logic** from `src/i18n/routing.ts` (plain Node, can't import TS) — change both together. Each page is emitted once per language with `xhtml:link` alternates; blog URLs are added dynamically from the synced JSON. Site URL is overridable via `SITE_URL` env (defaults to the production domain) so preview builds don't leak the wrong canonical host.
 - `vercel.json` gives `sitemap.xml`/`robots.txt` correct content-type + caching and rewrites everything else to the SPA entry.
 
 ### Styling

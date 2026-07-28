@@ -4,7 +4,7 @@ import { useI18n } from '../../composables/useI18n'
 import { featuredWork } from '../../data/projects'
 import { track, trackOutbound } from '../../composables/useAnalytics'
 
-const { t } = useI18n()
+const { t, lp } = useI18n()
 </script>
 
 <template>
@@ -59,7 +59,7 @@ const { t } = useI18n()
 
     <div class="mt-12">
       <RouterLink
-        to="/projects"
+        :to="lp('/projects')"
         class="text-[17px] font-medium text-brand hover:underline"
         @click="track('nav_click', { target: 'all_work', location: 'work_section' })"
       >

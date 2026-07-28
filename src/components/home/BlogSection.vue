@@ -5,7 +5,7 @@ import { useI18n } from '../../composables/useI18n'
 import { useLatestPosts, formatPostDate } from '../../composables/useBlogPosts'
 import { track } from '../../composables/useAnalytics'
 
-const { t, lang } = useI18n()
+const { t, lang, lp } = useI18n()
 
 // `location` separates a post opened from the home teaser from the same post
 // opened via /blog — the pageview alone can't tell them apart, and that's the
@@ -40,7 +40,7 @@ const rest = computed(() => latest.value.slice(1))
       <template v-if="featured">
         <!-- Newest post -->
         <RouterLink
-          :to="`/blog/${featured.slug}`"
+          :to="lp(`/blog/${featured.slug}`)"
           class="group mt-14 grid grid-cols-[1.05fr_.95fr] items-stretch overflow-hidden rounded-3xl border border-night-line bg-night-card no-underline transition duration-[250ms] hover:-translate-y-1 hover:border-night-line-strong hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] max-md:grid-cols-1"
           @click="onPostClick(featured.slug, 'featured')"
         >
@@ -96,7 +96,7 @@ const rest = computed(() => latest.value.slice(1))
         <ul v-if="rest.length" class="m-0 mt-4 flex list-none flex-col gap-1 p-0">
           <li v-for="post in rest" :key="post.slug">
             <RouterLink
-              :to="`/blog/${post.slug}`"
+              :to="lp(`/blog/${post.slug}`)"
               class="group grid grid-cols-[auto_1fr] items-baseline gap-x-6 gap-y-1 rounded-2xl px-6 py-5 no-underline transition-colors duration-200 hover:bg-night-card max-md:grid-cols-1 max-md:px-4"
               @click="onPostClick(post.slug, 'list')"
             >
@@ -121,7 +121,7 @@ const rest = computed(() => latest.value.slice(1))
 
       <div class="mt-12">
         <RouterLink
-          to="/blog"
+          :to="lp('/blog')"
           class="text-[17px] font-medium text-sky no-underline hover:underline"
           @click="track('nav_click', { target: 'all_posts', location: 'blog_section' })"
         >

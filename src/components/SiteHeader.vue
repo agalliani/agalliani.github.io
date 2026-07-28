@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { localizePath } from '../i18n/routing'
 import { track } from '../composables/useAnalytics'
 import type { Messages } from '../i18n/messages'
 
@@ -11,7 +13,7 @@ import type { Messages } from '../i18n/messages'
 // destinations are RouterLinks, and #contact (a section, not a page) is the one
 // anchor, resolved against "/" so it works from an inner page too.
 
-const { t, other, toggle } = useI18n()
+const { t, lp, other } = useI18n()
 const route = useRoute()
 
 const links: { key: keyof Messages; to: string }[] = [
@@ -19,25 +21,31 @@ const links: { key: keyof Messages; to: string }[] = [
   { key: 'navBlog', to: '/blog' },
 ]
 
-// /blog/<slug> keeps "Blog" highlighted.
-const isActive = (to: string) => route.path === to || route.path.startsWith(`${to}/`)
+// Compared against the localised path, so /en/blog highlights "Blog" the same
+// way /blog does. /blog/<slug> keeps it highlighted too.
+const isActive = (to: string) => route.path === lp(to) || route.path.startsWith(`${lp(to)}/`)
 
 // On the home page the brand is a scroll-to-top affordance; elsewhere the
 // RouterLink navigation does the work on its own.
 const onBrandClick = (e: MouseEvent) => {
   track('nav_click', { target: 'brand', location: 'header' })
-  if (route.path !== '/') return
+  if (route.path !== lp('/')) return
   e.preventDefault()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const onNavClick = (target: string) => track('nav_click', { target, location: 'header' })
 
-const onToggleLang = () => {
-  // Read `other` before toggling — after it, it's the language we came from.
-  track('language_switch', { to: other.value })
-  toggle()
-}
+// The language switch is a link to the same page in the other tree, not a state
+// toggle: the URL carries the language, so the switch has to be navigation.
+// Being a real <a href> also means crawlers can follow it and discover the
+// English pages, which a button would have hidden behind a click handler.
+const switchTo = computed(() => ({
+  path: localizePath(route.path, other.value),
+  hash: route.hash,
+}))
+
+const onSwitchLang = () => track('language_switch', { to: other.value })
 </script>
 
 <template>
@@ -45,7 +53,7 @@ const onToggleLang = () => {
     class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-line bg-white/80 px-[clamp(24px,5vw,48px)] py-[18px] font-ui backdrop-blur-[20px] backdrop-saturate-[1.8]"
   >
     <RouterLink
-      to="/"
+      :to="lp('/')"
       class="text-[19px] font-semibold tracking-[-0.02em] text-ink no-underline max-[440px]:text-[17px]"
       @click="onBrandClick"
     >
@@ -58,7 +66,7 @@ const onToggleLang = () => {
       <RouterLink
         v-for="l in links"
         :key="l.to"
-        :to="l.to"
+        :to="lp(l.to)"
         class="no-underline transition-colors hover:text-ink"
         :class="isActive(l.to) ? 'font-semibold text-ink' : 'text-ink-soft'"
         :aria-current="isActive(l.to) ? 'page' : undefined"
@@ -68,21 +76,22 @@ const onToggleLang = () => {
       </RouterLink>
 
       <RouterLink
-        :to="{ path: '/', hash: '#contact' }"
+        :to="{ path: lp('/'), hash: '#contact' }"
         class="text-ink-soft no-underline transition-colors hover:text-ink max-[440px]:hidden"
         @click="onNavClick('contact')"
       >
         {{ t.navContact }}
       </RouterLink>
 
-      <button
-        type="button"
-        class="shrink-0 cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
+      <RouterLink
+        :to="switchTo"
+        class="shrink-0 rounded-full border border-line-strong px-3 py-1.5 text-[13px] font-semibold text-ink no-underline transition-colors hover:bg-surface"
+        :hreflang="other"
         :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
-        @click="onToggleLang"
+        @click="onSwitchLang"
       >
         {{ other.toUpperCase() }}
-      </button>
+      </RouterLink>
     </nav>
   </header>
 </template>

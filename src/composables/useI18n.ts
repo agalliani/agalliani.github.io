@@ -1,43 +1,43 @@
-import { computed, ref } from 'vue'
+import { computed, inject, ref, type InjectionKey, type Ref } from 'vue'
 import { messages, type Lang } from '../i18n/messages'
+import { DEFAULT_LANG, localizePath } from '../i18n/routing'
 
-// Language state as a single module-level ref shared across every component that
-// imports this composable. For one boolean-ish toggle + a static dictionary this
-// is more maintainable than a Pinia store or vue-i18n: no store boilerplate, no
-// SSR install dance. If i18n grows (more locales, interpolation, pluralisation)
-// swap this for vue-i18n — callers only touch `t`/`lang`/`toggle`.
+// The current language, provided per app instance and derived from the route.
 //
-// SSR note: vite-ssg prerenders every route on the server with `lang` at its
-// default ('it'), so the static HTML ships Italian (matching the design). We
-// never mutate during prerender; the browser reads the saved preference after
-// mount via initLangFromStorage().
+// It is *not* a module-level ref, and that isn't a style choice: vite-ssg
+// prerenders routes concurrently in a single Node process, so shared mutable
+// state gets interleaved between renders — the first version of this shipped an
+// Italian /blog page with English markup because the /en pass had moved the
+// global ref mid-render. One ref per app, created in main.ts, makes each
+// prerender pass independent.
+//
+// Language lives in the URL (/ vs /en), never in localStorage: a crawler has no
+// storage and never clicks a toggle, so a stored preference could not make the
+// English pages indexable. main.ts owns the only writer — a router guard.
 
-const STORAGE_KEY = 'ag-lang'
+export const LANG_KEY: InjectionKey<Ref<Lang>> = Symbol('lang')
 
-const lang = ref<Lang>('it')
+// Used when a component is mounted outside the app created by main.ts — chiefly
+// Cypress component tests, which mount a single component with no provider.
+const fallbackLang = ref<Lang>(DEFAULT_LANG)
 
-/**
- * Read the persisted language once on the client. Call from onMounted (never at
- * module load) so it stays out of the SSR render pass — `localStorage` doesn't
- * exist on the server, and mutating state there would leak across prerendered
- * pages.
- */
-export function initLangFromStorage(): void {
-  if (typeof window === 'undefined') return
-  const saved = window.localStorage.getItem(STORAGE_KEY)
-  if (saved === 'it' || saved === 'en') lang.value = saved
+/** Creates the per-app language ref. Call once, from the vite-ssg setup hook. */
+export function createLangRef(): Ref<Lang> {
+  return ref<Lang>(DEFAULT_LANG)
 }
 
 export function useI18n() {
+  const lang = inject(LANG_KEY, fallbackLang)
+
   const t = computed(() => messages[lang.value])
   const other = computed<Lang>(() => (lang.value === 'it' ? 'en' : 'it'))
 
-  const setLang = (next: Lang) => {
-    lang.value = next
-    if (typeof window !== 'undefined') window.localStorage.setItem(STORAGE_KEY, next)
-  }
+  /**
+   * Localises an internal path to the current language, so every link keeps the
+   * visitor inside the tree they're browsing: lp('/blog') is '/blog' in Italian
+   * and '/en/blog' in English.
+   */
+  const lp = (path: string) => localizePath(path, lang.value)
 
-  const toggle = () => setLang(other.value)
-
-  return { lang, t, other, setLang, toggle }
+  return { lang, t, other, lp }
 }

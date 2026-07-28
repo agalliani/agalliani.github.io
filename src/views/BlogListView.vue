@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import { usePosts, formatPostDate } from '../composables/useBlogPosts'
-import { useI18n, initLangFromStorage } from '../composables/useI18n'
+import { useI18n } from '../composables/useI18n'
+import { seoLinks, seoOpenGraph } from '../composables/useSeo'
 import { track } from '../composables/useAnalytics'
 
-const { t, lang } = useI18n()
+const { t, lang, lp } = useI18n()
 const posts = usePosts()
 
-onMounted(initLangFromStorage)
-
-useHead({
+useHead(() => ({
   title: 'Blog',
   meta: [
-    { name: 'description', content: 'Articoli e note dal progetto HAB e dallo sviluppo con l\'AI come copilota — learn in public.' },
+    { name: 'description', content: t.value.seoBlogDesc },
     { property: 'og:title', content: 'Blog | Andrea Galliani' },
-    { property: 'og:description', content: 'Articoli e note dal progetto HAB e dallo sviluppo con l\'AI come copilota — learn in public.' },
-    { property: 'og:url', content: 'https://andreagalliani.com/blog' },
+    { property: 'og:description', content: t.value.seoBlogDesc },
     { property: 'og:type', content: 'website' },
+    ...seoOpenGraph('/blog', lang.value),
   ],
-  link: [{ rel: 'canonical', href: 'https://andreagalliani.com/blog' }],
-})
+  link: seoLinks('/blog', lang.value),
+}))
 </script>
 
 <template>
@@ -47,7 +45,7 @@ useHead({
       <ul class="m-0 flex list-none flex-col gap-3 p-0">
         <li v-for="post in posts" :key="post.slug">
           <RouterLink
-            :to="`/blog/${post.slug}`"
+            :to="lp(`/blog/${post.slug}`)"
             class="group block rounded-2xl p-6 no-underline transition-colors duration-200 hover:bg-surface max-md:p-4"
             @click="track('blog_post_click', { slug: post.slug, location: 'blog_list' })"
           >
@@ -81,7 +79,7 @@ useHead({
     <footer class="border-t border-line bg-surface px-[clamp(24px,5vw,48px)] py-14">
       <div class="mx-auto flex max-w-[1080px] items-center justify-between gap-6 text-[13px] text-ink-faint">
         <span>© 2026 Andrea Galliani</span>
-        <RouterLink to="/" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
+        <RouterLink :to="lp('/')" class="font-medium text-brand hover:underline">{{ t.backHome }}</RouterLink>
       </div>
     </footer>
   </div>

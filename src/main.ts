@@ -7,6 +7,8 @@ import { nextTick } from 'vue'
 import App from './App.vue'
 import { routes } from './router'
 import { trackPageView } from './composables/useAnalytics'
+import { createLangRef, LANG_KEY } from './composables/useI18n'
+import { langFromPath } from './i18n/routing'
 
 // vite-ssg builds the router (right history mode per environment), manages the
 // unhead instance, and handles mount — so no manual createApp/createUnhead/mount.
@@ -28,6 +30,18 @@ export const createApp = ViteSSG(
   },
   ({ app, router, isClient }) => {
     app.use(createPinia())
+
+    // The /en prefix *is* the language state (see composables/useI18n). The ref
+    // belongs to this app instance — vite-ssg prerenders routes concurrently, so
+    // a shared one would let the passes overwrite each other's language — and
+    // the guard below is its only writer. It runs during prerender too, which is
+    // what makes vite-ssg emit real English HTML into dist/en/** rather than
+    // Italian markup that only turns English once JS boots.
+    const lang = createLangRef()
+    app.provide(LANG_KEY, lang)
+    router.beforeEach((to) => {
+      lang.value = langFromPath(to.path)
+    })
 
     // GA4 pageviews. `send_page_view: false` in the index.html gtag config means
     // nothing is sent automatically, so every view — the landing one included —
