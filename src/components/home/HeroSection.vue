@@ -1,11 +1,8 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 
 const { t } = useI18n()
-
-const scrollTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-}
 </script>
 
 <template>
@@ -26,21 +23,21 @@ const scrollTo = (id: string) => {
       <p class="mt-[22px] max-w-[500px] text-[19px] leading-[1.6] text-ink-soft">
         {{ t.heroLead }}
       </p>
+      <!-- Both CTAs are destinations, not in-page jumps: the primary one used to
+           scroll to the blog teaser instead of opening the blog. -->
       <div class="mt-10 flex flex-wrap gap-3.5">
-        <button
-          type="button"
-          class="cursor-pointer rounded-full bg-brand px-7 py-3.5 text-[16px] font-medium text-white transition-opacity hover:opacity-90"
-          @click="scrollTo('blog')"
+        <RouterLink
+          to="/blog"
+          class="rounded-full bg-brand px-7 py-3.5 text-[16px] font-medium text-white no-underline transition-opacity hover:opacity-90"
         >
           {{ t.ctaBlog }}
-        </button>
-        <button
-          type="button"
-          class="cursor-pointer rounded-full bg-surface px-7 py-3.5 text-[16px] font-medium text-ink transition-colors hover:bg-surface-2"
-          @click="scrollTo('work')"
+        </RouterLink>
+        <RouterLink
+          to="/projects"
+          class="rounded-full bg-surface px-7 py-3.5 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-surface-2"
         >
           {{ t.ctaWork }}
-        </button>
+        </RouterLink>
       </div>
     </div>
 
