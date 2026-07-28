@@ -2,9 +2,11 @@ import './assets/main.css'
 
 import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
+import { nextTick } from 'vue'
 
 import App from './App.vue'
 import { routes } from './router'
+import { trackPageView } from './composables/useAnalytics'
 
 // vite-ssg builds the router (right history mode per environment), manages the
 // unhead instance, and handles mount — so no manual createApp/createUnhead/mount.
@@ -24,8 +26,30 @@ export const createApp = ViteSSG(
       return savedPosition ?? { top: 0 }
     },
   },
-  ({ app }) => {
+  ({ app, router, isClient }) => {
     app.use(createPinia())
+
+    // GA4 pageviews. `send_page_view: false` in the index.html gtag config means
+    // nothing is sent automatically, so every view — the landing one included —
+    // comes from here. Without this the SPA reported one pageview per session.
+    if (!isClient) return
+
+    let lastPath = ''
+    const sendPageView = async (path: string) => {
+      // afterEach also fires for the initial navigation on hydration, which
+      // would otherwise double up with the isReady() call below.
+      if (path === lastPath) return
+      lastPath = path
+      // unhead writes document.title after the route commits; without the tick
+      // we'd report the *previous* page's title.
+      await nextTick()
+      trackPageView(path, document.title)
+    }
+
+    router.isReady().then(() => sendPageView(router.currentRoute.value.fullPath))
+    router.afterEach((to) => {
+      void sendPageView(to.fullPath)
+    })
   },
 )
 
