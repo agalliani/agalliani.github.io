@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import type { BlogPost } from '../types/blog'
 import SiteHeader from '../components/SiteHeader.vue'
 import { getPostBySlug, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n, initLangFromStorage } from '../composables/useI18n'
+import { trackOutbound } from '../composables/useAnalytics'
+import { useScrollDepth } from '../composables/useScrollDepth'
 
 const SITE_URL = 'https://andreagalliani.com'
 
@@ -16,7 +18,28 @@ const route = useRoute()
 // prerenders every post statically.
 const post = computed<BlogPost | undefined>(() => getPostBySlug(String(route.params.slug)))
 
-onMounted(initLangFromStorage)
+const body = ref<HTMLElement | null>(null)
+const slug = computed(() => String(route.params.slug))
+
+useScrollDepth(body, slug)
+
+// Links inside the post come from v-html, so there's no template to hang a
+// @click on — one delegated listener on the container covers them all,
+// including any added by future posts.
+const onBodyClick = (e: MouseEvent) => {
+  const anchor = (e.target as HTMLElement | null)?.closest('a')
+  if (!anchor) return
+  if (anchor.hostname && anchor.hostname !== window.location.hostname) {
+    trackOutbound(anchor.href, anchor.textContent?.trim() || anchor.href, 'post_body')
+  }
+}
+
+onMounted(() => {
+  initLangFromStorage()
+  body.value?.addEventListener('click', onBodyClick)
+})
+
+onBeforeUnmount(() => body.value?.removeEventListener('click', onBodyClick))
 
 // Meta tags are baked into the static HTML by vite-ssg → social crawlers (which
 // don't run JS) and search engines see them in the server response.
@@ -79,7 +102,7 @@ useHead(() => {
         <hr class="my-10 border-0 border-t border-line" />
 
         <!-- html is pre-rendered and rewritten at sync time (first-party content). -->
-        <article class="post-body" v-html="post.html"></article>
+        <article ref="body" class="post-body" v-html="post.html"></article>
 
         <div class="mt-16 border-t border-line pt-8">
           <RouterLink to="/blog" class="text-[17px] font-medium text-brand no-underline hover:underline">
