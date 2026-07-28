@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { useHead } from '@unhead/vue'
+import ConsentBanner from './components/ConsentBanner.vue'
 
 useHead({
   title: 'Andrea Galliani | AMS Engineer & Ph.D.',
@@ -17,5 +18,7 @@ useHead({
 
 <template>
   <RouterView />
+  <!-- Sits here rather than in a view: it has to outlive route changes. -->
+  <ConsentBanner />
 </template>
 

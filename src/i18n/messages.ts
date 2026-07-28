@@ -50,8 +50,6 @@ export interface Messages {
   projectsTitle: string
   projectsLead: string
   backHome: string
-  catWip: string
-  catWipLead: string
   statusWip: string
   catWeb: string
   catDeepTech: string
@@ -69,6 +67,11 @@ export interface Messages {
   contactKicker: string
   contactTitle: string
   contactLead: string
+
+  // Cookie consent banner
+  consentText: string
+  consentAccept: string
+  consentReject: string
 }
 
 export const messages: Record<Lang, Messages> = {
@@ -112,9 +115,7 @@ export const messages: Record<Lang, Messages> = {
     projectsLead:
       'L’archivio completo: dal software full-stack ai chip in silicio, dall’IoT industriale ai prototipi sul campo.',
     backHome: '← Home',
-    catWip: 'Work in progress',
-    catWipLead: 'Progetti in cantiere, aggiornati mentre prendono forma.',
-    statusWip: 'In corso',
+    statusWip: 'In cantiere',
     catWeb: 'Full-Stack & Web Design',
     catDeepTech: 'Deep Tech & Silicio',
     catIndustrial: 'IoT Industriale & Sicurezza',
@@ -131,6 +132,11 @@ export const messages: Record<Lang, Messages> = {
     contactTitle: 'Parliamone',
     contactLead:
       'Mi fa sempre piacere parlare di tecnologia, prodotti e nuove idee. Scrivimi.',
+
+    consentText:
+      'Uso Google Analytics per capire come viene letto il sito. Nessun dato viene usato per pubblicità.',
+    consentAccept: 'Accetta',
+    consentReject: 'Rifiuta',
   },
   en: {
     navWork: 'Work',
@@ -172,9 +178,7 @@ export const messages: Record<Lang, Messages> = {
     projectsLead:
       'The full archive: from full-stack software to silicon chips, from industrial IoT to field prototypes.',
     backHome: '← Home',
-    catWip: 'Work in progress',
-    catWipLead: 'Projects under construction, updated as they take shape.',
-    statusWip: 'In progress',
+    statusWip: 'In the works',
     catWeb: 'Full-Stack & Web Design',
     catDeepTech: 'Deep Tech & Silicon',
     catIndustrial: 'Industrial IoT & Safety',
@@ -191,5 +195,10 @@ export const messages: Record<Lang, Messages> = {
     contactTitle: 'Let’s talk',
     contactLead:
       'I always enjoy talking about technology, products and new ideas. Get in touch.',
+
+    consentText:
+      'I use Google Analytics to understand how the site is read. No data is used for advertising.',
+    consentAccept: 'Accept',
+    consentReject: 'Reject',
   },
 }

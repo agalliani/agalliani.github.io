@@ -30,17 +30,33 @@
   <meta property="og:image" content="https://andreagalliani.com/propic.webp">
   <meta property="og:url" content="https://andreagalliani.com/">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NJFPWY2XD"></script>
+  <!-- Google tag (gtag.js) — Consent Mode v2.
+       The consent defaults MUST be pushed before gtag.js loads, hence the inline
+       block first and the async loader after it. Until the visitor accepts (see
+       ConsentBanner.vue) GA4 sends cookieless pings only. -->
   <script>
     window.dataLayer = window.dataLayer || []
     function gtag() {
       dataLayer.push(arguments)
     }
+
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      wait_for_update: 500,
+    })
+    gtag("set", "url_passthrough", true)
+    gtag("set", "ads_data_redaction", true)
+
     gtag("js", new Date())
 
-    gtag("config", "G-7NJFPWY2XD")
+    // No automatic page_view: this is a client-routed SPA, so every view (the
+    // first one included) is sent from the router hook in src/main.ts.
+    gtag("config", "G-7NJFPWY2XD", { send_page_view: false })
   </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NJFPWY2XD"></script>
 
 </head>
 
