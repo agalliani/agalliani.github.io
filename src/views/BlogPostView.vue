@@ -3,12 +3,13 @@ import { computed, onMounted } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import type { BlogPost } from '../types/blog'
+import SiteHeader from '../components/SiteHeader.vue'
 import { getPostBySlug, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n, initLangFromStorage } from '../composables/useI18n'
 
 const SITE_URL = 'https://andreagalliani.com'
 
-const { t, lang, other, toggle } = useI18n()
+const { t, lang } = useI18n()
 const route = useRoute()
 
 // Resolved synchronously from the bundled JSON (see useBlogPosts), so vite-ssg
@@ -41,28 +42,21 @@ useHead(() => {
 
 <template>
   <div class="min-h-screen bg-white font-ui text-ink">
-    <!-- Top bar — same chrome as /blog and /projects -->
-    <header
-      class="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white/80 px-[clamp(24px,5vw,48px)] py-[18px] backdrop-blur-[20px] backdrop-saturate-[1.8]"
-    >
-      <RouterLink to="/blog" class="text-[15px] font-medium text-ink no-underline hover:text-ink/60">
-        {{ t.backBlog }}
-      </RouterLink>
-      <button
-        type="button"
-        class="cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
-        :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
-        @click="toggle"
-      >
-        {{ other.toUpperCase() }}
-      </button>
-    </header>
+    <SiteHeader />
 
     <main class="mx-auto max-w-[720px] px-[clamp(24px,5vw,48px)] pb-[clamp(56px,8vw,96px)] pt-[clamp(48px,8vw,88px)]">
       <template v-if="post">
+        <!-- Breadcrumb up one level: the header navigates the site, this one
+             navigates the hierarchy the post sits in. -->
+        <RouterLink
+          to="/blog"
+          class="text-[15px] font-medium text-ink-soft no-underline transition-colors hover:text-ink"
+        >
+          {{ t.backBlog }}
+        </RouterLink>
         <time
           v-if="post.date"
-          class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"
+          class="mt-8 block font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"
         >
           {{ formatPostDate(post.date, lang) }}
         </time>

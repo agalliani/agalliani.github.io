@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useHead } from '@unhead/vue'
-import SiteHeader from '../components/home/SiteHeader.vue'
+import SiteHeader from '../components/SiteHeader.vue'
 import HeroSection from '../components/home/HeroSection.vue'
 import BlogSection from '../components/home/BlogSection.vue'
 import WorkSection from '../components/home/WorkSection.vue'

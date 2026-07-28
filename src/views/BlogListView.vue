@@ -2,10 +2,11 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@unhead/vue'
+import SiteHeader from '../components/SiteHeader.vue'
 import { usePosts, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n, initLangFromStorage } from '../composables/useI18n'
 
-const { t, lang, other, toggle } = useI18n()
+const { t, lang } = useI18n()
 const posts = usePosts()
 
 onMounted(initLangFromStorage)
@@ -25,22 +26,7 @@ useHead({
 
 <template>
   <div class="min-h-screen bg-white font-ui text-ink">
-    <!-- Top bar — same chrome as /projects -->
-    <header
-      class="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white/80 px-[clamp(24px,5vw,48px)] py-[18px] backdrop-blur-[20px] backdrop-saturate-[1.8]"
-    >
-      <RouterLink to="/" class="text-[15px] font-medium text-ink no-underline hover:text-ink/60">
-        {{ t.backHome }}
-      </RouterLink>
-      <button
-        type="button"
-        class="cursor-pointer rounded-full border border-line-strong bg-transparent px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface"
-        :aria-label="`Switch language to ${other === 'en' ? 'English' : 'Italian'}`"
-        @click="toggle"
-      >
-        {{ other.toUpperCase() }}
-      </button>
-    </header>
+    <SiteHeader />
 
     <!-- Heading -->
     <section class="mx-auto max-w-[820px] px-[clamp(24px,5vw,48px)] pb-4 pt-[clamp(48px,8vw,96px)]">

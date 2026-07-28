@@ -16,7 +16,11 @@ export const createApp = ViteSSG(
     // Always land at the top of the new page on navigation (Vue Router keeps
     // the previous scroll offset by default, which otherwise drops visitors
     // mid-page on /projects when they navigated from further down the home page).
-    scrollBehavior(_to, _from, savedPosition) {
+    // A hash target (the header's "Contact" link, which resolves to /#contact
+    // from any page) wins over that: `top` offsets the sticky header, since
+    // router scrolling ignores the sections' scroll-margin.
+    scrollBehavior(to, _from, savedPosition) {
+      if (to.hash) return { el: to.hash, top: 72, behavior: 'smooth' }
       return savedPosition ?? { top: 0 }
     },
   },
