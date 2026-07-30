@@ -1,5 +1,12 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/en/blog/mandare-un-pezzo-di-me-in-stratosfera",
+      "destination": "/en/blog/send-a-piece-of-myself-to-the-stratosphere",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!sitemap.xml|robots.txt|.*\\.[\\w]+$).*)",
