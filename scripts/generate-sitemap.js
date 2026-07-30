@@ -68,24 +68,46 @@ function localizedEntries(page, lastmod = TODAY) {
   return LANGS.map((l) => urlEntry(`${SITE_URL}${localizePath(page, l)}`, lastmod, alternates));
 }
 
-/** The language-neutral paths of every synced blog post, with its own date. */
+/**
+ * Every synced blog post, with its own date and its per-language slug. Unlike
+ * the static PAGES, a post's English URL doesn't share the Italian slug —
+ * `en.slug` may be a real localized slug — so it can't go through
+ * `localizedEntries`, which assumes one shared path prefixed per language.
+ */
 function blogPages() {
   if (!fs.existsSync(blogDir)) return [];
   return fs
     .readdirSync(blogDir)
     .filter((f) => f.endsWith('.json'))
     .map((f) => JSON.parse(fs.readFileSync(path.join(blogDir, f), 'utf8')))
-    .map((post) => ({ page: `/blog/${post.slug}`, lastmod: post.date || TODAY, translated: Boolean(post.en) }));
+    .map((post) => ({
+      itSlug: post.slug,
+      enSlug: post.en ? post.en.slug || post.slug : null,
+      lastmod: post.date || TODAY,
+      translated: Boolean(post.en),
+    }));
+}
+
+/** One <url> per published language of a post, with reciprocal hreflang between its (possibly different) slugs. */
+function blogEntries({ itSlug, enSlug, lastmod, translated }) {
+  const itUrl = `${SITE_URL}/blog/${itSlug}`;
+  // An untranslated post has no English version worth listing: /en/<slug>
+  // resolves, but it renders the Italian text and canonicalises back to it.
+  if (!translated) return [urlEntry(itUrl, lastmod)];
+
+  const enUrl = `${SITE_URL}${localizePath('/blog', 'en')}/${enSlug}`;
+  const alternates = [
+    `    <xhtml:link rel="alternate" hreflang="it" href="${itUrl}"/>\n`,
+    `    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>\n`,
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${itUrl}"/>\n`,
+  ].join('');
+  return [urlEntry(itUrl, lastmod, alternates), urlEntry(enUrl, lastmod, alternates)];
 }
 
 function generateSitemap() {
   const urls = [
     ...PAGES.flatMap((p) => localizedEntries(p)),
-    // An untranslated post has no English version worth listing: /en/<slug>
-    // resolves, but it renders the Italian text and canonicalises back to it.
-    ...blogPages().flatMap(({ page, lastmod, translated }) =>
-      translated ? localizedEntries(page, lastmod) : [urlEntry(`${SITE_URL}${page}`, lastmod)],
-    ),
+    ...blogPages().flatMap(blogEntries),
     ...ASSETS.map((p) => urlEntry(`${SITE_URL}${p}`)),
   ];
 

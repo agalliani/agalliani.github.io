@@ -12,24 +12,42 @@ import type { } from 'vite-ssg'
 // Shared with the app so the prerendered paths and the router can't drift apart.
 import { localizePath } from './src/i18n/routing'
 
-/** Concrete /blog/<slug> paths, read from the synced JSON so prerender covers every post. */
-function blogRoutes(): string[] {
+/**
+ * Per-post slugs, read from the synced JSON: the Italian slug always, plus
+ * the English one when the post has a translation — which may be a genuine
+ * localized slug (`en.slug`) or, for translations that predate localized
+ * slugs, the Italian slug reused under /en (old behaviour).
+ */
+function blogPostSlugs(): Array<{ it: string; en?: string }> {
   const dir = fileURLToPath(new URL('./src/content/blog', import.meta.url))
   if (!fs.existsSync(dir)) return []
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith('.json'))
-    .map((f) => `/blog/${f.replace(/\.json$/, '')}`)
+    .map((f) => {
+      const post = JSON.parse(fs.readFileSync(new URL(`./src/content/blog/${f}`, import.meta.url), 'utf8'))
+      return { it: post.slug as string, en: post.en ? ((post.en.slug as string) || post.slug) : undefined }
+    })
 }
 
 /**
  * Every page, in both languages. The English tree is only indexable because it
  * is prerendered here: without these entries /en/* would fall through to the SPA
  * rewrite and a crawler would get the Italian shell.
+ *
+ * Blog posts are handled separately from the other pages: their English URL
+ * doesn't share the Italian page's slug, so it can't be derived by blindly
+ * prefixing `/en` onto the same path like the static pages can.
  */
 function allRoutes(): string[] {
-  const pages = ['/', '/projects', '/blog', ...blogRoutes()]
-  return [...pages, ...pages.map((p) => localizePath(p, 'en'))]
+  const staticPages = ['/', '/projects', '/blog']
+  const posts = blogPostSlugs()
+  return [
+    ...staticPages,
+    ...staticPages.map((p) => localizePath(p, 'en')),
+    ...posts.map((p) => `/blog/${p.it}`),
+    ...posts.filter((p) => p.en).map((p) => `${localizePath('/blog', 'en')}/${p.en}`),
+  ]
 }
 
 // https://vite.dev/config/

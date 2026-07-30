@@ -72,8 +72,12 @@ function renderBody(content, slug) {
 
 /**
  * Optional English rendering, from `index.en.md` next to the Italian index.
- * Only the translatable fields are emitted — slug, date and cover stay
- * single-sourced from the Italian frontmatter (one post, one URL).
+ * Date and cover stay single-sourced from the Italian frontmatter (one post,
+ * one publication date, one image). `slug`, however, is translatable: set
+ * `slug: "..."` in the index.en.md frontmatter to give the translation its
+ * own keyword-bearing URL instead of inheriting the Italian one — see
+ * docs on ARTICLE_GROUPS-style localized slugs. Falls back to the Italian
+ * slug when omitted, for posts translated before this field existed.
  */
 function readTranslation(postDir, slug, fallback) {
   const enPath = path.join(postDir, 'index.en.md');
@@ -86,6 +90,7 @@ function readTranslation(postDir, slug, fallback) {
     html: renderBody(content, slug),
   };
   if (data.tags) translation.tags = data.tags;
+  if (data.slug) translation.slug = data.slug;
   return translation;
 }
 

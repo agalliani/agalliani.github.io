@@ -44,7 +44,9 @@ onBeforeUnmount(() => body.value?.removeEventListener('click', onBodyClick))
 useHead(() => {
   const p = post.value
   if (!p) return { title: t.value.postNotFound, meta: [{ name: 'robots', content: 'noindex' }] }
-  const base = `/blog/${p.slug}`
+  // Always the Italian path — the per-language URL (which may have its own
+  // localized slug) comes from langPaths, not from re-prefixing this one.
+  const base = p.langPaths.it ?? `/blog/${p.slug}`
   const image = p.cover ? `${SITE_URL}${p.cover}` : `${SITE_URL}/propic.webp`
   return {
     title: p.title,
@@ -54,11 +56,11 @@ useHead(() => {
       { property: 'og:description', content: p.excerpt },
       { property: 'og:type', content: 'article' },
       { property: 'og:image', content: image },
-      ...seoOpenGraph(base, lang.value),
+      ...seoOpenGraph(base, lang.value, p.langPaths),
     ],
     // A post is only claimed as an alternate once it actually has an English
     // rendering — see the `en` block in the post JSON.
-    link: seoLinks(base, lang.value, Boolean(p.en)),
+    link: seoLinks(base, lang.value, Boolean(p.en), p.langPaths),
   }
 })
 </script>
