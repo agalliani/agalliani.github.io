@@ -10,8 +10,10 @@ const pairs = [
   { it: '/projects', en: '/en/projects' },
   { it: '/blog', en: '/en/blog' },
   {
+    // Localized slugs: the English URL is a real English slug, not the
+    // Italian one wearing an /en prefix — see LocalizedBlogPost.langPaths.
     it: '/blog/mandare-un-pezzo-di-me-in-stratosfera',
-    en: '/en/blog/mandare-un-pezzo-di-me-in-stratosfera',
+    en: '/en/blog/send-a-piece-of-myself-to-the-stratosphere',
   },
 ]
 
@@ -42,7 +44,7 @@ describe('prerendered language trees', () => {
   })
 
   it('translates the post body, not just the chrome', () => {
-    cy.request('/en/blog/mandare-un-pezzo-di-me-in-stratosfera')
+    cy.request('/en/blog/send-a-piece-of-myself-to-the-stratosphere')
       .its('body')
       .should('contain', 'In third grade I wrote')
     cy.request('/blog/mandare-un-pezzo-di-me-in-stratosfera')
@@ -55,8 +57,14 @@ describe('prerendered language trees', () => {
     cy.get('nav a[href="/en/blog"]').click()
     cy.location('pathname').should('eq', '/en/blog')
     cy.contains('a', 'I want to send a piece of myself to the stratosphere').click()
-    cy.location('pathname').should('eq', '/en/blog/mandare-un-pezzo-di-me-in-stratosfera')
+    cy.location('pathname').should('eq', '/en/blog/send-a-piece-of-myself-to-the-stratosphere')
   })
+
+  // Note: the 301 from the old pre-localization English URL to the new slug
+  // is a vercel.json `redirects` rule — Vercel-only routing that `vite
+  // preview` doesn't emulate, so it can't be asserted by this local Cypress
+  // suite. Verify manually against the production deployment instead:
+  //   curl -sI https://andreagalliani.com/en/blog/mandare-un-pezzo-di-me-in-stratosfera
 
   it('lists both languages in the sitemap', () => {
     cy.request('/sitemap.xml').its('body').then((xml: string) => {
