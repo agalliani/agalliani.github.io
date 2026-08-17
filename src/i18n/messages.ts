@@ -142,7 +142,7 @@ export const messages: Record<Lang, Messages> = {
       'Mi fa sempre piacere parlare di tecnologia, prodotti e nuove idee. Scrivimi.',
 
     consentText:
-      'Uso Google Analytics per capire come viene letto il sito. Nessun dato viene usato per pubblicità.',
+      'Uso Google Analytics e Microsoft Clarity per capire come viene letto il sito. Nessun dato viene usato per pubblicità.',
     consentAccept: 'Accetta',
     consentReject: 'Rifiuta',
 
@@ -214,7 +214,7 @@ export const messages: Record<Lang, Messages> = {
       'I always enjoy talking about technology, products and new ideas. Get in touch.',
 
     consentText:
-      'I use Google Analytics to understand how the site is read. No data is used for advertising.',
+      'I use Google Analytics and Microsoft Clarity to understand how the site is read. No data is used for advertising.',
     consentAccept: 'Accept',
     consentReject: 'Reject',
 

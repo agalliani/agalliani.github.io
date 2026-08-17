@@ -7,6 +7,7 @@ import { nextTick } from 'vue'
 import App from './App.vue'
 import { routes } from './router'
 import { trackPageView } from './composables/useAnalytics'
+import { initClarity } from './composables/useClarity'
 import { createLangRef, LANG_KEY } from './composables/useI18n'
 import { langFromPath } from './i18n/routing'
 
@@ -47,6 +48,11 @@ export const createApp = ViteSSG(
     // nothing is sent automatically, so every view — the landing one included —
     // comes from here. Without this the SPA reported one pageview per session.
     if (!isClient) return
+
+    // Microsoft Clarity (session replay / heatmaps). Loaded here rather than
+    // from index.html so the tag never lands in the prerendered HTML, and
+    // started at `denied` — ConsentBanner's answer upgrades it (useConsent).
+    initClarity('denied')
 
     let lastPath = ''
     const sendPageView = async (path: string) => {

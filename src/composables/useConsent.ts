@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { trackPageView } from './useAnalytics'
+import { setClarityConsent } from './useClarity'
 
 // Analytics consent state, shaped exactly like useI18n(): one module-level ref
 // shared by every importer, hydrated from localStorage on the client only.
@@ -15,16 +16,22 @@ export type Consent = 'granted' | 'denied'
 /** null = the visitor hasn't chosen yet (the only state that shows the banner). */
 const consent = ref<Consent | null>(null)
 
-function updateGtagConsent(value: Consent): void {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return
+/** Fan the visitor's answer out to every tag that has a consent switch. */
+function updateConsent(value: Consent): void {
+  if (typeof window === 'undefined') return
   // Only analytics storage is ever granted — the site runs no ads, so the ad_*
   // signals stay denied regardless of the answer.
-  window.gtag('consent', 'update', {
-    analytics_storage: value === 'granted' ? 'granted' : 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-  })
+  if (typeof window.gtag === 'function') {
+    window.gtag('consent', 'update', {
+      analytics_storage: value === 'granted' ? 'granted' : 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    })
+  }
+  // Clarity has no consent defaults to declare up front, so main.ts already sent
+  // a `denied` state at init; this is the update.
+  setClarityConsent(value)
 }
 
 /**
@@ -36,15 +43,15 @@ export function initConsentFromStorage(): void {
   const saved = window.localStorage.getItem(STORAGE_KEY)
   if (saved !== 'granted' && saved !== 'denied') return
   consent.value = saved
-  // The gtag default is `denied`, so only a granted choice needs replaying.
-  if (saved === 'granted') updateGtagConsent('granted')
+  // Both tags start at `denied`, so only a granted choice needs replaying.
+  if (saved === 'granted') updateConsent('granted')
 }
 
 export function useConsent() {
   const set = (value: Consent) => {
     consent.value = value
     if (typeof window !== 'undefined') window.localStorage.setItem(STORAGE_KEY, value)
-    updateGtagConsent(value)
+    updateConsent(value)
   }
 
   const grant = () => {
