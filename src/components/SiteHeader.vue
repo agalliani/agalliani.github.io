@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { usePost } from '../composables/useBlogPosts'
 import { localizePath } from '../i18n/routing'
 import { track } from '../composables/useAnalytics'
 import type { Messages } from '../i18n/messages'
@@ -40,8 +41,20 @@ const onNavClick = (target: string) => track('nav_click', { target, location: 'h
 // toggle: the URL carries the language, so the switch has to be navigation.
 // Being a real <a href> also means crawlers can follow it and discover the
 // English pages, which a button would have hidden behind a click handler.
+//
+// For every page but a blog post the other tree's URL *is* the same path with
+// the prefix swapped. A post is the exception: its English URL can carry its
+// own localized slug (see LocalizedBlogPost.langPaths), so prefixing blindly
+// pointed at URLs that don't exist — /en/<italian-slug>, which is prerendered
+// for no post, and worse, /blog/<english-slug> going back, which resolves to
+// nothing at all and 404s. So ask the post for its real URL in the other
+// language, and only fall back to the prefix swap when there isn't one (a
+// static page, or a post with no translation — which by design still renders
+// Italian under /en and canonicalises to the Italian URL).
+const currentPost = usePost(computed(() => String(route.params.slug ?? '')))
+
 const switchTo = computed(() => ({
-  path: localizePath(route.path, other.value),
+  path: currentPost.value?.langPaths[other.value] ?? localizePath(route.path, other.value),
   hash: route.hash,
 }))
 
