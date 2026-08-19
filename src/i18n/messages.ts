@@ -43,6 +43,7 @@ export interface Messages {
   oxy: string
   tl: string
   dalila: string
+  falegnameria: string
   pihex: string
   falaphel: string
 
@@ -116,6 +117,7 @@ export const messages: Record<Lang, Messages> = {
     oxy: 'Dispositivo IoT e app per l’allenamento: dal prototipo ai primi dati sul campo.',
     tl: 'Crea timeline pronte da esportare in pochi secondi.',
     dalila: 'Sito portfolio disegnato e sviluppato su misura.',
+    falegnameria: 'Sito vetrina per un’attività di falegnameria artigianale, in cantiere con il cliente.',
     pihex: 'Chip in CMOS 28nm per gli acceleratori HL-LHC al CERN.',
     falaphel: 'Front-end analogico in CMOS 28nm per rivelatori a pixel dei futuri collider.',
 
@@ -188,6 +190,7 @@ export const messages: Record<Lang, Messages> = {
     oxy: 'IoT device and training app: from prototype to the first real field data.',
     tl: 'Build export-ready timelines in seconds.',
     dalila: 'A portfolio site designed and built from scratch.',
+    falegnameria: 'Showcase site for a craft carpentry workshop, evolving together with the client.',
     pihex: '28nm CMOS chip for CERN’s HL-LHC accelerators.',
     falaphel: '28nm CMOS analog front-end for pixel detectors at future colliders.',
 

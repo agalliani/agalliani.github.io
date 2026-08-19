@@ -10,6 +10,7 @@
 import dalilaHero from '@/assets/images/web-apps/dalila-portfolio-hero.png'
 import timelineMeHero from '@/assets/images/web-apps/timeline-me-hero.png'
 import oxymeterHero from '@/assets/images/web-apps/oxymeter-hero.png'
+import falegnameriaHero from '@/assets/images/web-apps/falegnameria-galliani-hero.png'
 import pihexChip from '@/assets/images/deep-tech/pihex/BILINEAR_PRIN_FULLCHIP_3.png'
 import falaphelChip from '@/assets/images/deep-tech/falaphel/FLASH_AFE_FALAPHEL_chip_v20.png'
 
@@ -64,7 +65,7 @@ export interface ProjectCategory {
 }
 
 // ---- Featured (home) -------------------------------------------------------
-export type FeaturedDescKey = 'oxy' | 'tl' | 'dalila' | 'pihex' | 'falaphel'
+export type FeaturedDescKey = 'oxy' | 'tl' | 'dalila' | 'falegnameria' | 'pihex' | 'falaphel'
 
 export interface FeaturedProject {
   id: string
@@ -105,6 +106,14 @@ export const featuredWork: FeaturedProject[] = [
     descKey: 'dalila',
     href: 'https://dalilascollo.com/',
     image: dalilaHero,
+  },
+  {
+    id: 'falegnameria-galliani',
+    title: 'Falegnameria Galliani',
+    tag: 'Web design',
+    descKey: 'falegnameria',
+    href: 'https://falegnameria-galliani.vercel.app/',
+    image: falegnameriaHero,
   },
   {
     id: 'pihex',
@@ -163,6 +172,7 @@ const webApps: Project[] = [
     link: 'https://falegnameria-galliani.vercel.app/',
     linkLabel: 'Anteprima live',
     status: 'wip',
+    image: falegnameriaHero,
   },
   {
     id: 'dalila-scollo',
