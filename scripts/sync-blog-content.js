@@ -29,6 +29,7 @@ import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
 import katexPlugin from '@vscode/markdown-it-katex';
+import { enhancePostImages } from './lib/post-images.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(__dirname, '..');
@@ -74,11 +75,16 @@ function copyPostImages(postDir, slug) {
   fs.cpSync(imagesDir, dest, { recursive: true });
 }
 
-/** Renders a post's markdown body and points its images at the public path. */
+/**
+ * Renders a post's markdown body, points its images at the public path and
+ * gives them their intrinsic size plus loading hints — the images have to be
+ * copied first (copyPostImages), since the sizes are read off the files.
+ */
 function renderBody(content, slug) {
-  return md
+  const html = md
     .render(content)
     .replace(/(<img[^>]+src=")([^"]+)(")/g, (_m, pre, ref, post) => `${pre}${rewriteImagePath(ref, slug)}${post}`);
+  return enhancePostImages(html, path.join(siteRoot, 'public'));
 }
 
 /**
