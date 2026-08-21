@@ -32,6 +32,7 @@ export interface Messages {
   blogPageLead: string
   blogEmpty: string
   backBlog: string
+  moreReading: string
   postNotFound: string
   postNotFoundLead: string
 
@@ -109,6 +110,7 @@ export const messages: Record<Lang, Messages> = {
       'Appunti e articoli dai progetti che sto costruendo: le scelte, gli errori e i numeri veri.',
     blogEmpty: 'Nessun articolo pubblicato per ora.',
     backBlog: '← Blog',
+    moreReading: 'Continua a leggere',
     postNotFound: 'Articolo non trovato',
     postNotFoundLead: 'L’articolo che cerchi non esiste o è stato spostato.',
 
@@ -183,6 +185,7 @@ export const messages: Record<Lang, Messages> = {
       'Notes and articles from the projects I am building: the choices, the mistakes and the real numbers.',
     blogEmpty: 'No posts published yet.',
     backBlog: '← Blog',
+    moreReading: 'Keep reading',
     postNotFound: 'Post not found',
     postNotFoundLead: 'The post you are looking for does not exist or has moved.',
 

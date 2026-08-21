@@ -4,11 +4,11 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import BreadcrumbTrail from '../components/BreadcrumbTrail.vue'
-import { usePost, formatPostDate } from '../composables/useBlogPosts'
+import { usePost, usePosts, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n } from '../composables/useI18n'
 import { seoArticle, seoLinks, seoOpenGraph, seoSocial } from '../composables/useSeo'
 import { blogPostSchema, jsonLdScript } from '../composables/useStructuredData'
-import { trackOutbound } from '../composables/useAnalytics'
+import { track, trackOutbound } from '../composables/useAnalytics'
 import { useScrollDepth } from '../composables/useScrollDepth'
 // Post formulas are pre-rendered to KaTeX markup at sync time
 // (scripts/sync-blog-content.js); only this stylesheet (and its fonts) ships,
@@ -36,6 +36,14 @@ const trail = computed(() => {
     ...(p ? [{ name: p.title, path: here }] : []),
   ]
 })
+
+// Two more posts to read next. A post that links only back to /blog is a leaf
+// in the crawl graph: these give a crawler (and a reader who reached the end)
+// somewhere else to go, from the page where the interest is highest.
+const allPosts = usePosts()
+const related = computed(() =>
+  allPosts.value.filter((p) => p.slug !== post.value?.slug).slice(0, 2),
+)
 
 useScrollDepth(body, slug)
 
@@ -131,7 +139,34 @@ useHead(() => {
         <!-- html is pre-rendered and rewritten at sync time (first-party content). -->
         <article ref="body" class="post-body" v-html="post.html"></article>
 
-        <div class="mt-16 border-t border-line pt-8">
+        <section v-if="related.length" class="mt-16 border-t border-line pt-8">
+          <h2 class="m-0 font-serif text-[24px] font-medium tracking-[-0.01em]">
+            {{ t.moreReading }}
+          </h2>
+          <ul class="mt-5 flex list-none flex-col gap-4 p-0">
+            <li v-for="other in related" :key="other.slug">
+              <RouterLink
+                :to="other.langPaths[lang] ?? `/blog/${other.slug}`"
+                class="group block no-underline"
+                @click="track('blog_post_click', { slug: other.slug, location: 'post_related' })"
+              >
+                <time
+                  v-if="other.date"
+                  class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"
+                >
+                  {{ formatPostDate(other.date, lang) }}
+                </time>
+                <span
+                  class="mt-1 block font-serif text-[20px] font-medium leading-[1.25] text-ink transition-colors group-hover:text-brand"
+                >
+                  {{ other.title }}
+                </span>
+              </RouterLink>
+            </li>
+          </ul>
+        </section>
+
+        <div class="mt-12 border-t border-line pt-8">
           <RouterLink :to="lp('/blog')" class="text-[17px] font-medium text-brand no-underline hover:underline">
             {{ t.backBlog }}
           </RouterLink>
