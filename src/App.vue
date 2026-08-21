@@ -15,6 +15,16 @@ useHead(() => ({
   title: 'Andrea Galliani | AMS Engineer & Ph.D.',
   titleTemplate: '%s | Andrea Galliani',
   htmlAttrs: { lang: lang.value },
+  // The feed a reader (or a browser extension) autodiscovers — one per
+  // language, matching the tree the page belongs to.
+  link: [
+    {
+      rel: 'alternate',
+      type: 'application/rss+xml',
+      title: lang.value === 'it' ? 'Blog di Andrea Galliani' : 'Andrea Galliani’s Blog',
+      href: lang.value === 'it' ? '/rss.xml' : '/en/rss.xml',
+    },
+  ],
   meta: [
     { name: 'description', content: t.value.seoSiteDesc },
     { property: 'og:image', content: 'https://andreagalliani.com/propic.webp' },

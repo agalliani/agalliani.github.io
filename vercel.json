@@ -17,15 +17,40 @@
     {
       "source": "/sitemap.xml",
       "headers": [
-        { "key": "content-type", "value": "application/xml" },
-        { "key": "cache-control", "value": "public, max-age=86400, must-revalidate" }
+        {
+          "key": "content-type",
+          "value": "application/xml"
+        },
+        {
+          "key": "cache-control",
+          "value": "public, max-age=86400, must-revalidate"
+        }
       ]
     },
     {
       "source": "/robots.txt",
       "headers": [
-        { "key": "content-type", "value": "text/plain" },
-        { "key": "cache-control", "value": "public, max-age=86400, must-revalidate" }
+        {
+          "key": "content-type",
+          "value": "text/plain"
+        },
+        {
+          "key": "cache-control",
+          "value": "public, max-age=86400, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(en/)?rss.xml",
+      "headers": [
+        {
+          "key": "content-type",
+          "value": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "key": "cache-control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
       ]
     }
   ]

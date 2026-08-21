@@ -15,7 +15,7 @@
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
     "build-only": "vite-ssg build",
-    "postbuild": "node scripts/generate-sitemap.js",
+    "postbuild": "node scripts/generate-sitemap.js && node scripts/generate-feed.js",
     "type-check": "vue-tsc --build",
     "sync-blog": "node scripts/sync-blog-content.js"
   },
