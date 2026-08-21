@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useHead } from "@unhead/vue";
 import SiteHeader from "../components/SiteHeader.vue";
+import BreadcrumbTrail from "../components/BreadcrumbTrail.vue";
 import { usePosts, formatPostDate } from "../composables/useBlogPosts";
 import { useI18n } from "../composables/useI18n";
 import { seoLinks, seoOpenGraph, seoSocial } from "../composables/useSeo";
@@ -10,6 +12,12 @@ import { track } from "../composables/useAnalytics";
 
 const { t, lang, lp } = useI18n();
 const posts = usePosts();
+
+// Rendered below the heading and serialized as BreadcrumbList — same array.
+const trail = computed(() => [
+  { name: t.value.navHome, path: lp("/") },
+  { name: t.value.navBlog, path: lp("/blog") },
+]);
 
 useHead(() => ({
   title: "Blog",
@@ -21,10 +29,7 @@ useHead(() => ({
   link: seoLinks("/blog", lang.value),
   script: [
     jsonLdScript(
-      blogListSchema(lang.value, t.value.seoBlogDesc, posts.value, [
-        { name: t.value.navHome, path: lp("/") },
-        { name: t.value.navBlog, path: lp("/blog") },
-      ]),
+      blogListSchema(lang.value, t.value.seoBlogDesc, posts.value, trail.value),
     ),
   ],
 }));

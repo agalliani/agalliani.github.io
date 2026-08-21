@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
+import BreadcrumbTrail from '../components/BreadcrumbTrail.vue'
 import { usePost, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n } from '../composables/useI18n'
 import { seoArticle, seoLinks, seoOpenGraph, seoSocial } from '../composables/useSeo'
@@ -23,6 +24,18 @@ const slug = computed(() => String(route.params.slug))
 // Resolved synchronously from the bundled JSON (see useBlogPosts), so vite-ssg
 // prerenders every post statically.
 const post = usePost(slug)
+
+// One trail, used twice: rendered as the visible breadcrumb and serialized as
+// BreadcrumbList. Google requires the two to describe the same hierarchy.
+const trail = computed(() => {
+  const p = post.value
+  const here = p ? (p.langPaths[lang.value] ?? `/blog/${p.slug}`) : lp('/blog')
+  return [
+    { name: t.value.navHome, path: lp('/') },
+    { name: t.value.navBlog, path: lp('/blog') },
+    ...(p ? [{ name: p.title, path: here }] : []),
+  ]
+})
 
 useScrollDepth(body, slug)
 
@@ -74,11 +87,7 @@ useHead(() => {
     // the template — Google requires the two to describe the same hierarchy.
     script: [
       jsonLdScript(
-        blogPostSchema(lang.value, p, [
-          { name: t.value.navHome, path: lp('/') },
-          { name: t.value.navBlog, path: lp('/blog') },
-          { name: p.title, path: p.langPaths[lang.value] ?? base },
-        ]),
+        blogPostSchema(lang.value, p, trail.value),
       ),
     ],
   }
@@ -91,14 +100,10 @@ useHead(() => {
 
     <main class="mx-auto max-w-[720px] px-[clamp(24px,5vw,48px)] pb-[clamp(56px,8vw,96px)] pt-[clamp(48px,8vw,88px)]">
       <template v-if="post">
-        <!-- Breadcrumb up one level: the header navigates the site, this one
-             navigates the hierarchy the post sits in. -->
-        <RouterLink
-          :to="lp('/blog')"
-          class="text-[15px] font-medium text-ink-soft no-underline transition-colors hover:text-ink"
-        >
-          {{ t.backBlog }}
-        </RouterLink>
+        <!-- The header navigates the site; this navigates the hierarchy the
+             post sits in, and is the on-page counterpart of the JSON-LD
+             BreadcrumbList. -->
+        <BreadcrumbTrail :items="trail" />
         <time
           v-if="post.date"
           class="mt-8 block font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint"

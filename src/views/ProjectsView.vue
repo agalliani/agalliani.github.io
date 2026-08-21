@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import ProjectCard from '../components/projects/ProjectCard.vue'
 import SiteHeader from '../components/SiteHeader.vue'
+import BreadcrumbTrail from '../components/BreadcrumbTrail.vue'
 import { projectCategories } from '../data/projects'
 import { useI18n } from '../composables/useI18n'
 import { seoLinks, seoOpenGraph, seoSocial } from '../composables/useSeo'
 import { jsonLdScript, pageSchema } from '../composables/useStructuredData'
 
 const { t, lang, lp } = useI18n()
+
+const trail = computed(() => [
+  { name: t.value.navHome, path: lp('/') },
+  { name: t.value.projectsTitle, path: lp('/projects') },
+])
 
 useHead(() => ({
   title: t.value.projectsTitle,
@@ -20,10 +27,7 @@ useHead(() => ({
   link: seoLinks('/projects', lang.value),
   script: [
     jsonLdScript(
-      pageSchema(lang.value, '/projects', t.value.projectsTitle, t.value.seoProjectsDesc, [
-        { name: t.value.navHome, path: lp('/') },
-        { name: t.value.projectsTitle, path: lp('/projects') },
-      ]),
+      pageSchema(lang.value, '/projects', t.value.projectsTitle, t.value.seoProjectsDesc, trail.value),
     ),
   ],
 }))
@@ -35,6 +39,7 @@ useHead(() => ({
 
     <!-- Heading -->
     <section class="mx-auto max-w-[1080px] px-[clamp(24px,5vw,48px)] pb-4 pt-[clamp(48px,8vw,96px)]">
+      <BreadcrumbTrail :items="trail" class="mb-6" />
       <h1 class="m-0 text-[clamp(40px,6vw,56px)] font-semibold leading-[1.05] tracking-[-0.02em]">
         {{ t.projectsTitle }}
       </h1>
