@@ -5,6 +5,7 @@ import SiteHeader from "../components/SiteHeader.vue";
 import { usePosts, formatPostDate } from "../composables/useBlogPosts";
 import { useI18n } from "../composables/useI18n";
 import { seoLinks, seoOpenGraph } from "../composables/useSeo";
+import { blogListSchema, jsonLdScript } from "../composables/useStructuredData";
 import { track } from "../composables/useAnalytics";
 
 const { t, lang, lp } = useI18n();
@@ -20,6 +21,14 @@ useHead(() => ({
     ...seoOpenGraph("/blog", lang.value),
   ],
   link: seoLinks("/blog", lang.value),
+  script: [
+    jsonLdScript(
+      blogListSchema(lang.value, t.value.seoBlogDesc, posts.value, [
+        { name: t.value.navHome, path: lp("/") },
+        { name: t.value.navBlog, path: lp("/blog") },
+      ]),
+    ),
+  ],
 }));
 </script>
 

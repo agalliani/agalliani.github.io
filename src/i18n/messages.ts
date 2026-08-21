@@ -9,6 +9,7 @@ export type Lang = 'it' | 'en'
 
 export interface Messages {
   // Header / nav
+  navHome: string
   navWork: string
   navBlog: string
   navContact: string
@@ -85,6 +86,7 @@ export interface Messages {
 
 export const messages: Record<Lang, Messages> = {
   it: {
+    navHome: 'Home',
     navWork: 'Progetti',
     navBlog: 'Blog',
     navContact: 'Contatti',
@@ -158,6 +160,7 @@ export const messages: Record<Lang, Messages> = {
       'Articoli e note dal progetto HAB e dallo sviluppo con l’AI come copilota — learn in public.',
   },
   en: {
+    navHome: 'Home',
     navWork: 'Work',
     navBlog: 'Blog',
     navContact: 'Contact',

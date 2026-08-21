@@ -6,6 +6,7 @@ import SiteHeader from '../components/SiteHeader.vue'
 import { projectCategories } from '../data/projects'
 import { useI18n } from '../composables/useI18n'
 import { seoLinks, seoOpenGraph } from '../composables/useSeo'
+import { jsonLdScript, pageSchema } from '../composables/useStructuredData'
 
 const { t, lang, lp } = useI18n()
 
@@ -16,6 +17,14 @@ useHead(() => ({
     ...seoOpenGraph('/projects', lang.value),
   ],
   link: seoLinks('/projects', lang.value),
+  script: [
+    jsonLdScript(
+      pageSchema(lang.value, '/projects', t.value.projectsTitle, t.value.seoProjectsDesc, [
+        { name: t.value.navHome, path: lp('/') },
+        { name: t.value.projectsTitle, path: lp('/projects') },
+      ]),
+    ),
+  ],
 }))
 </script>
 

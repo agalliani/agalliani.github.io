@@ -6,6 +6,7 @@ import SiteHeader from '../components/SiteHeader.vue'
 import { usePost, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n } from '../composables/useI18n'
 import { seoLinks, seoOpenGraph } from '../composables/useSeo'
+import { blogPostSchema, jsonLdScript } from '../composables/useStructuredData'
 import { SITE_URL } from '../i18n/routing'
 import { trackOutbound } from '../composables/useAnalytics'
 import { useScrollDepth } from '../composables/useScrollDepth'
@@ -65,6 +66,17 @@ useHead(() => {
     // A post is only claimed as an alternate once it actually has an English
     // rendering — see the `en` block in the post JSON.
     link: seoLinks(base, lang.value, Boolean(p.en), p.langPaths),
+    // Article + breadcrumb graph. The trail mirrors the visible breadcrumb in
+    // the template — Google requires the two to describe the same hierarchy.
+    script: [
+      jsonLdScript(
+        blogPostSchema(lang.value, p, [
+          { name: t.value.navHome, path: lp('/') },
+          { name: t.value.navBlog, path: lp('/blog') },
+          { name: p.title, path: p.langPaths[lang.value] ?? base },
+        ]),
+      ),
+    ],
   }
 })
 </script>
