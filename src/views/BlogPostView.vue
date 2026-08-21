@@ -5,9 +5,8 @@ import { useHead } from '@unhead/vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import { usePost, formatPostDate } from '../composables/useBlogPosts'
 import { useI18n } from '../composables/useI18n'
-import { seoLinks, seoOpenGraph } from '../composables/useSeo'
+import { seoArticle, seoLinks, seoOpenGraph, seoSocial } from '../composables/useSeo'
 import { blogPostSchema, jsonLdScript } from '../composables/useStructuredData'
-import { SITE_URL } from '../i18n/routing'
 import { trackOutbound } from '../composables/useAnalytics'
 import { useScrollDepth } from '../composables/useScrollDepth'
 // Post formulas are pre-rendered to KaTeX markup at sync time
@@ -52,15 +51,20 @@ useHead(() => {
   // Always the Italian path — the per-language URL (which may have its own
   // localized slug) comes from langPaths, not from re-prefixing this one.
   const base = p.langPaths.it ?? `/blog/${p.slug}`
-  const image = p.cover ? `${SITE_URL}${p.cover}` : `${SITE_URL}/propic.webp`
+  // `image` (not `cover`): a post without an explicit cover still has the
+  // first picture in its body, which is a far better card than the portrait.
   return {
     title: p.title,
     meta: [
       { name: 'description', content: p.excerpt },
-      { property: 'og:title', content: p.title },
-      { property: 'og:description', content: p.excerpt },
-      { property: 'og:type', content: 'article' },
-      { property: 'og:image', content: image },
+      ...seoSocial({
+        title: p.title,
+        description: p.excerpt,
+        image: p.image,
+        imageAlt: p.title,
+        type: 'article',
+      }),
+      ...seoArticle({ published: p.date, modified: p.updated, tags: p.tags }),
       ...seoOpenGraph(base, lang.value, p.langPaths),
     ],
     // A post is only claimed as an alternate once it actually has an English

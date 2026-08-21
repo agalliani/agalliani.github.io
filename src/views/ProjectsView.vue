@@ -5,7 +5,7 @@ import ProjectCard from '../components/projects/ProjectCard.vue'
 import SiteHeader from '../components/SiteHeader.vue'
 import { projectCategories } from '../data/projects'
 import { useI18n } from '../composables/useI18n'
-import { seoLinks, seoOpenGraph } from '../composables/useSeo'
+import { seoLinks, seoOpenGraph, seoSocial } from '../composables/useSeo'
 import { jsonLdScript, pageSchema } from '../composables/useStructuredData'
 
 const { t, lang, lp } = useI18n()
@@ -14,6 +14,7 @@ useHead(() => ({
   title: t.value.projectsTitle,
   meta: [
     { name: 'description', content: t.value.seoProjectsDesc },
+    ...seoSocial({ title: `${t.value.projectsTitle} | Andrea Galliani`, description: t.value.seoProjectsDesc }),
     ...seoOpenGraph('/projects', lang.value),
   ],
   link: seoLinks('/projects', lang.value),

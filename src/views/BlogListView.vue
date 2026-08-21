@@ -4,7 +4,7 @@ import { useHead } from "@unhead/vue";
 import SiteHeader from "../components/SiteHeader.vue";
 import { usePosts, formatPostDate } from "../composables/useBlogPosts";
 import { useI18n } from "../composables/useI18n";
-import { seoLinks, seoOpenGraph } from "../composables/useSeo";
+import { seoLinks, seoOpenGraph, seoSocial } from "../composables/useSeo";
 import { blogListSchema, jsonLdScript } from "../composables/useStructuredData";
 import { track } from "../composables/useAnalytics";
 
@@ -15,9 +15,7 @@ useHead(() => ({
   title: "Blog",
   meta: [
     { name: "description", content: t.value.seoBlogDesc },
-    { property: "og:title", content: "Blog | Andrea Galliani" },
-    { property: "og:description", content: t.value.seoBlogDesc },
-    { property: "og:type", content: "website" },
+    ...seoSocial({ title: "Blog | Andrea Galliani", description: t.value.seoBlogDesc }),
     ...seoOpenGraph("/blog", lang.value),
   ],
   link: seoLinks("/blog", lang.value),
