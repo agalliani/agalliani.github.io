@@ -48,8 +48,8 @@ const rest = computed(() => latest.value.slice(1))
             class="relative min-h-[260px] overflow-hidden bg-[linear-gradient(180deg,#0b1a3a_0%,#22467e_45%,#7db0e6_100%)] max-md:aspect-video max-md:min-h-0"
           >
             <img
-              v-if="featured.cover"
-              :src="featured.cover"
+              v-if="featured.image"
+              :src="featured.image"
               :alt="featured.title"
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               loading="lazy"

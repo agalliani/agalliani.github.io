@@ -28,6 +28,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
+import katexPlugin from '@vscode/markdown-it-katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(__dirname, '..');
@@ -45,6 +46,16 @@ const imgOutRoot = path.join(siteRoot, 'public', 'images', 'blog');
 // first-party/trusted (authored by us in hab), so this is a safety default, not
 // a full sanitizer.
 const md = new MarkdownIt({ html: false, linkify: true, typographer: true });
+
+// Math is written in the posts as LaTeX ($inline$ / $$display$$) and rendered
+// to HTML+MathML *here*, at sync time — the browser never loads KaTeX, it only
+// needs `katex/dist/katex.min.css` (imported from src/assets/main.css) plus the
+// fonts Vite bundles alongside it.
+md.use(katexPlugin.default ?? katexPlugin, {
+  throwOnError: false,
+  strict: false,
+  output: 'htmlAndMathml',
+});
 
 /** Rewrites relative `images/...` refs to the site-absolute public path. */
 function rewriteImagePath(ref, slug) {

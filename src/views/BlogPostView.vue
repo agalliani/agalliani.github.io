@@ -9,6 +9,10 @@ import { seoLinks, seoOpenGraph } from '../composables/useSeo'
 import { SITE_URL } from '../i18n/routing'
 import { trackOutbound } from '../composables/useAnalytics'
 import { useScrollDepth } from '../composables/useScrollDepth'
+// Post formulas are pre-rendered to KaTeX markup at sync time
+// (scripts/sync-blog-content.js); only this stylesheet (and its fonts) ships,
+// and only on the routes that can contain math.
+import 'katex/dist/katex.min.css'
 
 const { t, lang, lp } = useI18n()
 const route = useRoute()
@@ -220,5 +224,24 @@ useHead(() => {
   margin: 2rem 0;
   color: #6e6e73; /* --color-ink-soft */
   font-style: italic;
+}
+
+/* --- Math (KaTeX, pre-rendered at sync time) --- */
+/* Formulas usually sit inside a blockquote, which is muted + italic; the
+   formula itself must read as body text, not as an aside. */
+.post-body :deep(.katex) {
+  font-style: normal;
+  color: #1d1d1f; /* --color-ink */
+  font-size: 1.05em;
+}
+.post-body :deep(.katex-display) {
+  margin: 0.5rem 0;
+  /* A long display formula scrolls in its own box instead of widening the page. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+.post-body :deep(.katex-block) {
+  margin: 0;
 }
 </style>

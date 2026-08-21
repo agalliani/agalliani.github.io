@@ -163,7 +163,7 @@ export const messages: Record<Lang, Messages> = {
     navContact: 'Contact',
 
     role: 'AMS Engineer · Ph.D. in Microelectronics',
-    heroTag: 'I design, I write code, I build products. Then I write about it here.',
+    heroTag: 'I design, I write code, I build products. Then I talk about it here.',
     heroLead:
       'I work across analog chip design and software development. On the blog I document my projects as they take shape: from hardware to the stratosphere, all the way to business.',
     ctaBlog: 'Read the blog',

@@ -30,6 +30,19 @@ const byEnSlug: Record<string, BlogPost> = Object.fromEntries(
 export interface LocalizedBlogPost extends BlogPost {
   /** `/blog/<slug>` for every language this post is published in — for canonical/hreflang, never guessed from a single slug. */
   langPaths: Partial<Record<Lang, string>>
+  /**
+   * The image to represent the post in a card/teaser: the explicit `cover`
+   * from frontmatter when there is one, otherwise the first image in the post
+   * body. Derived here rather than at sync time so posts already committed
+   * without a `cover` get one without a resync. `null` when the post has no
+   * image at all — call sites still need their placeholder.
+   */
+  image: string | null
+}
+
+/** First `<img src>` in the pre-rendered (sync-time, html:false) post HTML. */
+function firstImage(html: string): string | null {
+  return /<img[^>]+src="([^"]+)"/.exec(html)?.[1] ?? null
 }
 
 /**
@@ -48,10 +61,22 @@ function localize(post: BlogPost, to: Lang): LocalizedBlogPost {
   const langPaths: Partial<Record<Lang, string>> = { it: `/blog/${post.slug}` }
   if (post.en) langPaths.en = localizePath(`/blog/${post.en.slug ?? post.slug}`, 'en')
 
-  if (to !== 'en' || !post.en) return { ...post, langPaths }
+  if (to !== 'en' || !post.en)
+    return { ...post, langPaths, image: post.cover ?? firstImage(post.html) }
 
   const { title, excerpt, html, tags, slug } = post.en
-  return { ...post, title, excerpt, html, tags: tags ?? post.tags, slug: slug ?? post.slug, langPaths }
+  return {
+    ...post,
+    title,
+    excerpt,
+    html,
+    tags: tags ?? post.tags,
+    slug: slug ?? post.slug,
+    langPaths,
+    // Same picture in both languages: cover isn't translatable, and the two
+    // renderings embed the same images.
+    image: post.cover ?? firstImage(html) ?? firstImage(post.html),
+  }
 }
 
 // These are composables, not plain getters: the language comes from the app's
