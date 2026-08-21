@@ -49,9 +49,31 @@ const localizePath = (p, lang) =>
 
 const blogDir = path.resolve(__dirname, '../src/content/blog');
 
-/** Wraps a URL entry with <loc> and <lastmod> only — Google ignores priority/changefreq. */
-const urlEntry = (loc, lastmod = TODAY, alternates = '') =>
-  `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates}  </url>`;
+/**
+ * Wraps a URL entry with <loc> and <lastmod> — Google ignores
+ * priority/changefreq. `extra` carries the optional per-URL blocks: hreflang
+ * alternates for a translated page, <image:image> for a post that has pictures.
+ */
+const urlEntry = (loc, lastmod = TODAY, extra = '') =>
+  `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${extra}  </url>`;
+
+/** XML-escapes a URL for use inside a tag body. */
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * The images a post embeds, as sitemap <image:image> entries.
+ *
+ * Google discovers images by crawling the page that holds them, but a post
+ * image only becomes eligible for Google Images once Google has actually
+ * rendered that page. Listing them here removes the wait — and is the only
+ * supported way to declare an image that a crawler might otherwise reach late.
+ */
+function imageEntries(html) {
+  const srcs = [...html.matchAll(/<img[^>]+src="(\/[^"]+)"/g)].map((m) => m[1]);
+  return [...new Set(srcs)]
+    .map((src) => `    <image:image>\n      <image:loc>${esc(SITE_URL + src)}</image:loc>\n    </image:image>\n`)
+    .join('');
+}
 
 /**
  * One <url> per language, each carrying the full reciprocal hreflang set —
@@ -89,15 +111,17 @@ function blogPages() {
       // crawler learns to ignore.
       lastmod: post.updated || post.date || TODAY,
       translated: Boolean(post.en),
+      itImages: imageEntries(post.html),
+      enImages: post.en ? imageEntries(post.en.html) : '',
     }));
 }
 
 /** One <url> per published language of a post, with reciprocal hreflang between its (possibly different) slugs. */
-function blogEntries({ itSlug, enSlug, lastmod, translated }) {
+function blogEntries({ itSlug, enSlug, lastmod, translated, itImages, enImages }) {
   const itUrl = `${SITE_URL}/blog/${itSlug}`;
   // An untranslated post has no English version worth listing: /en/<slug>
   // resolves, but it renders the Italian text and canonicalises back to it.
-  if (!translated) return [urlEntry(itUrl, lastmod)];
+  if (!translated) return [urlEntry(itUrl, lastmod, itImages)];
 
   const enUrl = `${SITE_URL}${localizePath('/blog', 'en')}/${enSlug}`;
   const alternates = [
@@ -105,7 +129,10 @@ function blogEntries({ itSlug, enSlug, lastmod, translated }) {
     `    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>\n`,
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${itUrl}"/>\n`,
   ].join('');
-  return [urlEntry(itUrl, lastmod, alternates), urlEntry(enUrl, lastmod, alternates)];
+  return [
+    urlEntry(itUrl, lastmod, alternates + itImages),
+    urlEntry(enUrl, lastmod, alternates + enImages),
+  ];
 }
 
 function generateSitemap() {
@@ -117,7 +144,7 @@ function generateSitemap() {
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
     ...urls,
     '</urlset>',
   ].join('\n');
