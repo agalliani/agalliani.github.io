@@ -5,6 +5,15 @@ export interface BlogPost {
   slug: string
   title: string
   date: string | null
+  /**
+   * Last substantive revision, from the optional `updated:` frontmatter key.
+   * `null` for a post that has never been edited since publication — in which
+   * case `date` is also its modification date. Kept separate from `date` so
+   * `dateModified` and the sitemap's <lastmod> can say "this changed" without
+   * rewriting the publication date, which is what a reader (and Google's
+   * freshness signal) reads in the byline.
+   */
+  updated?: string | null
   excerpt: string
   tags: string[]
   cover: string | null

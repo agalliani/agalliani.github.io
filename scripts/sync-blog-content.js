@@ -118,6 +118,12 @@ function syncPost(slug) {
     slug: data.slug || slug,
     title: data.title || slug,
     date: data.date ? new Date(data.date).toISOString().split('T')[0] : null,
+    // `updated:` in the frontmatter, set only when a published post is
+    // materially revised. It feeds schema.org `dateModified` and the sitemap's
+    // <lastmod>, which is how a crawler learns a URL is worth re-fetching —
+    // so it must stay absent rather than default to "today", or every post
+    // would claim to have changed on every build.
+    updated: data.updated ? new Date(data.updated).toISOString().split('T')[0] : null,
     excerpt: data.excerpt || '',
     tags: data.tags || [],
     cover: data.cover ? rewriteImagePath(data.cover, slug) : null,

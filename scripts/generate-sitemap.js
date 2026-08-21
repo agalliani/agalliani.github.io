@@ -83,7 +83,11 @@ function blogPages() {
     .map((post) => ({
       itSlug: post.slug,
       enSlug: post.en ? post.en.slug || post.slug : null,
-      lastmod: post.date || TODAY,
+      // The last time this URL's content actually changed: the revision date
+      // when there is one, the publication date otherwise. Never TODAY for a
+      // post that exists — a <lastmod> that moves on every build is noise a
+      // crawler learns to ignore.
+      lastmod: post.updated || post.date || TODAY,
       translated: Boolean(post.en),
     }));
 }
