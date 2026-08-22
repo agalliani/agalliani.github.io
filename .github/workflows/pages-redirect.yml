@@ -1,0 +1,47 @@
+name: Deploy GitHub Pages redirect
+
+# Publishes only the tiny redirect landing page in github-pages-home/ to the
+# GitHub Pages "user site" (agalliani.github.io). It does NOT touch the
+# `timeline-me` project -- that lives in its own repo with its own Pages
+# deployment (agalliani.github.io/timeline-me/), so this workflow never
+# overwrites it.
+#
+# Requires repo Settings > Pages > Build and deployment > Source = "GitHub
+# Actions" (this repo used to deploy the old portfolio the same way, see the
+# now-removed workflow that lived on the `dev` branch).
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'github-pages-home/**'
+      - '.github/workflows/pages-redirect.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './github-pages-home'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
